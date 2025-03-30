@@ -27,10 +27,10 @@ class Tmdb {
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
-            : "https://stream-blog.s3.amazonaws.com/blog/wp-content/uploads/fc148f0fc75d02841d017bb36e14e388/Stream-logo-with-background-.png",
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
         poster: movie['poster_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
-            : "https://stream-blog.s3.amazonaws.com/blog/wp-content/uploads/fc148f0fc75d02841d017bb36e14e388/Stream-logo-with-background-.png",
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()

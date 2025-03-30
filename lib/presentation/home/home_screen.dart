@@ -41,8 +41,27 @@ class HomeScreen extends ConsumerWidget {
         ],
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           HeroCarousel(movies: movies),
+          Container(
+            padding: const EdgeInsets.only(left: 16, top: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  "In Theatres, Near You...",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.italic,
+                      ),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
+          ),
         ],
       ),
     );
