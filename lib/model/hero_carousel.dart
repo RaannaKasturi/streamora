@@ -1,4 +1,4 @@
-class HeroCarouselData {
+class MovieListData {
   String title;
   String backdrop;
   String poster;
@@ -8,7 +8,7 @@ class HeroCarouselData {
   String overview;
   List<String>? genres;
 
-  HeroCarouselData({
+  MovieListData({
     required this.title,
     required this.backdrop,
     required this.poster,

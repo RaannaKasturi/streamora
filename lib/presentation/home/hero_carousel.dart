@@ -10,7 +10,7 @@ class HeroCarousel extends StatelessWidget {
     required this.movies,
   });
 
-  final AsyncValue<List<HeroCarouselData>> movies;
+  final AsyncValue<List<MovieListData>> movies;
 
   @override
   Widget build(BuildContext context) {

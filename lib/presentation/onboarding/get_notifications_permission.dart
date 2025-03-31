@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:streamora/presentation/home/home_screen.dart';
+import 'package:streamora/presentation/onboarding/set_location_theme.dart';
 
 class GetNotificationsPermission extends StatelessWidget {
   const GetNotificationsPermission({super.key});
@@ -15,7 +15,7 @@ class GetNotificationsPermission extends StatelessWidget {
           context,
           PageTransition(
             type: PageTransitionType.rightToLeft,
-            child: HomeScreen(),
+            child: SetLocationTheme(),
           ),
         );
       } else if (status.isDenied) {

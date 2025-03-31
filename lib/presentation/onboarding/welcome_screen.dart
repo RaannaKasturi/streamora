@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:streamora/onboarding/get_notifications_permission.dart';
+import 'package:streamora/presentation/onboarding/get_notifications_permission.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
