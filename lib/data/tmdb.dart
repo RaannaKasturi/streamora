@@ -2,7 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streamora/data/api_keys.dart';
 import 'package:streamora/data/genres_data.dart';
-import 'package:streamora/model/hero_carousel.dart';
+import 'package:streamora/model/movie_list_data.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 part 'tmdb.g.dart';
@@ -30,6 +30,7 @@ class Tmdb {
             movie["media_type"] == "movie" || movie["media_type"] == "tv")
         .map((movie) {
       return MovieListData(
+        id: movie['id'],
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
@@ -60,6 +61,7 @@ class Tmdb {
     final moviesData = response['results'] as List<dynamic>;
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
+        id: movie['id'],
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
@@ -89,6 +91,7 @@ class Tmdb {
     final moviesData = response['results'] as List<dynamic>;
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
+        id: movie['id'],
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
@@ -120,6 +123,7 @@ class Tmdb {
     final moviesData = response['results'] as List<dynamic>;
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
+        id: movie['id'],
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
@@ -149,6 +153,7 @@ class Tmdb {
     final moviesData = response['results'] as List<dynamic>;
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
+        id: movie['id'],
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
@@ -180,6 +185,7 @@ class Tmdb {
     final moviesData = response['results'] as List<dynamic>;
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
+        id: movie['id'],
         title: movie['title'] ?? movie['original_title'] ?? movie['name'],
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"

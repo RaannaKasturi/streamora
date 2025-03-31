@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:streamora/model/hero_carousel.dart';
+import 'package:page_transition/page_transition.dart';
+import 'package:streamora/model/movie_list_data.dart';
+import 'package:streamora/presentation/movie/movie_screen.dart';
 
 class CardListCarousel extends StatelessWidget {
   final List<MovieListData> movieData;
@@ -78,7 +80,17 @@ class CardListCarousel extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    // TODO: Handle movie tap
+                    if (movie.mediaType == "movie") {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: MovieScreen(
+                            movieId: movie.id,
+                          ),
+                        ),
+                      );
+                    }
                   },
                 ),
               );

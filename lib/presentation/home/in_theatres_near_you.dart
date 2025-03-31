@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:streamora/model/hero_carousel.dart';
+import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 
 class InTheatresNearYou extends StatelessWidget {

@@ -1,5 +1,6 @@
 class MovieListData {
   String title;
+  int id;
   String backdrop;
   String poster;
   String voteAverage;
@@ -10,6 +11,7 @@ class MovieListData {
 
   MovieListData({
     required this.title,
+    required this.id,
     required this.backdrop,
     required this.poster,
     required this.voteAverage,
