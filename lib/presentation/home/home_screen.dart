@@ -77,6 +77,15 @@ class HomeScreen extends ConsumerWidget {
             SizedBox(
               height: 30,
             ),
+            Divider(
+              color: Colors.grey,
+              thickness: 0.5,
+              indent: MediaQuery.of(context).size.width * 0.2,
+              endIndent: MediaQuery.of(context).size.width * 0.2,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             const Center(
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
