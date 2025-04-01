@@ -309,7 +309,7 @@ class Tmdb {
       originalLanguage: moviesData['original_language'] ?? "N/A",
       similarMovies: similarMovies,
       logo: movieLogo == null
-          ? "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/logo_placeholder.png"
+          ? "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/movie_logo_placeholder.png"
           : "https://image.tmdb.org/t/p/w500$movieLogo",
     );
   }
