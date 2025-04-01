@@ -5,13 +5,13 @@ import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
 
-class MovieScreen extends ConsumerWidget {
-  final int movieId;
-  const MovieScreen({super.key, required this.movieId});
+class SeriesScreen extends ConsumerWidget {
+  final int seriesId;
+  const SeriesScreen({super.key, required this.seriesId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final movieDetails = ref.watch(movieDetailsProvider(movieId));
+    final movieDetails = ref.watch(seriesDetailsProvider(seriesId));
 
     return Scaffold(
       appBar: AppBar(

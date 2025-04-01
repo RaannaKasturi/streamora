@@ -266,5 +266,137 @@ class _MovieDetailsProviderElement
   @override
   int get movieID => (origin as MovieDetailsProvider).movieID;
 }
+
+String _$seriesDetailsHash() => r'1531f4d030b8a1fe9c5f6b885c5ed3c95bedd02c';
+
+/// See also [seriesDetails].
+@ProviderFor(seriesDetails)
+const seriesDetailsProvider = SeriesDetailsFamily();
+
+/// See also [seriesDetails].
+class SeriesDetailsFamily extends Family<AsyncValue<MovieDetailsData>> {
+  /// See also [seriesDetails].
+  const SeriesDetailsFamily();
+
+  /// See also [seriesDetails].
+  SeriesDetailsProvider call(
+    int seriesID,
+  ) {
+    return SeriesDetailsProvider(
+      seriesID,
+    );
+  }
+
+  @override
+  SeriesDetailsProvider getProviderOverride(
+    covariant SeriesDetailsProvider provider,
+  ) {
+    return call(
+      provider.seriesID,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'seriesDetailsProvider';
+}
+
+/// See also [seriesDetails].
+class SeriesDetailsProvider
+    extends AutoDisposeFutureProvider<MovieDetailsData> {
+  /// See also [seriesDetails].
+  SeriesDetailsProvider(
+    int seriesID,
+  ) : this._internal(
+          (ref) => seriesDetails(
+            ref as SeriesDetailsRef,
+            seriesID,
+          ),
+          from: seriesDetailsProvider,
+          name: r'seriesDetailsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$seriesDetailsHash,
+          dependencies: SeriesDetailsFamily._dependencies,
+          allTransitiveDependencies:
+              SeriesDetailsFamily._allTransitiveDependencies,
+          seriesID: seriesID,
+        );
+
+  SeriesDetailsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.seriesID,
+  }) : super.internal();
+
+  final int seriesID;
+
+  @override
+  Override overrideWith(
+    FutureOr<MovieDetailsData> Function(SeriesDetailsRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SeriesDetailsProvider._internal(
+        (ref) => create(ref as SeriesDetailsRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        seriesID: seriesID,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<MovieDetailsData> createElement() {
+    return _SeriesDetailsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SeriesDetailsProvider && other.seriesID == seriesID;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, seriesID.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SeriesDetailsRef on AutoDisposeFutureProviderRef<MovieDetailsData> {
+  /// The parameter `seriesID` of this provider.
+  int get seriesID;
+}
+
+class _SeriesDetailsProviderElement
+    extends AutoDisposeFutureProviderElement<MovieDetailsData>
+    with SeriesDetailsRef {
+  _SeriesDetailsProviderElement(super.provider);
+
+  @override
+  int get seriesID => (origin as SeriesDetailsProvider).seriesID;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

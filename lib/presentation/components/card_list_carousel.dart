@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/presentation/movie/movie_screen.dart';
+import 'package:streamora/presentation/series/series_screen.dart';
 
 class CardListCarousel extends StatelessWidget {
   final List<MovieListData> movieData;
@@ -87,6 +88,25 @@ class CardListCarousel extends StatelessWidget {
                           type: PageTransitionType.fade,
                           child: MovieScreen(
                             movieId: movie.id,
+                          ),
+                        ),
+                      );
+                    } else if (movie.mediaType == "tv") {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: SeriesScreen(
+                            seriesId: movie.id,
+                          ),
+                        ),
+                      );
+                    } else {
+                      print("Unknown media type: ${movie.mediaType}");
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            "Unknown media type: ${movie.mediaType} \n${movie.title} (${movie.releaseYear}). Please report this issue.",
                           ),
                         ),
                       );
