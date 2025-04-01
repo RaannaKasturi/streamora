@@ -1,4 +1,5 @@
 import 'package:streamora/model/movie_list_data.dart';
+import 'package:streamora/model/person_list_data.dart';
 
 class MovieDetailsData {
   final String title;
@@ -16,6 +17,8 @@ class MovieDetailsData {
   final String tagline;
   final String originalLanguage;
   final List<MovieListData> similarMovies;
+  final List<PersonListData> cast;
+  final List<PersonListData> crew;
 
   MovieDetailsData({
     required this.title,
@@ -33,5 +36,7 @@ class MovieDetailsData {
     required this.tagline,
     required this.originalLanguage,
     required this.similarMovies,
+    required this.cast,
+    required this.crew,
   });
 }

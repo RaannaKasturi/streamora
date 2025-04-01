@@ -1,11 +1,11 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streamora/data/api_keys.dart';
 import 'package:streamora/data/genres_data.dart';
 import 'package:streamora/model/movie_details_data.dart';
 import 'package:streamora/model/movie_list_data.dart';
+import 'package:streamora/model/person_list_data.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 part 'tmdb.g.dart';
@@ -264,6 +264,31 @@ class Tmdb {
       );
     }).toList();
 
+    final List<PersonListData> cast =
+        (moviesData['credits']['cast'] as List<dynamic>)
+            .map<PersonListData>((person) {
+      return PersonListData(
+        name: person['name'],
+        characterName: person['character'],
+        profilePath: person['profile_path'] != null
+            ? "https://image.tmdb.org/t/p/w500${person['profile_path']}"
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/person_placeholder.png",
+        id: person['id'].toString(),
+      );
+    }).toList();
+    final List<PersonListData> crew =
+        (moviesData['credits']['crew'] as List<dynamic>)
+            .map<PersonListData>((person) {
+      return PersonListData(
+        name: person['name'],
+        characterName: person['job'],
+        profilePath: person['profile_path'] != null
+            ? "https://image.tmdb.org/t/p/w500${person['profile_path']}"
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/person_placeholder.png",
+        id: person['id'].toString(),
+      );
+    }).toList();
+
     String? movieLogo;
     if (moviesData['images'] != null &&
         moviesData['images']['logos'] != null &&
@@ -311,6 +336,8 @@ class Tmdb {
       logo: movieLogo == null
           ? "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/movie_logo_placeholder.png"
           : "https://image.tmdb.org/t/p/w500$movieLogo",
+      cast: cast,
+      crew: crew,
     );
   }
 }
