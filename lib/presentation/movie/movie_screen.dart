@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
+import 'package:streamora/presentation/components/credits_list_carousel.dart';
 
 class MovieScreen extends ConsumerWidget {
   final int movieId;
@@ -237,73 +238,13 @@ class MovieScreen extends ConsumerWidget {
               SizedBox(
                 height: 15,
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                alignment: Alignment.topLeft,
-                child: Text(
-                  "Cast",
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
+              CreditsListCarousel(
+                creditsData: data.cast,
               ),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
-              (data.cast.isNotEmpty)
-                  ? SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: data.cast
-                            .map(
-                              (cast) => Container(
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                margin: const EdgeInsets.only(
-                                  left: 10,
-                                  right: 10,
-                                  bottom: 10,
-                                ),
-                                child: Column(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundImage:
-                                          CachedNetworkImageProvider(
-                                        cast.profilePath,
-                                      ),
-                                      radius: 30,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      cast.name,
-                                      style: const TextStyle(fontSize: 16),
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
-                                    ),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      cast.characterName,
-                                      style: const TextStyle(fontSize: 14),
-                                      overflow: TextOverflow.ellipsis,
-                                      softWrap: true,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    )
-                  : const Center(
-                      child: Text(
-                        "No Cast Found",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
+              CreditsListCarousel(creditsData: data.crew),
               SizedBox(
                 height: 25,
               ),
@@ -334,7 +275,13 @@ class MovieScreen extends ConsumerWidget {
             ),
           ),
           loading: () => const Center(
-            child: CircularProgressIndicator(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+              ],
+            ),
           ),
         ),
       ),
