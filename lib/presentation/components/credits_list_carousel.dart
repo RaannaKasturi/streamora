@@ -4,9 +4,11 @@ import 'package:streamora/model/person_list_data.dart';
 
 class CreditsListCarousel extends StatelessWidget {
   final List<PersonListData> creditsData;
+  final bool isCast;
   const CreditsListCarousel({
     super.key,
     required this.creditsData,
+    required this.isCast,
   });
 
   @override
@@ -17,7 +19,7 @@ class CreditsListCarousel extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           alignment: Alignment.topLeft,
           child: Text(
-            "Cast",
+            isCast ? "Cast" : "Crew",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -73,9 +75,9 @@ class CreditsListCarousel extends StatelessWidget {
                       .toList(),
                 ),
               )
-            : const Center(
+            : Center(
                 child: Text(
-                  "No Cast Found",
+                  "No ${isCast ? "Cast" : "Crew"} Found",
                   style: TextStyle(fontSize: 16),
                 ),
               ),

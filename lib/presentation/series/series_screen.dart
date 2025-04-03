@@ -2,23 +2,35 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/model/episode_details_data.dart';
+import 'package:streamora/model/series_details_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
 
-class SeriesScreen extends ConsumerWidget {
+class SeriesScreen extends ConsumerStatefulWidget {
   final int seriesId;
   const SeriesScreen({super.key, required this.seriesId});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final movieDetails = ref.watch(seriesDetailsProvider(seriesId));
+  ConsumerState<ConsumerStatefulWidget> createState() => _SeriesScreenState();
+}
+
+class _SeriesScreenState extends ConsumerState<SeriesScreen> {
+  int selectedSeason = 1;
+
+  @override
+  Widget build(BuildContext context) {
+    final AsyncValue<SeriesDetailsData> movieDetails =
+        ref.watch(seriesDetailsProvider(widget.seriesId));
+    final AsyncValue<List<EpisodeDetailsData>> seriesSeasonEpisodeDetails =
+        ref.watch(seasonEpisodesProvider(widget.seriesId, selectedSeason));
 
     return Scaffold(
       appBar: AppBar(
         title: movieDetails.when(
           data: (data) => Text(data.title),
-          error: (error, stack) => Text('Error'),
-          loading: () => Text('Loading...'),
+          error: (error, stack) => const Text('Error'),
+          loading: () => const Text('Loading...'),
         ),
       ),
       body: SingleChildScrollView(
@@ -235,13 +247,203 @@ class SeriesScreen extends ConsumerWidget {
                   ],
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: DropdownButtonFormField<int>(
+                        menuMaxHeight: 300,
+                        decoration: InputDecoration(
+                          labelText: "Season",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ),
+                        items: [
+                          for (int i = 1; i <= data.seasonNumber; i++)
+                            DropdownMenuItem<int>(
+                              value: i,
+                              child: Text("Season $i"),
+                            ),
+                        ],
+                        value: 1,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedSeason = value!;
+                          });
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: SizedBox(),
+                    )
+                  ],
+                ),
+              ),
+              seriesSeasonEpisodeDetails.when(
+                data: (seasonEpisodeData) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    alignment: Alignment.topLeft,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: seasonEpisodeData.map((episode) {
+                          return Container(
+                            margin: const EdgeInsets.only(
+                              right: 10,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              border: Border.all(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withAlpha((0.1 * 255).toInt()),
+                                width: 1,
+                              ),
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.8,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Stack(
+                                  alignment: Alignment.bottomLeft,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(8.0),
+                                          topRight: Radius.circular(8.0),
+                                        ),
+                                      ),
+                                      clipBehavior: Clip.hardEdge,
+                                      child: AspectRatio(
+                                        aspectRatio: 16 / 12,
+                                        child: CachedNetworkImage(
+                                          imageUrl: episode.stillPath,
+                                          fit: BoxFit.cover,
+                                          alignment: Alignment.center,
+                                        ),
+                                      ),
+                                    ),
+                                    Positioned.fill(
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          gradient: LinearGradient(
+                                            colors: [
+                                              Colors.black,
+                                              Colors.transparent,
+                                            ],
+                                            begin: Alignment.bottomCenter,
+                                            end: Alignment.topCenter,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, bottom: 8.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "S${episode.seasonNumber} E${episode.episodeNumber}",
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          Text(
+                                            episode.episodeTitle,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            softWrap: true,
+                                            style: const TextStyle(
+                                              fontSize: 20,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    episode.overview,
+                                    maxLines: 4,
+                                    overflow: TextOverflow.ellipsis,
+                                    softWrap: true,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge
+                                        ?.copyWith(
+                                          color: Colors.grey,
+                                        ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                  );
+                },
+                error: (error, stack) => Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Error: $error',
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+                loading: () => const Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
               CreditsListCarousel(
                 creditsData: data.cast,
+                isCast: true,
               ),
               SizedBox(
                 height: 15,
               ),
-              CreditsListCarousel(creditsData: data.crew),
+              CreditsListCarousel(
+                creditsData: data.crew,
+                isCast: false,
+              ),
               SizedBox(
                 height: 25,
               ),
@@ -279,12 +481,11 @@ class SeriesScreen extends ConsumerWidget {
           ),
           loading: () => const Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-              ],
-            ),
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                ]),
           ),
         ),
       ),

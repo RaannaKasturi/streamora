@@ -40,7 +40,7 @@ class CardListCarousel extends StatelessWidget {
                       ),
                     ),
                     width: 150,
-                    height: 285,
+                    height: 290,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -62,7 +62,7 @@ class CardListCarousel extends StatelessWidget {
                             left: 8.0,
                             right: 8.0,
                           ),
-                          height: 40,
+                          height: 45,
                           child: Text(
                             "${movie.title} (${movie.releaseYear})",
                             style: Theme.of(context)

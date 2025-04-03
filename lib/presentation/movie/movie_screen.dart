@@ -237,11 +237,15 @@ class MovieScreen extends ConsumerWidget {
               ),
               CreditsListCarousel(
                 creditsData: data.cast,
+                isCast: true,
               ),
               SizedBox(
                 height: 15,
               ),
-              CreditsListCarousel(creditsData: data.crew),
+              CreditsListCarousel(
+                creditsData: data.crew,
+                isCast: false,
+              ),
               SizedBox(
                 height: 25,
               ),

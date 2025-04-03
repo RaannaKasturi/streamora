@@ -3,9 +3,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streamora/data/api_keys.dart';
 import 'package:streamora/data/genres_data.dart';
+import 'package:streamora/model/episode_details_data.dart';
 import 'package:streamora/model/movie_details_data.dart';
 import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/model/person_list_data.dart';
+import 'package:streamora/model/series_details_data.dart';
 import 'package:tmdb_api/tmdb_api.dart';
 
 part 'tmdb.g.dart';
@@ -18,7 +20,8 @@ class Tmdb {
       showErrorLogs: true,
     ),
   );
-  final baseTMDBEndpoint = "https://api.themoviedb.org/3";
+  final baseTMDBEndpoint =
+      "https://proxy.wafflehacker.io/?destination=https://api.themoviedb.org/3";
   final dio = Dio(BaseOptions(
     followRedirects: true,
   ));
@@ -340,7 +343,7 @@ class Tmdb {
     );
   }
 
-  Future<MovieDetailsData> getSeriesDetails({required int seriesID}) async {
+  Future<SeriesDetailsData> getSeriesDetails({required int seriesID}) async {
     final response = await dio.get(
       "$baseTMDBEndpoint/tv/$seriesID?append_to_response=credits,similar,images&include_image_language=en,null",
       options: Options(headers: headers),
@@ -413,7 +416,7 @@ class Tmdb {
       }
     }
 
-    return MovieDetailsData(
+    return SeriesDetailsData(
       title: moviesData['title'] ??
           moviesData['original_title'] ??
           moviesData['name'] ??
@@ -430,7 +433,7 @@ class Tmdb {
       releaseYear: (moviesData['release_date'] ?? moviesData['first_air_date'])
           .toString()
           .split("-")[0],
-      mediaType: moviesData['media_type'] ?? "movie",
+      mediaType: moviesData['media_type'] ?? "tv",
       overview: moviesData['overview'] ?? "No overview available",
       genres: moviesData["genres"] != null
           ? List<String>.from(moviesData["genres"].map((e) => e["name"]))
@@ -446,7 +449,36 @@ class Tmdb {
           : "https://image.tmdb.org/t/p/w500$movieLogo",
       cast: cast,
       crew: crew,
+      seasonNumber: moviesData['number_of_seasons'] ?? 0,
+      episodeCount: moviesData['number_of_episodes'] ?? 0,
     );
+  }
+
+  Future<List<EpisodeDetailsData>> getSeasonEpisodesData(
+      {required int seriesID, required int seasonNumber}) async {
+    final response = await dio.get(
+      "$baseTMDBEndpoint/tv/$seriesID/season/$seasonNumber",
+      options: Options(headers: headers),
+    );
+    final moviesData = response.data as Map<String, dynamic>;
+    final List<EpisodeDetailsData> episodes =
+        (moviesData['episodes'] as List<dynamic>)
+            .map<EpisodeDetailsData>((episode) {
+      return EpisodeDetailsData(
+        episodeTitle: episode['name'],
+        stillPath: episode['still_path'] != null
+            ? "https://image.tmdb.org/t/p/w500${episode['still_path']}"
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
+        seasonNumber: episode['season_number'].toString(),
+        episodeNumber: episode['episode_number'].toString(),
+        airDate: episode['air_date'],
+        runTime: episode['runtime'] != null
+            ? "${(episode['runtime'] ~/ 60).floor()}h ${(episode['runtime'] % 60)}m"
+            : "N/A",
+        overview: episode['overview'] ?? "No overview available",
+      );
+    }).toList();
+    return episodes;
   }
 }
 
@@ -493,7 +525,34 @@ Future<MovieDetailsData> movieDetails(ref, int movieID) async {
 }
 
 @riverpod
-Future<MovieDetailsData> seriesDetails(ref, int seriesID) async {
+Future<SeriesDetailsData> seriesDetails(ref, int seriesID) async {
   final tmdb = Tmdb();
   return await tmdb.getSeriesDetails(seriesID: seriesID);
+}
+
+@riverpod
+class SeasonEpisodes extends _$SeasonEpisodes {
+  @override
+  Future<List<EpisodeDetailsData>> build(
+      int seriesID, int initialSeason) async {
+    final tmdb = Tmdb();
+    return await tmdb.getSeasonEpisodesData(
+      seriesID: seriesID,
+      seasonNumber: initialSeason,
+    );
+  }
+
+  Future<void> getSeasonEpisodes(int seasonNumber) async {
+    state = const AsyncValue.loading();
+    try {
+      final tmdb = Tmdb();
+      final episodes = await tmdb.getSeasonEpisodesData(
+        seriesID: seriesID,
+        seasonNumber: seasonNumber,
+      );
+      state = AsyncValue.data(episodes);
+    } catch (e, stackTrace) {
+      state = AsyncValue.error(e, stackTrace);
+    }
+  }
 }

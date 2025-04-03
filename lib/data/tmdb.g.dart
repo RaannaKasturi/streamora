@@ -267,14 +267,14 @@ class _MovieDetailsProviderElement
   int get movieID => (origin as MovieDetailsProvider).movieID;
 }
 
-String _$seriesDetailsHash() => r'1531f4d030b8a1fe9c5f6b885c5ed3c95bedd02c';
+String _$seriesDetailsHash() => r'9dc84a106ddcfb3e0cf40f155dc4475c93b0bce4';
 
 /// See also [seriesDetails].
 @ProviderFor(seriesDetails)
 const seriesDetailsProvider = SeriesDetailsFamily();
 
 /// See also [seriesDetails].
-class SeriesDetailsFamily extends Family<AsyncValue<MovieDetailsData>> {
+class SeriesDetailsFamily extends Family<AsyncValue<SeriesDetailsData>> {
   /// See also [seriesDetails].
   const SeriesDetailsFamily();
 
@@ -313,7 +313,7 @@ class SeriesDetailsFamily extends Family<AsyncValue<MovieDetailsData>> {
 
 /// See also [seriesDetails].
 class SeriesDetailsProvider
-    extends AutoDisposeFutureProvider<MovieDetailsData> {
+    extends AutoDisposeFutureProvider<SeriesDetailsData> {
   /// See also [seriesDetails].
   SeriesDetailsProvider(
     int seriesID,
@@ -348,7 +348,7 @@ class SeriesDetailsProvider
 
   @override
   Override overrideWith(
-    FutureOr<MovieDetailsData> Function(SeriesDetailsRef provider) create,
+    FutureOr<SeriesDetailsData> Function(SeriesDetailsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
@@ -365,7 +365,7 @@ class SeriesDetailsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<MovieDetailsData> createElement() {
+  AutoDisposeFutureProviderElement<SeriesDetailsData> createElement() {
     return _SeriesDetailsProviderElement(this);
   }
 
@@ -385,18 +385,189 @@ class SeriesDetailsProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SeriesDetailsRef on AutoDisposeFutureProviderRef<MovieDetailsData> {
+mixin SeriesDetailsRef on AutoDisposeFutureProviderRef<SeriesDetailsData> {
   /// The parameter `seriesID` of this provider.
   int get seriesID;
 }
 
 class _SeriesDetailsProviderElement
-    extends AutoDisposeFutureProviderElement<MovieDetailsData>
+    extends AutoDisposeFutureProviderElement<SeriesDetailsData>
     with SeriesDetailsRef {
   _SeriesDetailsProviderElement(super.provider);
 
   @override
   int get seriesID => (origin as SeriesDetailsProvider).seriesID;
+}
+
+String _$seasonEpisodesHash() => r'b6b1d774df88fc2121ed12e4cd44dc0463b7aff5';
+
+abstract class _$SeasonEpisodes
+    extends BuildlessAutoDisposeAsyncNotifier<List<EpisodeDetailsData>> {
+  late final int seriesID;
+  late final int initialSeason;
+
+  FutureOr<List<EpisodeDetailsData>> build(
+    int seriesID,
+    int initialSeason,
+  );
+}
+
+/// See also [SeasonEpisodes].
+@ProviderFor(SeasonEpisodes)
+const seasonEpisodesProvider = SeasonEpisodesFamily();
+
+/// See also [SeasonEpisodes].
+class SeasonEpisodesFamily
+    extends Family<AsyncValue<List<EpisodeDetailsData>>> {
+  /// See also [SeasonEpisodes].
+  const SeasonEpisodesFamily();
+
+  /// See also [SeasonEpisodes].
+  SeasonEpisodesProvider call(
+    int seriesID,
+    int initialSeason,
+  ) {
+    return SeasonEpisodesProvider(
+      seriesID,
+      initialSeason,
+    );
+  }
+
+  @override
+  SeasonEpisodesProvider getProviderOverride(
+    covariant SeasonEpisodesProvider provider,
+  ) {
+    return call(
+      provider.seriesID,
+      provider.initialSeason,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'seasonEpisodesProvider';
+}
+
+/// See also [SeasonEpisodes].
+class SeasonEpisodesProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    SeasonEpisodes, List<EpisodeDetailsData>> {
+  /// See also [SeasonEpisodes].
+  SeasonEpisodesProvider(
+    int seriesID,
+    int initialSeason,
+  ) : this._internal(
+          () => SeasonEpisodes()
+            ..seriesID = seriesID
+            ..initialSeason = initialSeason,
+          from: seasonEpisodesProvider,
+          name: r'seasonEpisodesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$seasonEpisodesHash,
+          dependencies: SeasonEpisodesFamily._dependencies,
+          allTransitiveDependencies:
+              SeasonEpisodesFamily._allTransitiveDependencies,
+          seriesID: seriesID,
+          initialSeason: initialSeason,
+        );
+
+  SeasonEpisodesProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.seriesID,
+    required this.initialSeason,
+  }) : super.internal();
+
+  final int seriesID;
+  final int initialSeason;
+
+  @override
+  FutureOr<List<EpisodeDetailsData>> runNotifierBuild(
+    covariant SeasonEpisodes notifier,
+  ) {
+    return notifier.build(
+      seriesID,
+      initialSeason,
+    );
+  }
+
+  @override
+  Override overrideWith(SeasonEpisodes Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: SeasonEpisodesProvider._internal(
+        () => create()
+          ..seriesID = seriesID
+          ..initialSeason = initialSeason,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        seriesID: seriesID,
+        initialSeason: initialSeason,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeAsyncNotifierProviderElement<SeasonEpisodes,
+      List<EpisodeDetailsData>> createElement() {
+    return _SeasonEpisodesProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SeasonEpisodesProvider &&
+        other.seriesID == seriesID &&
+        other.initialSeason == initialSeason;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, seriesID.hashCode);
+    hash = _SystemHash.combine(hash, initialSeason.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SeasonEpisodesRef
+    on AutoDisposeAsyncNotifierProviderRef<List<EpisodeDetailsData>> {
+  /// The parameter `seriesID` of this provider.
+  int get seriesID;
+
+  /// The parameter `initialSeason` of this provider.
+  int get initialSeason;
+}
+
+class _SeasonEpisodesProviderElement
+    extends AutoDisposeAsyncNotifierProviderElement<SeasonEpisodes,
+        List<EpisodeDetailsData>> with SeasonEpisodesRef {
+  _SeasonEpisodesProviderElement(super.provider);
+
+  @override
+  int get seriesID => (origin as SeasonEpisodesProvider).seriesID;
+  @override
+  int get initialSeason => (origin as SeasonEpisodesProvider).initialSeason;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
