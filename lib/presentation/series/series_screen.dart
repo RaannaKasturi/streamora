@@ -1,11 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/model/episode_details_data.dart';
 import 'package:streamora/model/series_details_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
+import 'package:streamora/presentation/video/video_screen.dart';
 
 class SeriesScreen extends ConsumerStatefulWidget {
   final int seriesId;
@@ -300,108 +302,126 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: seasonEpisodeData.map((episode) {
-                          return Container(
-                            margin: const EdgeInsets.only(
-                              right: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              border: Border.all(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .onSurface
-                                    .withAlpha((0.1 * 255).toInt()),
-                                width: 1,
+                          return InkWell(
+                            child: Container(
+                              margin: const EdgeInsets.only(
+                                right: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onSurface
+                                      .withAlpha((0.1 * 255).toInt()),
+                                  width: 1,
+                                ),
+                              ),
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.bottomLeft,
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(8.0),
+                                            topRight: Radius.circular(8.0),
+                                          ),
+                                        ),
+                                        clipBehavior: Clip.hardEdge,
+                                        child: AspectRatio(
+                                          aspectRatio: 16 / 12,
+                                          child: CachedNetworkImage(
+                                            imageUrl: episode.stillPath,
+                                            fit: BoxFit.cover,
+                                            alignment: Alignment.center,
+                                          ),
+                                        ),
+                                      ),
+                                      Positioned.fill(
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.black,
+                                                Colors.transparent,
+                                              ],
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, bottom: 8.0),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "S${episode.seasonNumber} E${episode.episodeNumber}",
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            Text(
+                                              episode.episodeTitle,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              softWrap: true,
+                                              style: const TextStyle(
+                                                fontSize: 20,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      episode.overview,
+                                      maxLines: 4,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: true,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                            color: Colors.grey,
+                                          ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                            width: MediaQuery.of(context).size.width * 0.8,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Stack(
-                                  alignment: Alignment.bottomLeft,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(8.0),
-                                          topRight: Radius.circular(8.0),
-                                        ),
-                                      ),
-                                      clipBehavior: Clip.hardEdge,
-                                      child: AspectRatio(
-                                        aspectRatio: 16 / 12,
-                                        child: CachedNetworkImage(
-                                          imageUrl: episode.stillPath,
-                                          fit: BoxFit.cover,
-                                          alignment: Alignment.center,
-                                        ),
-                                      ),
-                                    ),
-                                    Positioned.fill(
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Colors.black,
-                                              Colors.transparent,
-                                            ],
-                                            begin: Alignment.bottomCenter,
-                                            end: Alignment.topCenter,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, bottom: 8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "S${episode.seasonNumber} E${episode.episodeNumber}",
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                          Text(
-                                            episode.episodeTitle,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            softWrap: true,
-                                            style: const TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    episode.overview,
-                                    maxLines: 4,
-                                    overflow: TextOverflow.ellipsis,
-                                    softWrap: true,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge
-                                        ?.copyWith(
-                                          color: Colors.grey,
-                                        ),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                PageTransition(
+                                  type: PageTransitionType.fade,
+                                  child: VideoScreen(
+                                    tmdbId: data.id.toString(),
+                                    title: data.title,
+                                    year: data.releaseYear,
+                                    mediaType: "tv",
+                                    season: episode.seasonNumber,
+                                    episode: episode.episodeNumber,
                                   ),
                                 ),
-                              ],
-                            ),
+                              );
+                            },
                           );
                         }).toList(),
                       ),

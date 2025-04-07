@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
+import 'package:streamora/presentation/video/video_screen.dart';
 
 class MovieScreen extends ConsumerWidget {
   final int movieId;
@@ -102,7 +104,58 @@ class MovieScreen extends ConsumerWidget {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 25.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 10.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: () {},
+                      label: Text(
+                        "Watch Trailer",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      icon: Icon(Icons.play_arrow),
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            child: VideoScreen(
+                              tmdbId: data.id.toString(),
+                              title: data.title,
+                              year: data.releaseYear,
+                              mediaType: "movie",
+                              season: "",
+                              episode: "",
+                            ),
+                          ),
+                        );
+                      },
+                      label: Text(
+                        "Watch Movie",
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      icon: Icon(Icons.play_arrow),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 20.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   spacing: 5,

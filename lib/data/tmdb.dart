@@ -122,7 +122,7 @@ class Tmdb {
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: "tv",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
