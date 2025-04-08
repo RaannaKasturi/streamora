@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.12.0"
+  beautiful_soup_dart:
+    dependency: transitive
+    description:
+      name: beautiful_soup_dart
+      sha256: "57e23946c85776dd9515a4e9a14263fff37dbedbd559bc4412bf565886e12b10"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -209,14 +217,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.19.1"
-  colorize:
-    dependency: transitive
-    description:
-      name: colorize
-      sha256: "584746cd6ba1cba0633b6720f494fe6f9601c4170f0666c1579d2aa2a61071ba"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   convert:
     dependency: transitive
     description:
@@ -973,6 +973,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.1"
+  streamora_provider:
+    dependency: "direct main"
+    description:
+      path: streamora_provider
+      relative: true
+    source: path
+    version: "1.0.0"
   string_scanner:
     dependency: transitive
     description:
@@ -1013,14 +1020,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.2"
-  tmdb_api:
-    dependency: "direct main"
-    description:
-      name: tmdb_api
-      sha256: "452c68c558f9e22226c9da1e8ff6e4dd44d1cd8b16712a26aaac10cd68ba7380"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.2.3"
   typed_data:
     dependency: transitive
     description:

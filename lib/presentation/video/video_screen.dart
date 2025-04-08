@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streamora/data/supreme_video_data.dart';
+import 'package:streamora/data/stream.dart';
 
 class VideoScreen extends ConsumerWidget {
   final String tmdbId;
@@ -21,8 +21,8 @@ class VideoScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final videoDataListAsync = ref.watch(
-      supremeVideoDataProvider(
+    final videoDataList = ref.watch(
+      videoStreamProvider(
         tmdbId: tmdbId,
         title: title,
         year: year,
@@ -33,7 +33,7 @@ class VideoScreen extends ConsumerWidget {
     );
 
     return Scaffold(
-      body: videoDataListAsync.when(
+      body: videoDataList.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
         data: (videoDataList) {

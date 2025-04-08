@@ -8,18 +8,10 @@ import 'package:streamora/model/movie_details_data.dart';
 import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/model/person_list_data.dart';
 import 'package:streamora/model/series_details_data.dart';
-import 'package:tmdb_api/tmdb_api.dart';
 
 part 'tmdb.g.dart';
 
 class Tmdb {
-  final tmdb = TMDB(
-    ApiKeys(tmdbApiKey, tmdbApiReadAccessToken),
-    logConfig: const ConfigLogger(
-      showLogs: true,
-      showErrorLogs: true,
-    ),
-  );
   final baseTMDBEndpoint =
       "https://proxy.wafflehacker.io/?destination=https://api.themoviedb.org/3";
   final dio = Dio(BaseOptions(

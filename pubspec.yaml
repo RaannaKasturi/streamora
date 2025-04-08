@@ -46,7 +46,8 @@ dependencies:
   permission_handler: ^11.4.0
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3
-  tmdb_api: ^2.2.3
+  streamora_provider:
+    path: ./streamora_provider
 
 dev_dependencies:
   flutter_test:
