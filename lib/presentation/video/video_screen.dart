@@ -37,6 +37,9 @@ class VideoScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (error, stackTrace) => Center(child: Text('Error: $error')),
         data: (videoDataList) {
+          if (videoDataList.isEmpty) {
+            return const Center(child: Text('No streams available'));
+          }
           return ListView.builder(
             itemCount: videoDataList.length,
             itemBuilder: (BuildContext context, int index) {
