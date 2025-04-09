@@ -132,12 +132,13 @@ class MovieScreen extends ConsumerWidget {
                           PageTransition(
                             type: PageTransitionType.fade,
                             child: VideoScreen(
+                              imdbId: data.imdbId.toString(),
                               tmdbId: data.id.toString(),
                               title: data.title,
                               year: data.releaseYear,
                               mediaType: "movie",
-                              season: "",
-                              episode: "",
+                              season: null,
+                              episode: null,
                             ),
                           ),
                         );

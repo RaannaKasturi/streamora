@@ -412,12 +412,13 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                                 PageTransition(
                                   type: PageTransitionType.fade,
                                   child: VideoScreen(
+                                    imdbId: data.imdbId.toString(),
                                     tmdbId: data.id.toString(),
                                     title: data.title,
                                     year: data.releaseYear,
                                     mediaType: "tv",
-                                    season: episode.seasonNumber,
-                                    episode: episode.episodeNumber,
+                                    season: int.parse(episode.seasonNumber),
+                                    episode: int.parse(episode.episodeNumber),
                                   ),
                                 ),
                               );

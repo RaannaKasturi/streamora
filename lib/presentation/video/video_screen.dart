@@ -4,14 +4,16 @@ import 'package:streamora/data/stream.dart';
 
 class VideoScreen extends ConsumerWidget {
   final String tmdbId;
+  final String imdbId;
   final String title;
   final String year;
   final String mediaType;
-  final String season;
-  final String episode;
+  final int? season;
+  final int? episode;
   const VideoScreen({
     super.key,
     required this.tmdbId,
+    required this.imdbId,
     required this.title,
     required this.year,
     required this.mediaType,
@@ -24,6 +26,7 @@ class VideoScreen extends ConsumerWidget {
     final videoDataList = ref.watch(
       videoStreamProvider(
         tmdbId: tmdbId,
+        imdbId: imdbId,
         title: title,
         year: year,
         mediaType: mediaType,

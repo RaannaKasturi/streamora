@@ -7,19 +7,21 @@ part 'stream.g.dart';
 class Stream {
   Future<List<VideoData>> getStreams({
     required String tmdbId,
+    required String imdbId,
     required String title,
     required String year,
     required String mediaType,
-    required String season,
-    required String episode,
+    int? season,
+    int? episode,
   }) async {
     return await StreamoraProvider().scrape(
-      imdbId: tmdbId,
+      tmdbId: tmdbId,
+      imdbId: imdbId,
       mediaType: mediaType,
       title: title,
       year: year,
-      season: int.tryParse(season),
-      episode: int.tryParse(episode),
+      season: season,
+      episode: episode,
     );
   }
 }
@@ -28,15 +30,17 @@ class Stream {
 Future<List<VideoData>> videoStream(
   ref, {
   required String tmdbId,
+  required String imdbId,
   required String title,
   required String year,
   required String mediaType,
-  required String season,
-  required String episode,
+  int? season,
+  int? episode,
 }) async {
   final stream = Stream();
   return await stream.getStreams(
     tmdbId: tmdbId,
+    imdbId: imdbId,
     title: title,
     year: year,
     mediaType: mediaType,

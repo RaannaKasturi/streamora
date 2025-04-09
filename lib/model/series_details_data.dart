@@ -4,6 +4,7 @@ import 'package:streamora/model/person_list_data.dart';
 class SeriesDetailsData {
   final String title;
   final int id;
+  final String imdbId;
   final String backdrop;
   final String poster;
   final String logo;
@@ -25,6 +26,7 @@ class SeriesDetailsData {
   SeriesDetailsData({
     required this.title,
     required this.id,
+    required this.imdbId,
     required this.backdrop,
     required this.poster,
     required this.logo,

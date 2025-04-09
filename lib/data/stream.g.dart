@@ -6,7 +6,7 @@ part of 'stream.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$videoStreamHash() => r'be80768fbe56c003c490f011072560bc512b9cb5';
+String _$videoStreamHash() => r'0fa2cfd62ac27d48f53ba263569aa91bdce50425';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -41,14 +41,16 @@ class VideoStreamFamily extends Family<AsyncValue<List<VideoData>>> {
   /// See also [videoStream].
   VideoStreamProvider call({
     required String tmdbId,
+    required String imdbId,
     required String title,
     required String year,
     required String mediaType,
-    required String season,
-    required String episode,
+    int? season,
+    int? episode,
   }) {
     return VideoStreamProvider(
       tmdbId: tmdbId,
+      imdbId: imdbId,
       title: title,
       year: year,
       mediaType: mediaType,
@@ -63,6 +65,7 @@ class VideoStreamFamily extends Family<AsyncValue<List<VideoData>>> {
   ) {
     return call(
       tmdbId: provider.tmdbId,
+      imdbId: provider.imdbId,
       title: provider.title,
       year: provider.year,
       mediaType: provider.mediaType,
@@ -91,15 +94,17 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
   /// See also [videoStream].
   VideoStreamProvider({
     required String tmdbId,
+    required String imdbId,
     required String title,
     required String year,
     required String mediaType,
-    required String season,
-    required String episode,
+    int? season,
+    int? episode,
   }) : this._internal(
           (ref) => videoStream(
             ref as VideoStreamRef,
             tmdbId: tmdbId,
+            imdbId: imdbId,
             title: title,
             year: year,
             mediaType: mediaType,
@@ -116,6 +121,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
           allTransitiveDependencies:
               VideoStreamFamily._allTransitiveDependencies,
           tmdbId: tmdbId,
+          imdbId: imdbId,
           title: title,
           year: year,
           mediaType: mediaType,
@@ -131,6 +137,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.tmdbId,
+    required this.imdbId,
     required this.title,
     required this.year,
     required this.mediaType,
@@ -139,11 +146,12 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
   }) : super.internal();
 
   final String tmdbId;
+  final String imdbId;
   final String title;
   final String year;
   final String mediaType;
-  final String season;
-  final String episode;
+  final int? season;
+  final int? episode;
 
   @override
   Override overrideWith(
@@ -159,6 +167,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         tmdbId: tmdbId,
+        imdbId: imdbId,
         title: title,
         year: year,
         mediaType: mediaType,
@@ -177,6 +186,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
   bool operator ==(Object other) {
     return other is VideoStreamProvider &&
         other.tmdbId == tmdbId &&
+        other.imdbId == imdbId &&
         other.title == title &&
         other.year == year &&
         other.mediaType == mediaType &&
@@ -188,6 +198,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, tmdbId.hashCode);
+    hash = _SystemHash.combine(hash, imdbId.hashCode);
     hash = _SystemHash.combine(hash, title.hashCode);
     hash = _SystemHash.combine(hash, year.hashCode);
     hash = _SystemHash.combine(hash, mediaType.hashCode);
@@ -204,6 +215,9 @@ mixin VideoStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
   /// The parameter `tmdbId` of this provider.
   String get tmdbId;
 
+  /// The parameter `imdbId` of this provider.
+  String get imdbId;
+
   /// The parameter `title` of this provider.
   String get title;
 
@@ -214,10 +228,10 @@ mixin VideoStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
   String get mediaType;
 
   /// The parameter `season` of this provider.
-  String get season;
+  int? get season;
 
   /// The parameter `episode` of this provider.
-  String get episode;
+  int? get episode;
 }
 
 class _VideoStreamProviderElement
@@ -228,15 +242,17 @@ class _VideoStreamProviderElement
   @override
   String get tmdbId => (origin as VideoStreamProvider).tmdbId;
   @override
+  String get imdbId => (origin as VideoStreamProvider).imdbId;
+  @override
   String get title => (origin as VideoStreamProvider).title;
   @override
   String get year => (origin as VideoStreamProvider).year;
   @override
   String get mediaType => (origin as VideoStreamProvider).mediaType;
   @override
-  String get season => (origin as VideoStreamProvider).season;
+  int? get season => (origin as VideoStreamProvider).season;
   @override
-  String get episode => (origin as VideoStreamProvider).episode;
+  int? get episode => (origin as VideoStreamProvider).episode;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

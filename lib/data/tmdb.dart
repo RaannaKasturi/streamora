@@ -305,6 +305,7 @@ class Tmdb {
           moviesData['original_title'] ??
           "Unknown Title",
       id: moviesData['id'],
+      imdbId: moviesData['imdb_id'],
       backdrop: moviesData['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/w500${moviesData['backdrop_path']}"
           : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
@@ -337,7 +338,7 @@ class Tmdb {
 
   Future<SeriesDetailsData> getSeriesDetails({required int seriesID}) async {
     final response = await dio.get(
-      "$baseTMDBEndpoint/tv/$seriesID?append_to_response=credits,similar,images&include_image_language=en,null",
+      "$baseTMDBEndpoint/tv/$seriesID?append_to_response=credits,similar,images,external_ids&include_image_language=en,null",
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
@@ -414,6 +415,7 @@ class Tmdb {
           moviesData['name'] ??
           "Unknown Title",
       id: moviesData['id'],
+      imdbId: moviesData['external_ids']['imdb_id'],
       backdrop: moviesData['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/w500${moviesData['backdrop_path']}"
           : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
