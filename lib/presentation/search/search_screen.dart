@@ -25,15 +25,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       _isLoading = true;
     });
     final asyncValue =
-        await ref.read(searchMoviesProvider(query: query).future);
+        await ref.read(searchResultsProvider(query: query).future);
     if (asyncValue.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("No results found")),
       );
-      setState(() {
-        _isLoading = false;
-        _searchResults = asyncValue;
-      });
     } else {
       setState(() {
         _isLoading = false;
@@ -76,17 +72,23 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isLoading ? Icons.hourglass_top : Icons.search,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        onPressed: () {
-                          if (_searchController.text.trim().isEmpty) return;
-                          _onSearch(query: _searchController.text.trim());
-                          FocusScope.of(context).unfocus();
-                        },
-                      ),
+                      suffixIcon: _isLoading
+                          ? const RefreshProgressIndicator(
+                              strokeWidth: 3,
+                            )
+                          : IconButton(
+                              icon: Icon(
+                                Icons.search,
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                              onPressed: () {
+                                if (_searchController.text.trim().isNotEmpty) {
+                                  _onSearch(
+                                      query: _searchController.text.trim());
+                                  FocusScope.of(context).unfocus();
+                                }
+                              },
+                            ),
                     ),
                     onTapOutside: (_) => FocusScope.of(context).unfocus(),
                     onSubmitted: (value) {

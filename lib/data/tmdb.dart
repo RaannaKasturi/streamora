@@ -227,7 +227,7 @@ class Tmdb {
     return movies;
   }
 
-  Future<List<MovieListData>> searchMovies({required String query}) async {
+  Future<List<MovieListData>> searchResults({required String query}) async {
     final response = await dio.get(
       "$baseTMDBEndpoint/search/multi?query=$query&include_adult=false&language=en-US&page=1",
       options: Options(headers: headers),
@@ -556,9 +556,9 @@ Future<List<MovieListData>> upcomingMovies(ref) async {
 }
 
 @riverpod
-Future<List<MovieListData>> searchMovies(ref, {required String query}) async {
+Future<List<MovieListData>> searchResults(ref, {required String query}) async {
   final tmdb = Tmdb();
-  final data = await tmdb.searchMovies(query: query);
+  final data = await tmdb.searchResults(query: query);
   print("Search Results found: $data");
   return data;
 }

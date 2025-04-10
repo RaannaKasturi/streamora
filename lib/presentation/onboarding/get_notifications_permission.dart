@@ -11,7 +11,7 @@ class GetNotificationsPermission extends StatelessWidget {
     void requestNotificationPermission() async {
       final status = await Permission.notification.request();
       if (status.isGranted) {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           PageTransition(
             type: PageTransitionType.rightToLeft,

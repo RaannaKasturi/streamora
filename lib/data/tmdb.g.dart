@@ -115,7 +115,7 @@ final upcomingMoviesProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UpcomingMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$searchMoviesHash() => r'06e4bb4880b17239db8f81ee49a44a909e1d54e5';
+String _$searchResultsHash() => r'8c8f9918ca677c33a24285332ca70d6454fcf534';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -138,27 +138,27 @@ class _SystemHash {
   }
 }
 
-/// See also [searchMovies].
-@ProviderFor(searchMovies)
-const searchMoviesProvider = SearchMoviesFamily();
+/// See also [searchResults].
+@ProviderFor(searchResults)
+const searchResultsProvider = SearchResultsFamily();
 
-/// See also [searchMovies].
-class SearchMoviesFamily extends Family<AsyncValue<List<MovieListData>>> {
-  /// See also [searchMovies].
-  const SearchMoviesFamily();
+/// See also [searchResults].
+class SearchResultsFamily extends Family<AsyncValue<List<MovieListData>>> {
+  /// See also [searchResults].
+  const SearchResultsFamily();
 
-  /// See also [searchMovies].
-  SearchMoviesProvider call({
+  /// See also [searchResults].
+  SearchResultsProvider call({
     required String query,
   }) {
-    return SearchMoviesProvider(
+    return SearchResultsProvider(
       query: query,
     );
   }
 
   @override
-  SearchMoviesProvider getProviderOverride(
-    covariant SearchMoviesProvider provider,
+  SearchResultsProvider getProviderOverride(
+    covariant SearchResultsProvider provider,
   ) {
     return call(
       query: provider.query,
@@ -177,33 +177,33 @@ class SearchMoviesFamily extends Family<AsyncValue<List<MovieListData>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'searchMoviesProvider';
+  String? get name => r'searchResultsProvider';
 }
 
-/// See also [searchMovies].
-class SearchMoviesProvider
+/// See also [searchResults].
+class SearchResultsProvider
     extends AutoDisposeFutureProvider<List<MovieListData>> {
-  /// See also [searchMovies].
-  SearchMoviesProvider({
+  /// See also [searchResults].
+  SearchResultsProvider({
     required String query,
   }) : this._internal(
-          (ref) => searchMovies(
-            ref as SearchMoviesRef,
+          (ref) => searchResults(
+            ref as SearchResultsRef,
             query: query,
           ),
-          from: searchMoviesProvider,
-          name: r'searchMoviesProvider',
+          from: searchResultsProvider,
+          name: r'searchResultsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$searchMoviesHash,
-          dependencies: SearchMoviesFamily._dependencies,
+                  : _$searchResultsHash,
+          dependencies: SearchResultsFamily._dependencies,
           allTransitiveDependencies:
-              SearchMoviesFamily._allTransitiveDependencies,
+              SearchResultsFamily._allTransitiveDependencies,
           query: query,
         );
 
-  SearchMoviesProvider._internal(
+  SearchResultsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -217,12 +217,12 @@ class SearchMoviesProvider
 
   @override
   Override overrideWith(
-    FutureOr<List<MovieListData>> Function(SearchMoviesRef provider) create,
+    FutureOr<List<MovieListData>> Function(SearchResultsRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: SearchMoviesProvider._internal(
-        (ref) => create(ref as SearchMoviesRef),
+      override: SearchResultsProvider._internal(
+        (ref) => create(ref as SearchResultsRef),
         from: from,
         name: null,
         dependencies: null,
@@ -235,12 +235,12 @@ class SearchMoviesProvider
 
   @override
   AutoDisposeFutureProviderElement<List<MovieListData>> createElement() {
-    return _SearchMoviesProviderElement(this);
+    return _SearchResultsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SearchMoviesProvider && other.query == query;
+    return other is SearchResultsProvider && other.query == query;
   }
 
   @override
@@ -254,18 +254,18 @@ class SearchMoviesProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SearchMoviesRef on AutoDisposeFutureProviderRef<List<MovieListData>> {
+mixin SearchResultsRef on AutoDisposeFutureProviderRef<List<MovieListData>> {
   /// The parameter `query` of this provider.
   String get query;
 }
 
-class _SearchMoviesProviderElement
+class _SearchResultsProviderElement
     extends AutoDisposeFutureProviderElement<List<MovieListData>>
-    with SearchMoviesRef {
-  _SearchMoviesProviderElement(super.provider);
+    with SearchResultsRef {
+  _SearchResultsProviderElement(super.provider);
 
   @override
-  String get query => (origin as SearchMoviesProvider).query;
+  String get query => (origin as SearchResultsProvider).query;
 }
 
 String _$movieDetailsHash() => r'4a5022e46cfa7d24bd00a051a21db935aef54eb6';
