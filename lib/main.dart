@@ -32,7 +32,7 @@ class MyApp extends ConsumerWidget {
     }
 
     final userPreferences = ref.watch(userPreferencesProvider);
-    final userTheme = userPreferences.value?.theme ?? "system";
+    final userTheme = userPreferences.value?.theme ?? "dark";
     TextTheme textTheme = createTextTheme(context, "Poppins", "Inter Tight");
     MaterialTheme theme = MaterialTheme(textTheme);
     return MaterialApp(

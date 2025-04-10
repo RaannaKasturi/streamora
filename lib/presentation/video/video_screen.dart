@@ -171,7 +171,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
           aspectRatio: 16 / 9,
           autoPlay: true,
           controlsConfiguration: BetterPlayerControlsConfiguration(
-            playerTheme: BetterPlayerTheme.cupertino,
+            playerTheme: BetterPlayerTheme.material,
             enableOverflowMenu: true,
             enableQualities: true,
             enableAudioTracks: true,
