@@ -18,17 +18,25 @@ class SearchScreen extends ConsumerStatefulWidget {
 class _SearchScreenState extends ConsumerState<SearchScreen> {
   final TextEditingController _searchController = TextEditingController();
   List<MovieListData> _searchResults = [];
+  bool _isLoading = false;
 
   void _onSearch({required String query}) async {
-    print("query: $query");
+    setState(() {
+      _isLoading = true;
+    });
     final asyncValue =
         await ref.read(searchMoviesProvider(query: query).future);
     if (asyncValue.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("No results found")),
       );
+      setState(() {
+        _isLoading = false;
+        _searchResults = asyncValue;
+      });
     } else {
       setState(() {
+        _isLoading = false;
         _searchResults = asyncValue;
       });
     }
@@ -69,7 +77,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       suffixIcon: IconButton(
-                        icon: const Icon(Icons.search),
+                        icon: Icon(
+                          _isLoading ? Icons.hourglass_top : Icons.search,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                         onPressed: () {
                           if (_searchController.text.trim().isEmpty) return;
                           _onSearch(query: _searchController.text.trim());

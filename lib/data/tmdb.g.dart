@@ -115,7 +115,7 @@ final upcomingMoviesProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UpcomingMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$searchMoviesHash() => r'a88e5c35600406cddce5bb04b8bd83a6ce11f8d9';
+String _$searchMoviesHash() => r'06e4bb4880b17239db8f81ee49a44a909e1d54e5';
 
 /// Copied from Dart SDK
 class _SystemHash {

@@ -233,8 +233,6 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data['results'] as List<dynamic>;
-    print(
-        "Search Results: $baseTMDBEndpoint/search/multi?query=$query&include_adult=false&language=en-US&page=1");
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
         id: movie['id'] ?? 0,
@@ -253,7 +251,7 @@ class Tmdb {
             .toString()
             .split("-")[0],
         mediaType: movie['media_type'],
-        overview: movie['overview'],
+        overview: movie['overview'] ?? "No overview available",
         genres: movie['genre_ids'] != null
             ? List<String>.from(
                 movie['genre_ids'].map(
@@ -560,7 +558,9 @@ Future<List<MovieListData>> upcomingMovies(ref) async {
 @riverpod
 Future<List<MovieListData>> searchMovies(ref, {required String query}) async {
   final tmdb = Tmdb();
-  return await tmdb.searchMovies(query: query);
+  final data = await tmdb.searchMovies(query: query);
+  print("Search Results found: $data");
+  return data;
 }
 
 @riverpod
