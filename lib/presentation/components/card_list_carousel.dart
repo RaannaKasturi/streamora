@@ -7,8 +7,10 @@ import 'package:streamora/presentation/series/series_screen.dart';
 
 class CardListCarousel extends StatelessWidget {
   final List<MovieListData> movieData;
+  final bool isReleased;
   const CardListCarousel({
     super.key,
+    required this.isReleased,
     required this.movieData,
   });
 
@@ -81,32 +83,42 @@ class CardListCarousel extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    if (movie.mediaType == "movie") {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          child: MovieScreen(
-                            movieId: movie.id,
+                    if (isReleased) {
+                      if (movie.mediaType == "movie") {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            child: MovieScreen(
+                              movieId: movie.id,
+                            ),
                           ),
-                        ),
-                      );
-                    } else if (movie.mediaType == "tv") {
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.fade,
-                          child: SeriesScreen(
-                            seriesId: movie.id,
+                        );
+                      } else if (movie.mediaType == "tv") {
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.fade,
+                            child: SeriesScreen(
+                              seriesId: movie.id,
+                            ),
                           ),
-                        ),
-                      );
+                        );
+                      } else {
+                        print("Unknown media type: ${movie.mediaType}");
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              "Unknown media type: ${movie.mediaType} \n${movie.title} (${movie.releaseYear}). Please report this issue.",
+                            ),
+                          ),
+                        );
+                      }
                     } else {
-                      print("Unknown media type: ${movie.mediaType}");
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(
-                            "Unknown media type: ${movie.mediaType} \n${movie.title} (${movie.releaseYear}). Please report this issue.",
+                            "This is a ${movie.mediaType == "movie" ? "Movie" : "Series"} is not released yet.",
                           ),
                         ),
                       );

@@ -231,6 +231,12 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "${widget.title} (${widget.year})",
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
       body: Center(
         child: _videoDataList.isNotEmpty && _videoPlayerController != null
             ? Center(
@@ -250,6 +256,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
                   ),
                   Text(
                     "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.\nYou might have slow network\n or the streams are not available.",
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ],
               ),

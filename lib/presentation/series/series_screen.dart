@@ -7,6 +7,7 @@ import 'package:streamora/model/episode_details_data.dart';
 import 'package:streamora/model/series_details_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
+import 'package:streamora/presentation/search/search_screen.dart';
 import 'package:streamora/presentation/video/video_screen.dart';
 
 class SeriesScreen extends ConsumerStatefulWidget {
@@ -34,6 +35,23 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
           error: (error, stack) => const Text('Error'),
           loading: () => const Text('Loading...'),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.fade,
+                    child: const SearchScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: movieDetails.when(
@@ -482,7 +500,10 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
               SizedBox(
                 height: 10,
               ),
-              CardListCarousel(movieData: data.similarMovies),
+              CardListCarousel(
+                movieData: data.similarMovies,
+                isReleased: true,
+              ),
               SizedBox(
                 height: 50,
               ),

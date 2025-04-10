@@ -214,7 +214,7 @@ class Tmdb {
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
             .substring(0, 4),
-        mediaType: "tv",
+        mediaType: "movie",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
             ? List<String>.from(movie['genre_ids'].map((e) =>
@@ -227,12 +227,47 @@ class Tmdb {
     return movies;
   }
 
+  Future<List<MovieListData>> searchMovies({required String query}) async {
+    final response = await dio.get(
+      "$baseTMDBEndpoint/search/multi?query=$query&include_adult=false&language=en-US&page=1",
+      options: Options(headers: headers),
+    );
+    final moviesData = response.data['results'] as List<dynamic>;
+    final List<MovieListData> movies = moviesData.map((movie) {
+      return MovieListData(
+        id: movie['id'],
+        title: movie['title'] ?? movie['original_title'] ?? movie['name'],
+        backdrop: movie['backdrop_path'] != null
+            ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
+        poster: movie['poster_path'] != null
+            ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
+            : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
+        voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
+        releaseYear: (movie['release_date'] ?? movie['first_air_date'])
+            .toString()
+            .substring(0, 4),
+        mediaType: movie['media_type'],
+        overview: movie['overview'],
+        genres: movie['genre_ids'] != null
+            ? List<String>.from(movie['genre_ids'].map((e) =>
+                movie['media_type'] == "tv"
+                    ? getTvGenre(e.toString())
+                    : getMovieGenre(e.toString())))
+            : [],
+      );
+    }).toList();
+    print("Search Results: $movies");
+    return movies;
+  }
+
   Future<MovieDetailsData> getMovieDetails({required int movieID}) async {
     final response = await dio.get(
       "$baseTMDBEndpoint/movie/$movieID?append_to_response=credits,similar,images&include_image_language=en,null",
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
+    print("Movie Details: $moviesData");
     final List<MovieListData> similarMovies =
         (moviesData['similar']['results'] as List<dynamic>)
             .map<MovieListData>((movie) {
@@ -251,10 +286,13 @@ class Tmdb {
         mediaType: "tv",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
-            ? List<String>.from(movie['genre_ids'].map((e) =>
-                movie['media_type'] == "tv"
-                    ? getTvGenre(e.toString())
-                    : getMovieGenre(e.toString())))
+            ? List<String>.from(
+                movie['genre_ids'].map(
+                  (e) => movie['media_type'] == "tv"
+                      ? getTvGenre(e.toString())
+                      : getMovieGenre(e.toString()),
+                ),
+              )
             : [],
       );
     }).toList();
@@ -510,6 +548,12 @@ Future<List<MovieListData>> topratedSeries(ref) async {
 Future<List<MovieListData>> upcomingMovies(ref) async {
   final tmdb = Tmdb();
   return await tmdb.fetchUpcomingMovies();
+}
+
+@riverpod
+Future<List<MovieListData>> searchMovies(ref, {required String query}) async {
+  final tmdb = Tmdb();
+  return await tmdb.searchMovies(query: query);
 }
 
 @riverpod

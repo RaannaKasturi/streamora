@@ -115,7 +115,7 @@ final upcomingMoviesProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef UpcomingMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$movieDetailsHash() => r'4a5022e46cfa7d24bd00a051a21db935aef54eb6';
+String _$searchMoviesHash() => r'a88e5c35600406cddce5bb04b8bd83a6ce11f8d9';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -137,6 +137,138 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [searchMovies].
+@ProviderFor(searchMovies)
+const searchMoviesProvider = SearchMoviesFamily();
+
+/// See also [searchMovies].
+class SearchMoviesFamily extends Family<AsyncValue<List<MovieListData>>> {
+  /// See also [searchMovies].
+  const SearchMoviesFamily();
+
+  /// See also [searchMovies].
+  SearchMoviesProvider call({
+    required String query,
+  }) {
+    return SearchMoviesProvider(
+      query: query,
+    );
+  }
+
+  @override
+  SearchMoviesProvider getProviderOverride(
+    covariant SearchMoviesProvider provider,
+  ) {
+    return call(
+      query: provider.query,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'searchMoviesProvider';
+}
+
+/// See also [searchMovies].
+class SearchMoviesProvider
+    extends AutoDisposeFutureProvider<List<MovieListData>> {
+  /// See also [searchMovies].
+  SearchMoviesProvider({
+    required String query,
+  }) : this._internal(
+          (ref) => searchMovies(
+            ref as SearchMoviesRef,
+            query: query,
+          ),
+          from: searchMoviesProvider,
+          name: r'searchMoviesProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$searchMoviesHash,
+          dependencies: SearchMoviesFamily._dependencies,
+          allTransitiveDependencies:
+              SearchMoviesFamily._allTransitiveDependencies,
+          query: query,
+        );
+
+  SearchMoviesProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.query,
+  }) : super.internal();
+
+  final String query;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MovieListData>> Function(SearchMoviesRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SearchMoviesProvider._internal(
+        (ref) => create(ref as SearchMoviesRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        query: query,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<MovieListData>> createElement() {
+    return _SearchMoviesProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SearchMoviesProvider && other.query == query;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, query.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SearchMoviesRef on AutoDisposeFutureProviderRef<List<MovieListData>> {
+  /// The parameter `query` of this provider.
+  String get query;
+}
+
+class _SearchMoviesProviderElement
+    extends AutoDisposeFutureProviderElement<List<MovieListData>>
+    with SearchMoviesRef {
+  _SearchMoviesProviderElement(super.provider);
+
+  @override
+  String get query => (origin as SearchMoviesProvider).query;
+}
+
+String _$movieDetailsHash() => r'4a5022e46cfa7d24bd00a051a21db935aef54eb6';
 
 /// See also [movieDetails].
 @ProviderFor(movieDetails)

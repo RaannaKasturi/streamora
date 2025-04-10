@@ -24,7 +24,6 @@ class Subtitles {
             ),
           );
         }
-        print("Subtitles fetched successfully: ${subtitles.length}");
       } else {
         print("Error fetching subtitles: ${response.statusCode}");
         return subtitles;

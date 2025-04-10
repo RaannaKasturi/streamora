@@ -51,6 +51,7 @@ class SeriesAiringToday extends StatelessWidget {
             data: (data) {
               return CardListCarousel(
                 movieData: data,
+                isReleased: true,
               );
             },
           ),

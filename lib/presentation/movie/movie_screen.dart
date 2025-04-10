@@ -5,6 +5,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
+import 'package:streamora/presentation/search/search_screen.dart';
 import 'package:streamora/presentation/video/video_screen.dart';
 
 class MovieScreen extends ConsumerWidget {
@@ -22,6 +23,23 @@ class MovieScreen extends ConsumerWidget {
           error: (error, stack) => Text('Error'),
           loading: () => Text('Loading...'),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.fade,
+                    child: const SearchScreen(),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: movieDetails.when(
@@ -36,10 +54,22 @@ class MovieScreen extends ConsumerWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 13),
-                child: CachedNetworkImage(
-                  imageUrl: data.logo,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                ),
+                child: data.logo.contains("movie_logo_placeholder")
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Text(
+                          data.title,
+                          textAlign: TextAlign.center,
+                          style:
+                              Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                      )
+                    : CachedNetworkImage(
+                        imageUrl: data.logo,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                      ),
               ),
               Text(
                 data.tagline,
@@ -317,7 +347,10 @@ class MovieScreen extends ConsumerWidget {
               SizedBox(
                 height: 10,
               ),
-              CardListCarousel(movieData: data.similarMovies),
+              CardListCarousel(
+                movieData: data.similarMovies,
+                isReleased: true,
+              ),
               SizedBox(
                 height: 50,
               ),

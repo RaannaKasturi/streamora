@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/data/user_preferences.dart';
 import 'package:streamora/presentation/home/hero_carousel.dart';
@@ -8,6 +9,7 @@ import 'package:streamora/presentation/home/series_airing_today.dart';
 import 'package:streamora/presentation/home/top_rated_movies.dart';
 import 'package:streamora/presentation/home/top_rated_series.dart';
 import 'package:streamora/presentation/home/upcoming_movies.dart';
+import 'package:streamora/presentation/search/search_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -44,7 +46,13 @@ class HomeScreen extends ConsumerWidget {
             child: IconButton(
               icon: const Icon(Icons.search),
               onPressed: () {
-                // TODO: Handle settings action
+                Navigator.push(
+                  context,
+                  PageTransition(
+                    type: PageTransitionType.fade,
+                    child: const SearchScreen(),
+                  ),
+                );
               },
             ),
           ),
