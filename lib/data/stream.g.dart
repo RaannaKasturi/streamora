@@ -6,7 +6,7 @@ part of 'stream.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$videoStreamHash() => r'0fa2cfd62ac27d48f53ba263569aa91bdce50425';
+String _$getStreamHash() => r'0561b2b3dd772ef0d58ccffa2fa57675db44d477';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,17 +29,17 @@ class _SystemHash {
   }
 }
 
-/// See also [videoStream].
-@ProviderFor(videoStream)
-const videoStreamProvider = VideoStreamFamily();
+/// See also [getStream].
+@ProviderFor(getStream)
+const getStreamProvider = GetStreamFamily();
 
-/// See also [videoStream].
-class VideoStreamFamily extends Family<AsyncValue<List<VideoData>>> {
-  /// See also [videoStream].
-  const VideoStreamFamily();
+/// See also [getStream].
+class GetStreamFamily extends Family<AsyncValue<List<VideoData>>> {
+  /// See also [getStream].
+  const GetStreamFamily();
 
-  /// See also [videoStream].
-  VideoStreamProvider call({
+  /// See also [getStream].
+  GetStreamProvider call({
     required String tmdbId,
     required String imdbId,
     required String title,
@@ -48,7 +48,7 @@ class VideoStreamFamily extends Family<AsyncValue<List<VideoData>>> {
     int? season,
     int? episode,
   }) {
-    return VideoStreamProvider(
+    return GetStreamProvider(
       tmdbId: tmdbId,
       imdbId: imdbId,
       title: title,
@@ -60,8 +60,8 @@ class VideoStreamFamily extends Family<AsyncValue<List<VideoData>>> {
   }
 
   @override
-  VideoStreamProvider getProviderOverride(
-    covariant VideoStreamProvider provider,
+  GetStreamProvider getProviderOverride(
+    covariant GetStreamProvider provider,
   ) {
     return call(
       tmdbId: provider.tmdbId,
@@ -86,13 +86,13 @@ class VideoStreamFamily extends Family<AsyncValue<List<VideoData>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'videoStreamProvider';
+  String? get name => r'getStreamProvider';
 }
 
-/// See also [videoStream].
-class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
-  /// See also [videoStream].
-  VideoStreamProvider({
+/// See also [getStream].
+class GetStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
+  /// See also [getStream].
+  GetStreamProvider({
     required String tmdbId,
     required String imdbId,
     required String title,
@@ -101,8 +101,8 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
     int? season,
     int? episode,
   }) : this._internal(
-          (ref) => videoStream(
-            ref as VideoStreamRef,
+          (ref) => getStream(
+            ref as GetStreamRef,
             tmdbId: tmdbId,
             imdbId: imdbId,
             title: title,
@@ -111,15 +111,14 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
             season: season,
             episode: episode,
           ),
-          from: videoStreamProvider,
-          name: r'videoStreamProvider',
+          from: getStreamProvider,
+          name: r'getStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$videoStreamHash,
-          dependencies: VideoStreamFamily._dependencies,
-          allTransitiveDependencies:
-              VideoStreamFamily._allTransitiveDependencies,
+                  : _$getStreamHash,
+          dependencies: GetStreamFamily._dependencies,
+          allTransitiveDependencies: GetStreamFamily._allTransitiveDependencies,
           tmdbId: tmdbId,
           imdbId: imdbId,
           title: title,
@@ -129,7 +128,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
           episode: episode,
         );
 
-  VideoStreamProvider._internal(
+  GetStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -155,12 +154,12 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
 
   @override
   Override overrideWith(
-    FutureOr<List<VideoData>> Function(VideoStreamRef provider) create,
+    FutureOr<List<VideoData>> Function(GetStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: VideoStreamProvider._internal(
-        (ref) => create(ref as VideoStreamRef),
+      override: GetStreamProvider._internal(
+        (ref) => create(ref as GetStreamRef),
         from: from,
         name: null,
         dependencies: null,
@@ -179,12 +178,12 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
 
   @override
   AutoDisposeFutureProviderElement<List<VideoData>> createElement() {
-    return _VideoStreamProviderElement(this);
+    return _GetStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is VideoStreamProvider &&
+    return other is GetStreamProvider &&
         other.tmdbId == tmdbId &&
         other.imdbId == imdbId &&
         other.title == title &&
@@ -211,7 +210,7 @@ class VideoStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin VideoStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
+mixin GetStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
   /// The parameter `tmdbId` of this provider.
   String get tmdbId;
 
@@ -234,25 +233,25 @@ mixin VideoStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
   int? get episode;
 }
 
-class _VideoStreamProviderElement
+class _GetStreamProviderElement
     extends AutoDisposeFutureProviderElement<List<VideoData>>
-    with VideoStreamRef {
-  _VideoStreamProviderElement(super.provider);
+    with GetStreamRef {
+  _GetStreamProviderElement(super.provider);
 
   @override
-  String get tmdbId => (origin as VideoStreamProvider).tmdbId;
+  String get tmdbId => (origin as GetStreamProvider).tmdbId;
   @override
-  String get imdbId => (origin as VideoStreamProvider).imdbId;
+  String get imdbId => (origin as GetStreamProvider).imdbId;
   @override
-  String get title => (origin as VideoStreamProvider).title;
+  String get title => (origin as GetStreamProvider).title;
   @override
-  String get year => (origin as VideoStreamProvider).year;
+  String get year => (origin as GetStreamProvider).year;
   @override
-  String get mediaType => (origin as VideoStreamProvider).mediaType;
+  String get mediaType => (origin as GetStreamProvider).mediaType;
   @override
-  int? get season => (origin as VideoStreamProvider).season;
+  int? get season => (origin as GetStreamProvider).season;
   @override
-  int? get episode => (origin as VideoStreamProvider).episode;
+  int? get episode => (origin as GetStreamProvider).episode;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

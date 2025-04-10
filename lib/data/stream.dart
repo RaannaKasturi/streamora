@@ -14,7 +14,7 @@ class Stream {
     int? season,
     int? episode,
   }) async {
-    return await StreamoraProvider().scrape(
+    final videoData = await StreamoraProvider().scrape(
       tmdbId: tmdbId,
       imdbId: imdbId,
       mediaType: mediaType,
@@ -23,11 +23,13 @@ class Stream {
       season: season,
       episode: episode,
     );
+    print("Video Streams Fetched Successfully: ${videoData.length}");
+    return videoData;
   }
 }
 
 @riverpod
-Future<List<VideoData>> videoStream(
+Future<List<VideoData>> getStream(
   ref, {
   required String tmdbId,
   required String imdbId,
@@ -37,8 +39,7 @@ Future<List<VideoData>> videoStream(
   int? season,
   int? episode,
 }) async {
-  final stream = Stream();
-  return await stream.getStreams(
+  return await Stream().getStreams(
     tmdbId: tmdbId,
     imdbId: imdbId,
     title: title,
