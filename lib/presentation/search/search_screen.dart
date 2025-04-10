@@ -20,16 +20,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   List<MovieListData> _searchResults = [];
 
   void _onSearch({required String query}) async {
-    try {
-      final asyncValue =
-          await ref.read(searchMoviesProvider(query: query).future);
+    print("query: $query");
+    final asyncValue =
+        await ref.read(searchMoviesProvider(query: query).future);
+    if (asyncValue.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("No results found")),
+      );
+    } else {
       setState(() {
         _searchResults = asyncValue;
       });
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: $error")),
-      );
     }
   }
 
@@ -80,6 +81,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     onSubmitted: (value) {
                       _onSearch(query: value.trim());
                       FocusScope.of(context).unfocus();
+                    },
+                    onChanged: (value) {
+                      if (value.isNotEmpty && value.length > 3) {
+                        _onSearch(query: value.trim());
+                      }
                     },
                   ),
                 ),

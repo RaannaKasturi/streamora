@@ -233,10 +233,15 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data['results'] as List<dynamic>;
+    print(
+        "Search Results: $baseTMDBEndpoint/search/multi?query=$query&include_adult=false&language=en-US&page=1");
     final List<MovieListData> movies = moviesData.map((movie) {
       return MovieListData(
-        id: movie['id'],
-        title: movie['title'] ?? movie['original_title'] ?? movie['name'],
+        id: movie['id'] ?? 0,
+        title: movie['title'] ??
+            movie['original_title'] ??
+            movie['name'] ??
+            "Unknown Title",
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
@@ -244,16 +249,19 @@ class Tmdb {
             ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
-        releaseYear: (movie['release_date'] ?? movie['first_air_date'])
+        releaseYear: (movie['release_date'] ?? movie['first_air_date'] ?? "N/A")
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: movie['media_type'],
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
-            ? List<String>.from(movie['genre_ids'].map((e) =>
-                movie['media_type'] == "tv"
-                    ? getTvGenre(e.toString())
-                    : getMovieGenre(e.toString())))
+            ? List<String>.from(
+                movie['genre_ids'].map(
+                  (e) => movie['media_type'] == "tv"
+                      ? getTvGenre(e.toString())
+                      : getMovieGenre(e.toString()),
+                ),
+              )
             : [],
       );
     }).toList();
@@ -267,7 +275,6 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
-    print("Movie Details: $moviesData");
     final List<MovieListData> similarMovies =
         (moviesData['similar']['results'] as List<dynamic>)
             .map<MovieListData>((movie) {
