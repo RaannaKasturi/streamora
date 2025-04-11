@@ -5,13 +5,22 @@ import 'package:streamora/model/subtitle_data.dart';
 part 'subtitles.g.dart';
 
 class Subtitles {
-  final String baseurl = "https://subs.whvx.net/search?id=";
+  final String baseurl = "https://subs.whvx.net/search/";
   final Dio dio = Dio();
 
-  Future<List<SubtitleData>> getSubtitles(String tmdbId) async {
+  Future<List<SubtitleData>> getSubtitles({
+    required String tmdbId,
+    String? season,
+    String? episode,
+  }) async {
     List<SubtitleData> subtitles = [];
+    final queryParams = {
+      "id": tmdbId,
+      "season": season ?? "",
+      "episode": episode ?? "",
+    };
     try {
-      Response response = await dio.get("$baseurl$tmdbId");
+      Response response = await dio.get(baseurl, queryParameters: queryParams);
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
         for (var item in data) {
@@ -37,6 +46,15 @@ class Subtitles {
 }
 
 @riverpod
-Future<List<SubtitleData>> subtitles(ref, {required String tmdbId}) async {
-  return Subtitles().getSubtitles(tmdbId);
+Future<List<SubtitleData>> subtitles(
+  ref, {
+  required String tmdbId,
+  String? season,
+  String? episode,
+}) async {
+  return Subtitles().getSubtitles(
+    tmdbId: tmdbId,
+    season: season,
+    episode: episode,
+  );
 }

@@ -162,6 +162,7 @@ class MovieScreen extends ConsumerWidget {
                           PageTransition(
                             type: PageTransitionType.fade,
                             child: VideoScreen(
+                              backdrop: data.backdrop,
                               imdbId: data.imdbId.toString(),
                               tmdbId: data.id.toString(),
                               title: data.title,

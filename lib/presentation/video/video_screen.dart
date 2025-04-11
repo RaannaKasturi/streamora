@@ -7,6 +7,7 @@ import 'package:streamora/model/subtitle_data.dart';
 import 'package:streamora_provider/data/video_data.dart';
 
 class VideoScreen extends ConsumerStatefulWidget {
+  final String backdrop;
   final String tmdbId;
   final String imdbId;
   final String title;
@@ -17,6 +18,7 @@ class VideoScreen extends ConsumerStatefulWidget {
 
   const VideoScreen({
     super.key,
+    required this.backdrop,
     required this.tmdbId,
     required this.imdbId,
     required this.title,
@@ -59,14 +61,34 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
             Map<String, String>.from(videoList[0].videoSourceHeaders ?? {}),
         subtitles: _subtitleDataList,
       );
+    } else {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Theme.of(context).colorScheme.errorContainer,
+          content: Text(
+            "We couldn't find any streams for this video.",
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onErrorContainer,
+                ),
+          ),
+          showCloseIcon: true,
+          closeIconColor: Theme.of(context).colorScheme.onErrorContainer,
+          dismissDirection: DismissDirection.horizontal,
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 5),
+        ),
+      );
     }
   }
 
   Future<void> getSubtitles() async {
     List<SubtitleData> subtitleList = await ref.read(subtitlesProvider(
-      tmdbId: widget.tmdbId,
+      tmdbId: widget.imdbId,
+      season: widget.season.toString(),
+      episode: widget.episode.toString(),
     ).future);
-
     if (subtitleList.isNotEmpty) {
       setState(() {
         _subtitleDataList = subtitleList;
@@ -161,6 +183,15 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
           : BetterPlayerVideoFormat.other,
       headers: videoSourceHeaders,
       subtitles: subtitleSources,
+      liveStream: false,
+      notificationConfiguration: BetterPlayerNotificationConfiguration(
+          showNotification: true,
+          title: "${widget.title} (${widget.year})",
+          author: (widget.season != null && widget.episode != null)
+              ? "Season ${widget.season} Episode ${widget.episode}"
+              : null,
+          imageUrl: widget.backdrop,
+          activityName: "MainActivity"),
     );
 
     if (_videoPlayerController != null) {
@@ -170,6 +201,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
         BetterPlayerConfiguration(
           aspectRatio: 16 / 9,
           autoPlay: true,
+          fit: BoxFit.contain,
+          autoDetectFullscreenDeviceOrientation: true,
           controlsConfiguration: BetterPlayerControlsConfiguration(
             playerTheme: BetterPlayerTheme.material,
             enableOverflowMenu: true,
@@ -195,6 +228,11 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
                 },
               ),
             ],
+          ),
+          subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(
+            fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize!,
+            fontColor: Colors.white,
+            backgroundColor: Colors.black,
           ),
         ),
         betterPlayerDataSource: newDataSource,
@@ -237,30 +275,32 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
-      body: Center(
-        child: _videoDataList.isNotEmpty && _videoPlayerController != null
-            ? Center(
-                child: AspectRatio(
-                  aspectRatio: 9 / 16,
-                  child: BetterPlayer(controller: _videoPlayerController!),
+      body: SafeArea(
+        child: Center(
+          child: _videoDataList.isNotEmpty && _videoPlayerController != null
+              ? Center(
+                  child: AspectRatio(
+                    aspectRatio: 9 / 16,
+                    child: BetterPlayer(controller: _videoPlayerController!),
+                  ),
+                )
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.\nYou might have slow network\n or the streams are not available.",
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
                 ),
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.\nYou might have slow network\n or the streams are not available.",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
+        ),
       ),
       floatingActionButton:
           _videoDataList.isNotEmpty && _videoPlayerController != null

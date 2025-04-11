@@ -263,7 +263,6 @@ class Tmdb {
             : [],
       );
     }).toList();
-    print("Search Results: $movies");
     return movies;
   }
 
@@ -559,7 +558,6 @@ Future<List<MovieListData>> upcomingMovies(ref) async {
 Future<List<MovieListData>> searchResults(ref, {required String query}) async {
   final tmdb = Tmdb();
   final data = await tmdb.searchResults(query: query);
-  print("Search Results found: $data");
   return data;
 }
 
