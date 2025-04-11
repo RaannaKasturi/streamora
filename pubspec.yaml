@@ -48,9 +48,11 @@ dependencies:
   json_annotation: ^4.9.0
   lottie: ^3.3.1
   page_transition: ^2.2.1
+  path: ^1.9.1
   permission_handler: ^12.0.0+1
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3
+  sqflite: ^2.4.2
   streamora_provider:
     path: ./streamora_provider
 
