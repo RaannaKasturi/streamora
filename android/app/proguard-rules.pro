@@ -1,0 +1,3 @@
+-keep class n2.** { *; }
+-keep class z2.** { *; }
+-keep class eu.org.raannakasturi.streamora.** { *; }

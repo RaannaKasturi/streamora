@@ -11,15 +11,16 @@ class CreateDatabase {
         version: 1,
         onCreate: (db, version) async {
           await db.execute('''
-          CREATE TABLE IF NOT EXISTS appData (
-            keys TEXT PRIMARY KEY,
-            values TEXT
-          )
-        ''');
+            CREATE TABLE IF NOT EXISTS appData (
+              keys TEXT PRIMARY KEY,
+              data_value TEXT
+            )
+          ''');
         },
       );
       return true;
     } catch (e) {
+      print("Database initialization error: $e");
       return false;
     }
   }
