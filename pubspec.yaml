@@ -28,8 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  beautiful_soup_dart: ^0.3.0
   better_player_remastered:
-    path: ../better_player_remastered
+    path: ./better_player_remastered
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8
@@ -54,8 +55,6 @@ dependencies:
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3
   sqflite: ^2.4.2
-  streamora_provider:
-    path: ../streamora_provider
 
 dev_dependencies:
   flutter_test:

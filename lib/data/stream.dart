@@ -1,6 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:streamora_provider/streamora_provider.dart';
-import 'package:streamora_provider/data/video_data.dart';
+import 'package:streamora/data/streams_scraping/streamora_base_provider.dart';
+import 'package:streamora/model/video_data.dart';
 
 part 'stream.g.dart';
 

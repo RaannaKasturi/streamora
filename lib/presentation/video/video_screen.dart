@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streamora/data/stream.dart';
 import 'package:streamora/data/subtitles.dart';
 import 'package:streamora/model/subtitle_data.dart';
-import 'package:streamora_provider/data/video_data.dart';
+import 'package:streamora/model/video_data.dart';
 import 'package:better_player_remastered/better_player_remastered.dart';
 
 class VideoScreen extends ConsumerStatefulWidget {
