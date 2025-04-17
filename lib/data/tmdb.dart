@@ -268,7 +268,7 @@ class Tmdb {
 
   Future<MovieDetailsData> getMovieDetails({required int movieID}) async {
     final response = await dio.get(
-      "$baseTMDBEndpoint/movie/$movieID?append_to_response=credits,similar,images&include_image_language=en,null",
+      "$baseTMDBEndpoint/movie/$movieID?append_to_response=credits,similar,images&include_image_language=en",
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
@@ -380,7 +380,7 @@ class Tmdb {
 
   Future<SeriesDetailsData> getSeriesDetails({required int seriesID}) async {
     final response = await dio.get(
-      "$baseTMDBEndpoint/tv/$seriesID?append_to_response=credits,similar,images,external_ids&include_image_language=en,null",
+      "$baseTMDBEndpoint/tv/$seriesID?append_to_response=credits,similar,images,external_ids&include_image_language=en",
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;

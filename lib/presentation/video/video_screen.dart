@@ -1,10 +1,10 @@
-import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:streamora/data/stream.dart';
 import 'package:streamora/data/subtitles.dart';
 import 'package:streamora/model/subtitle_data.dart';
 import 'package:streamora_provider/data/video_data.dart';
+import 'package:better_player_remastered/better_player_remastered.dart';
 
 class VideoScreen extends ConsumerStatefulWidget {
   final String backdrop;
@@ -50,6 +50,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
       episode: widget.episode,
     ).future);
 
+    if (!mounted) return;
+
     if (videoList.isNotEmpty) {
       setState(() {
         _videoDataList = videoList;
@@ -62,6 +64,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
         subtitles: _subtitleDataList,
       );
     } else {
+      if (!mounted) return;
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -89,6 +92,9 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
       season: widget.season.toString(),
       episode: widget.episode.toString(),
     ).future);
+
+    if (!mounted) return;
+
     if (subtitleList.isNotEmpty) {
       setState(() {
         _subtitleDataList = subtitleList;
@@ -103,7 +109,9 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
 
   bool isHLS(String url) {
     print("URL: $url");
-    if (url.contains('m3u8')) {
+    if (url.toLowerCase().contains('.m3u8') ||
+        url.toLowerCase().contains('.m3u') ||
+        url.toLowerCase().contains('.ts')) {
       return true;
     } else {
       return false;
@@ -199,11 +207,13 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     } else {
       _videoPlayerController = BetterPlayerController(
         BetterPlayerConfiguration(
+          fullScreenByDefault: true,
           aspectRatio: 16 / 9,
           autoPlay: true,
           fit: BoxFit.contain,
-          autoDetectFullscreenDeviceOrientation: true,
           controlsConfiguration: BetterPlayerControlsConfiguration(
+            title: "${widget.title} (${widget.year})",
+            showControls: true,
             playerTheme: BetterPlayerTheme.material,
             enableOverflowMenu: true,
             enableQualities: true,
@@ -294,7 +304,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
                       height: 20,
                     ),
                     Text(
-                      "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.\nYou might have slow network\n or the streams are not available.",
+                      "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.\nYou might have slow network.",
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium,
                     ),

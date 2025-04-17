@@ -65,14 +65,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.3.0"
-  better_player_plus:
+  better_player_remastered:
     dependency: "direct main"
     description:
-      name: better_player_plus
-      sha256: fc8804f837b450b1b614d5e624a9312894d3089c9194330542ab04a4afa82127
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.8"
+      path: "../better_player_remastered"
+      relative: true
+    source: path
+    version: "1.0.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -430,11 +429,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
-  flutter_localizations:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
   flutter_native_splash:
     dependency: "direct main"
     description:
@@ -557,14 +551,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.5.4"
-  intl:
-    dependency: transitive
-    description:
-      name: intl
-      sha256: d6f56758b7d3014a48af9701c085700aac781a92a87a62b1333b46d8879661cf
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.19.0"
   io:
     dependency: transitive
     description:
@@ -1109,7 +1095,7 @@ packages:
   streamora_provider:
     dependency: "direct main"
     description:
-      path: streamora_provider
+      path: "../streamora_provider"
       relative: true
     source: path
     version: "1.0.0"
