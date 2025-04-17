@@ -186,10 +186,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     final newDataSource = BetterPlayerDataSource(
       BetterPlayerDataSourceType.network,
       videoSourceUrl,
+      headers: videoSourceHeaders,
       videoFormat: isHlsFormat
           ? BetterPlayerVideoFormat.hls
           : BetterPlayerVideoFormat.other,
-      headers: videoSourceHeaders,
       subtitles: subtitleSources,
       liveStream: false,
       notificationConfiguration: BetterPlayerNotificationConfiguration(
