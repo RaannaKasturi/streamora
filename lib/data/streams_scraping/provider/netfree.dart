@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
 class NetFree {
-  final baseUrl = "https://netfree.cc";
+  final baseUrl = "https://netfree2.cc";
   final List<VideoData> videoDataList = [];
   final Dio dio = Dio();
 
@@ -43,17 +44,9 @@ class NetFree {
     return movieId;
   }
 
-  Future<List<VideoData>> scrape({
-    required String imdbId,
-    required String tmdbId,
-    required String mediaType,
-    required String title,
-    required String year,
-    int? season,
-    int? episode,
-  }) async {
+  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
     await getHeaders();
-    String movieId = await getId(title: title);
+    String movieId = await getId(title: movieData.title);
     if (movieId.isEmpty) {
       return videoDataList;
     }
@@ -73,39 +66,5 @@ class NetFree {
       );
     }
     return videoDataList;
-  }
-}
-
-void main() async {
-  final imdbID = "tt14513804";
-  final tmdbID = "822119";
-  final mediaType = "movie";
-  final title = "Dhoom Dhaam";
-  final year = "2025";
-  final season = null;
-  final episode = null;
-  List<VideoData> videoDataList = [];
-  final netFree = NetFree();
-
-  try {
-    List<VideoData> response = await netFree.scrape(
-      imdbId: imdbID,
-      tmdbId: tmdbID,
-      mediaType: mediaType,
-      title: title,
-      year: year,
-      season: season,
-      episode: episode,
-    );
-    videoDataList.addAll(response);
-  } catch (e) {
-    print("Error: $e");
-  }
-
-  print("-----" * 25);
-  for (var videoData in videoDataList) {
-    print("Video Source: ${videoData.videoSource}");
-    print("Video Source URL: ${videoData.videoSourceUrl}");
-    print("Video Source Headers: ${videoData.videoSourceHeaders}");
   }
 }

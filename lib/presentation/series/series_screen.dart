@@ -437,8 +437,8 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                                     title: data.title,
                                     year: data.releaseYear,
                                     mediaType: "tv",
-                                    season: int.parse(episode.seasonNumber),
-                                    episode: int.parse(episode.episodeNumber),
+                                    season: episode.seasonNumber,
+                                    episode: episode.episodeNumber,
                                   ),
                                 ),
                               );

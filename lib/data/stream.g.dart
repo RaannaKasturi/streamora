@@ -6,7 +6,7 @@ part of 'stream.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$getStreamHash() => r'0561b2b3dd772ef0d58ccffa2fa57675db44d477';
+String _$getStreamHash() => r'ea64bf4bec6a2866a61ff19030918de259fafffb';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -45,8 +45,8 @@ class GetStreamFamily extends Family<AsyncValue<List<VideoData>>> {
     required String title,
     required String year,
     required String mediaType,
-    int? season,
-    int? episode,
+    String? season,
+    String? episode,
   }) {
     return GetStreamProvider(
       tmdbId: tmdbId,
@@ -98,8 +98,8 @@ class GetStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
     required String title,
     required String year,
     required String mediaType,
-    int? season,
-    int? episode,
+    String? season,
+    String? episode,
   }) : this._internal(
           (ref) => getStream(
             ref as GetStreamRef,
@@ -149,8 +149,8 @@ class GetStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
   final String title;
   final String year;
   final String mediaType;
-  final int? season;
-  final int? episode;
+  final String? season;
+  final String? episode;
 
   @override
   Override overrideWith(
@@ -227,10 +227,10 @@ mixin GetStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
   String get mediaType;
 
   /// The parameter `season` of this provider.
-  int? get season;
+  String? get season;
 
   /// The parameter `episode` of this provider.
-  int? get episode;
+  String? get episode;
 }
 
 class _GetStreamProviderElement
@@ -249,9 +249,9 @@ class _GetStreamProviderElement
   @override
   String get mediaType => (origin as GetStreamProvider).mediaType;
   @override
-  int? get season => (origin as GetStreamProvider).season;
+  String? get season => (origin as GetStreamProvider).season;
   @override
-  int? get episode => (origin as GetStreamProvider).episode;
+  String? get episode => (origin as GetStreamProvider).episode;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

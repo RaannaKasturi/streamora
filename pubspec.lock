@@ -70,10 +70,10 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3a4c31d98c446cc8e31ca3684f67f449758f7a03"
-      url: "https://github.com/RaannaKasturi/better_player_plus.git"
+      resolved-ref: d9673a8f94b5cb6503792c8db6099fe8d30de537
+      url: "https://github.com/raannakasturi/better_player_plus"
     source: git
-    version: "1.1.0"
+    version: "1.1.1"
   boolean_selector:
     dependency: transitive
     description:
@@ -738,10 +738,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_android
-      sha256: "0ca7359dad67fd7063cb2892ab0c0737b2daafd807cf1acecd62374c8fae6c12"
+      sha256: d0d310befe2c8ab9e7f393288ccbb11b60c019c6b5afc21973eeee4dda2b35e9
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.16"
+    version: "2.2.17"
   path_provider_foundation:
     dependency: transitive
     description:
@@ -938,10 +938,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: c2c8c46297b5d6a80bed7741ec1f2759742c77d272f1a1698176ae828f8e1a18
+      sha256: "20cbd561f743a342c76c151d6ddb93a9ce6005751e7aa458baad3858bfbfb6ac"
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.9"
+    version: "2.4.10"
   shared_preferences_foundation:
     dependency: transitive
     description:

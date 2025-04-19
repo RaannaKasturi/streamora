@@ -45,7 +45,7 @@ class Subtitles {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<SubtitleData>> subtitles(
   ref, {
   required String tmdbId,

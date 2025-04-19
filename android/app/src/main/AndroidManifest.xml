@@ -15,6 +15,7 @@
         android:icon="@drawable/notification_icon"
         android:usesCleartextTraffic="true"
         android:allowBackup="true"
+        android:supportsPictureInPicture="true"
         android:foregroundServiceType="mediaPlayback"
         tools:targetApi="28">
         <activity

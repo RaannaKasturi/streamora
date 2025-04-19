@@ -1,20 +1,13 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
 class Vidzee {
-  Future<List<VideoData>> scrape({
-    required String imdbId,
-    required String tmdbId,
-    required String mediaType,
-    required String title,
-    required String year,
-    final int? season,
-    final int? episode,
-  }) async {
+  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
     final baseUrl =
-        "https://vidzee.wtf/$mediaType/player.php?id=$tmdbId${mediaType == 'tv' ? '&season=$season&episode=$episode' : ''}";
+        "https://vidzee.wtf/${movieData.mediaType}/player.php?id=${movieData.tmdbId}${movieData.mediaType == 'tv' ? '&season=${movieData.season}&episode=${movieData.episode}' : ''}";
     final List<VideoData> videoDataList = [];
     final Dio dio = Dio();
 
@@ -34,6 +27,7 @@ class Vidzee {
           VideoData(
             videoSource: 'VIDZEE_${videoDataList.length + 1} ($videoLabel)',
             videoSourceUrl: videoUrl,
+            videoSourceHeaders: {},
           ),
         );
       }
@@ -41,30 +35,5 @@ class Vidzee {
       print("Error: $e");
     }
     return videoDataList;
-  }
-}
-
-void main() async {
-  Vidzee vidzee = Vidzee();
-  final imdbID = "tt14513804";
-  final tmdbID = "822119";
-  final mediaType = "movie";
-  final title = "Captain America: Brave New World";
-  final year = "2025";
-  final season = null;
-  final episode = null;
-
-  List<VideoData> videoDataList = await vidzee.scrape(
-    imdbId: imdbID,
-    tmdbId: tmdbID,
-    mediaType: mediaType,
-    title: title,
-    year: year,
-    season: season,
-    episode: episode,
-  );
-  for (var videoData in videoDataList) {
-    print("\n\n\nVideo Source: ${videoData.videoSource}");
-    print("Video Source URL: ${videoData.videoSourceUrl}");
   }
 }

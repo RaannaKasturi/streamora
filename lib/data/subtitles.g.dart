@@ -6,7 +6,7 @@ part of 'subtitles.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$subtitlesHash() => r'9c17223b9dd726807d58a64634de24a61ec3bd07';
+String _$subtitlesHash() => r'fdc9feecef3811ca9d1cfb1adc1965de1eb1486a';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -78,7 +78,7 @@ class SubtitlesFamily extends Family<AsyncValue<List<SubtitleData>>> {
 }
 
 /// See also [subtitles].
-class SubtitlesProvider extends AutoDisposeFutureProvider<List<SubtitleData>> {
+class SubtitlesProvider extends FutureProvider<List<SubtitleData>> {
   /// See also [subtitles].
   SubtitlesProvider({
     required String tmdbId,
@@ -141,7 +141,7 @@ class SubtitlesProvider extends AutoDisposeFutureProvider<List<SubtitleData>> {
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<SubtitleData>> createElement() {
+  FutureProviderElement<List<SubtitleData>> createElement() {
     return _SubtitlesProviderElement(this);
   }
 
@@ -166,7 +166,7 @@ class SubtitlesProvider extends AutoDisposeFutureProvider<List<SubtitleData>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SubtitlesRef on AutoDisposeFutureProviderRef<List<SubtitleData>> {
+mixin SubtitlesRef on FutureProviderRef<List<SubtitleData>> {
   /// The parameter `tmdbId` of this provider.
   String get tmdbId;
 
@@ -178,8 +178,7 @@ mixin SubtitlesRef on AutoDisposeFutureProviderRef<List<SubtitleData>> {
 }
 
 class _SubtitlesProviderElement
-    extends AutoDisposeFutureProviderElement<List<SubtitleData>>
-    with SubtitlesRef {
+    extends FutureProviderElement<List<SubtitleData>> with SubtitlesRef {
   _SubtitlesProviderElement(super.provider);
 
   @override

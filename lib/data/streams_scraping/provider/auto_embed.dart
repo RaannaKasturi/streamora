@@ -26,7 +26,7 @@ class AutoEmbed {
     }
   }
 
-  Future<List<VideoData>> fetchVideoStreams(ScrapeStreamsData movieData) async {
+  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
     final requestUrl = buildUrl(
       imdbId: movieData.imdbId,
       mediaType: movieData.mediaType,

@@ -22,6 +22,7 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
   late Map<String, String> nowPlayingHeaders = {};
   bool _initialized = false;
   bool isLoading = true;
+  final GlobalKey betterPlayerKey = GlobalKey();
 
   Future<void> getStreams() async {
     List<VideoData> videoList = [
@@ -87,14 +88,14 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
       VideoData(
         videoSource: 'VIDSRC_3',
         videoSourceUrl:
-            'https://ikm.fleurixsun.xyz/file2/n32vQu2kTV8hhDb3JLkrdfqjSLxMQ8upG7W11jhGtDoHjriOiKMvS30YjIFIdv5aFgnJibm3d+UYL6O~04ju9xRZLIDm9QSVd~pkIqbhHClumW8FPLzc72pcb5JG+x87tUKegIZlSGG7t682Y4+NKn~GlUXKXHljKHDaD3QzoY4=/cGxheWxpc3QubTN1OA==.m3u8',
+            'https://cloudburst99.xyz/file2/n32vQu2kTV8hhDb3JLkrdfqjSLxMQ8upG7W11jhGtDoHjriOiKMvS30YjIFIdv5aFgnJibm3d+UYL6O~04ju9xRZLIDm9QSVd~pkIqbhHClumW8FPLzc72pcb5JG+x87tUKegIZlSGG7t682Y4+NKn~GlUXKXHljKHDaD3QzoY4=/cGxheWxpc3QubTN1OA==.m3u8',
         videoSourceHeaders: {},
       ),
       VideoData(
         videoSource: '2EMBED_1',
         videoSourceUrl:
             'https://a9jkzk10gy.cdn-centaurus.com/hls2/01/09548/mnpkev7613sg_n/master.m3u8?t=e7Jfrdo4qjd_tUuM4mMp7XjJqpuKCpTVprlZSGHcLik&s=1744976832&e=129600&f=47769808&srv=FRdn5eAUPJ&i=0.4&sp=500&p1=FRdn5eAUPJ&p2=FRdn5eAUPJ&asn=24554',
-        videoSourceHeaders: {},
+        videoSourceHeaders: {'Referer': 'https://megacloud.store/'},
       ),
       VideoData(
         videoSource: 'VIDZEE_1 (Hindi)',
@@ -313,6 +314,7 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
 
     if (_videoPlayerController != null) {
       _videoPlayerController!.setupDataSource(newDataSource);
+      _videoPlayerController!.setBetterPlayerGlobalKey(betterPlayerKey);
     } else {
       _videoPlayerController = BetterPlayerController(
         BetterPlayerConfiguration(
@@ -386,25 +388,47 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
       ),
       body: SafeArea(
         child: Center(
-          child: isLoading
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CircularProgressIndicator(),
-                    const SizedBox(height: 20),
-                    Text(
-                      "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.",
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ],
-                )
-              : _videoPlayerController != null
-                  ? AspectRatio(
-                      aspectRatio: 9 / 16,
-                      child: BetterPlayer(controller: _videoPlayerController!),
-                    )
-                  : Text("No stream available."),
+          child: Column(
+            children: [
+              Expanded(
+                child: isLoading
+                    ? Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircularProgressIndicator(),
+                          const SizedBox(height: 20),
+                          Text(
+                            "Please wait...\nWe're gathering the streams from Internet.\nIf it takes too long, please try again.",
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      )
+                    : _videoPlayerController != null
+                        ? AspectRatio(
+                            aspectRatio: 9 / 16,
+                            child: BetterPlayer(
+                              controller: _videoPlayerController!,
+                              key: betterPlayerKey,
+                            ),
+                          )
+                        : Text("No stream available."),
+              ),
+              ElevatedButton(
+                child: Text("Show PiP"),
+                onPressed: () {
+                  _videoPlayerController
+                      ?.enablePictureInPicture(betterPlayerKey);
+                },
+              ),
+              ElevatedButton(
+                child: Text("Disable PiP"),
+                onPressed: () async {
+                  _videoPlayerController?.disablePictureInPicture();
+                },
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton:

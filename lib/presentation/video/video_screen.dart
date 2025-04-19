@@ -13,8 +13,8 @@ class VideoScreen extends ConsumerStatefulWidget {
   final String title;
   final String year;
   final String mediaType;
-  final int? season;
-  final int? episode;
+  final String? season;
+  final String? episode;
 
   const VideoScreen({
     super.key,
@@ -38,6 +38,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
   late List<SubtitleData> _subtitleDataList = [];
   late String nowPlayingUrl = "";
   late Map<String, String> nowPlayingHeaders = {};
+  GlobalKey betterPlayerKey = GlobalKey();
 
   Future<void> getStreams() async {
     List<VideoData> videoList = await ref.read(getStreamProvider(
@@ -148,6 +149,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
                       videoSourceUrl: value.videoSourceUrl,
                       videoSourceHeaders: Map<String, String>.from(
                           value.videoSourceHeaders ?? {}),
+                      subtitles: _subtitleDataList,
                     );
                     Navigator.pop(context);
                   },
@@ -175,7 +177,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     print("-" * 25);
 
     List<BetterPlayerSubtitlesSource> subtitleSources = [];
-    if (subtitles != null) {
+    if (subtitles != null && subtitles.isNotEmpty) {
       for (var subtitle in subtitles) {
         subtitleSources.add(
           BetterPlayerSubtitlesSource(
@@ -295,7 +297,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
           child: _videoDataList.isNotEmpty && _videoPlayerController != null
               ? AspectRatio(
                   aspectRatio: 9 / 16,
-                  child: BetterPlayer(controller: _videoPlayerController!),
+                  child: BetterPlayer(
+                    controller: _videoPlayerController!,
+                    key: betterPlayerKey,
+                  ),
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
 class TwoEmbed {
@@ -13,14 +14,15 @@ class TwoEmbed {
     'Referer': 'https://streamsrcs.2embed.cc/',
   };
 
-  Future<String?> getStreamId(
-      String imdbId, String mediaType, String title, String year,
-      {int? season, int? episode}) async {
+  Future<String?> getStreamId({required ScrapeStreamsData movieData}) async {
     String url = "https://www.2embed.cc/embed/";
-    if (mediaType == "tv" && season != null && episode != null) {
-      url += "$imdbId/season-$season-episode-$episode";
+    if (movieData.mediaType == "tv" &&
+        movieData.season != null &&
+        movieData.episode != null) {
+      url +=
+          "${movieData.tmdbId}/season-${movieData.season}-episode-${movieData.episode}";
     } else {
-      url += imdbId;
+      url += movieData.tmdbId;
     }
 
     final response = await dio.get(url, options: Options(headers: headers));
@@ -107,18 +109,9 @@ class TwoEmbed {
     return null;
   }
 
-  Future<List<VideoData>> scrape({
-    required String imdbId,
-    required String tmdbId,
-    required String mediaType,
-    required String title,
-    required String year,
-    int? season,
-    int? episode,
-  }) async {
+  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
     try {
-      final streamId = await getStreamId(tmdbId, mediaType, title, year,
-          season: season, episode: episode);
+      final streamId = await getStreamId(movieData: movieData);
       if (streamId != null) {
         final url = "$baseUrl$streamId";
         final response = await dio.get(
@@ -135,6 +128,7 @@ class TwoEmbed {
             VideoData(
               videoSource: "2EMBED_${videoDataList.length + 1}",
               videoSourceUrl: source,
+              videoSourceHeaders: {},
             ),
           );
         } else {
@@ -147,26 +141,4 @@ class TwoEmbed {
 
     return videoDataList;
   }
-}
-
-void main() async {
-  final imdbID = "tt14513804";
-  final tmdbID = "822119";
-  final mediaType = "movie";
-  final title = "Captain America: Brave New World";
-  final year = "2025";
-  final season = null;
-  final episode = null;
-
-  TwoEmbed twoEmbed = TwoEmbed();
-  final data = twoEmbed.scrape(
-    imdbId: imdbID,
-    tmdbId: tmdbID,
-    mediaType: mediaType,
-    title: title,
-    year: year,
-    season: season,
-    episode: episode,
-  );
-  print("Stream ID: $data");
 }
