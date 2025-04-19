@@ -5,7 +5,11 @@ import 'package:streamora/model/video_data.dart';
 class AutoEmbed {
   final baseUrl = "https://tom.autoembed.cc/api/getVideoSource";
   final List<VideoData> videoDataList = [];
-  final Dio dio = Dio();
+  final Dio dio = Dio(BaseOptions(
+    sendTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
+    connectTimeout: const Duration(seconds: 10),
+  ));
   final headers = {
     'Referer': 'https://tom.autoembed.cc',
     'Origin': 'https://tom.autoembed.cc',

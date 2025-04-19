@@ -1,0 +1,134 @@
+import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:streamora/core/common/util.dart';
+import 'package:streamora/data/streams_scraping/provider/auto_embed.dart';
+import 'package:streamora/data/streams_scraping/provider/netfree.dart';
+import 'package:streamora/data/streams_scraping/provider/two_embed.dart';
+import 'package:streamora/data/streams_scraping/provider/vidsrc_su.dart';
+import 'package:streamora/data/streams_scraping/provider/vidzee.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
+import 'package:streamora/model/video_data.dart';
+
+part 'streamora_streams.g.dart';
+
+class StreamoraStreams {
+  final List providers = [
+    AutoEmbed(),
+    TwoEmbed(),
+    VidsrcSu(),
+    Vidzee(),
+    NetFree(),
+  ];
+
+  Future<List<VideoData>> scrape({
+    required ScrapeStreamsData movieData,
+    required BuildContext context,
+  }) async {
+    List<VideoData> videoDataList = [];
+    int index = 1;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    });
+    for (var provider in providers) {
+      try {
+        List<VideoData> streams = await provider.scrape(movieData: movieData);
+        for (VideoData stream in streams) {
+          if (await isAccessible(
+            url: stream.videoSourceUrl,
+            headers: stream.videoSourceHeaders,
+          )) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            });
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  behavior: SnackBarBehavior.floating,
+                  showCloseIcon: true,
+                  closeIconColor: Colors.white,
+                  content: Text(
+                    "$index of ${providers.length}: Fetching Streams from ${provider.runtimeType}...",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              );
+            });
+            videoDataList.add(stream);
+          } else {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+            });
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: Colors.red,
+                  behavior: SnackBarBehavior.floating,
+                  showCloseIcon: true,
+                  closeIconColor: Colors.white,
+                  content: Text(
+                    "$index of ${providers.length}: No Loadable Streams Found at ${provider.runtimeType}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              );
+            });
+          }
+        }
+      } catch (e) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        });
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              showCloseIcon: true,
+              closeIconColor: Colors.white,
+              content: Text(
+                "$index of ${providers.length}: No Stream Found at ${provider.runtimeType}",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
+        });
+      }
+      index++;
+    }
+    return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> streamoraStreams(
+  ref, {
+  required ScrapeStreamsData movieData,
+  required BuildContext context,
+}) async {
+  return await StreamoraStreams()
+      .scrape(movieData: movieData, context: context);
+}
+
+// void main() async {
+//   final provider = StreamoraStreams();
+//   final movieData = ScrapeStreamsData(
+//     title: "Dhoom Dhaam",
+//     imdbId: "tt14401230",
+//     tmdbId: "822119",
+//     mediaType: "movie",
+//     year: "2025",
+//   );
+//   List<VideoData> streams = await provider.scrape(movieData: movieData);
+//   for (var stream in streams) {
+//     print(
+//       "Stream: ${stream.videoSource} - ${stream.videoSourceUrl}\n${stream.videoSourceHeaders}",
+//     );
+//   }
+// }

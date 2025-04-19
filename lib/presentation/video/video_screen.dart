@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streamora/data/stream.dart';
+import 'package:streamora/data/streams_scraping/streamora_streams.dart';
 import 'package:streamora/data/subtitles.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/subtitle_data.dart';
 import 'package:streamora/model/video_data.dart';
 import 'package:better_player_plus/better_player_plus.dart';
@@ -41,14 +42,15 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
   GlobalKey betterPlayerKey = GlobalKey();
 
   Future<void> getStreams() async {
-    List<VideoData> videoList = await ref.read(getStreamProvider(
-      tmdbId: widget.tmdbId,
-      imdbId: widget.imdbId,
-      title: widget.title,
-      year: widget.year,
-      mediaType: widget.mediaType,
-      season: widget.season,
-      episode: widget.episode,
+    List<VideoData> videoList = await ref.read(streamoraStreamsProvider(
+      movieData: ScrapeStreamsData(
+        title: widget.title,
+        imdbId: widget.imdbId,
+        tmdbId: widget.tmdbId,
+        mediaType: widget.mediaType,
+        year: widget.year,
+      ),
+      context: context,
     ).future);
 
     if (!mounted) return;
