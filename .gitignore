@@ -48,5 +48,6 @@ app.*.map.json
 .env
 
 # inbuild repos and libraries
-/better_player_remastered
+/better_player_plus
 /streamora_provider
+/better_player_plus.old
