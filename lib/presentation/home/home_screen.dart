@@ -10,6 +10,7 @@ import 'package:streamora/presentation/home/top_rated_movies.dart';
 import 'package:streamora/presentation/home/top_rated_series.dart';
 import 'package:streamora/presentation/home/upcoming_movies.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
+import 'package:streamora/presentation/video/test_vod_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -27,18 +28,29 @@ class HomeScreen extends ConsumerWidget {
         : 'assets/brand/logo_dark.png';
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          children: [
-            SizedBox(
-              width: 10,
-            ),
-            Image.asset(
-              logo,
-              height: 32,
-            ),
-            const SizedBox(width: 8),
-            const Text('S T R E A M O R A'),
-          ],
+        title: InkWell(
+          child: Row(
+            children: [
+              SizedBox(
+                width: 10,
+              ),
+              Image.asset(
+                logo,
+                height: 32,
+              ),
+              const SizedBox(width: 8),
+              const Text('S T R E A M O R A'),
+            ],
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              PageTransition(
+                type: PageTransitionType.fade,
+                child: const TestVodScreen(),
+              ),
+            );
+          },
         ),
         actions: [
           Padding(

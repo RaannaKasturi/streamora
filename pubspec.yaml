@@ -29,8 +29,8 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   beautiful_soup_dart: ^0.3.0
-  better_player_remastered:
-    path: ./better_player_remastered
+  better_player_plus:
+    path: ./better_player_plus
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cupertino_icons: ^1.0.8

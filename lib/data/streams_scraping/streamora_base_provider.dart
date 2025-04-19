@@ -1,3 +1,4 @@
+import 'package:streamora/core/common/util.dart';
 import 'package:streamora/data/streams_scraping/provider/netfree.dart';
 import 'package:streamora/data/streams_scraping/provider/two_embed.dart';
 import 'package:streamora/data/streams_scraping/provider/vidsrc_su.dart';
@@ -24,7 +25,7 @@ class StreamoraProvider {
     List<VideoData> videoDataList = [];
     for (var provider in providers) {
       print('Scraping with provider: ${provider.runtimeType}');
-      List<VideoData> response = await provider.scrape(
+      List<VideoData> streams = await provider.scrape(
         imdbId: imdbId,
         tmdbId: tmdbId,
         mediaType: mediaType,
@@ -33,7 +34,16 @@ class StreamoraProvider {
         season: season,
         episode: episode,
       );
-      videoDataList.addAll(response);
+      for (VideoData stream in streams) {
+        if (await isAccessible(
+          url: stream.videoSourceUrl,
+          headers: stream.videoSourceHeaders,
+        )) {
+          videoDataList.add(stream);
+        } else {
+          print("Streamora: ${stream.videoSource} is not accessible.");
+        }
+      }
     }
     return videoDataList;
   }

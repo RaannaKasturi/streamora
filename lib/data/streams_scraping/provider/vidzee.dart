@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:streamora/core/common/util.dart';
 import 'package:streamora/model/video_data.dart';
 
 class Vidzee {
@@ -31,15 +30,12 @@ class Vidzee {
         var videoLabel = server['label'];
         var videoUrl =
             Uri.decodeFull(server['url'].toString().split("url=")[1]);
-        print("\n\n\nVideo Source: VIDZEE");
-        if (await isAccessible(url: videoUrl)) {
-          videoDataList.add(
-            VideoData(
-              videoSource: 'VIDZEE_${videoDataList.length + 1} ($videoLabel)',
-              videoSourceUrl: videoUrl,
-            ),
-          );
-        }
+        videoDataList.add(
+          VideoData(
+            videoSource: 'VIDZEE_${videoDataList.length + 1} ($videoLabel)',
+            videoSourceUrl: videoUrl,
+          ),
+        );
       }
     } catch (e) {
       print("Error: $e");

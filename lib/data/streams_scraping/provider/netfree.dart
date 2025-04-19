@@ -55,13 +55,11 @@ class NetFree {
     await getHeaders();
     String movieId = await getId(title: title);
     if (movieId.isEmpty) {
-      print("Movie ID not found for title: $title");
       return videoDataList;
     }
     Response response =
         await dio.get("$baseUrl/mobile/playlist.php?id=$movieId");
     if (response.statusCode != 200) {
-      print("Failed to fetch video data: ${response.statusCode}");
       return videoDataList;
     }
     final sources = response.data[0]['sources'];

@@ -44,8 +44,8 @@ class VidsrcSu {
           videoSource: "VIDSRC_${videoDataList.length + 1}",
           videoSourceUrl: server,
           videoSourceHeaders: {
-            'Referer': "https://vidsrc.su/",
-            "Origin": "https://vidsrc.su",
+            'Referer': 'https://vidsrc.su/',
+            'Origin': 'https://vidsrc.su',
           },
         ),
       );

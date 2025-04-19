@@ -4,7 +4,7 @@ import 'package:streamora/data/stream.dart';
 import 'package:streamora/data/subtitles.dart';
 import 'package:streamora/model/subtitle_data.dart';
 import 'package:streamora/model/video_data.dart';
-import 'package:better_player_remastered/better_player_remastered.dart';
+import 'package:better_player_plus/better_player_plus.dart';
 
 class VideoScreen extends ConsumerStatefulWidget {
   final String backdrop;
@@ -168,6 +168,12 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     if (videoSourceUrl == null) return;
     final isHlsFormat = isHLS(videoSourceUrl);
 
+    print("-" * 25);
+    print("Video Source: $videoSourceUrl");
+    print("Video Source URL: $videoSourceUrl");
+    print("Video Source Headers: $videoSourceHeaders");
+    print("-" * 25);
+
     List<BetterPlayerSubtitlesSource> subtitleSources = [];
     if (subtitles != null) {
       for (var subtitle in subtitles) {
@@ -207,7 +213,6 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     } else {
       _videoPlayerController = BetterPlayerController(
         BetterPlayerConfiguration(
-          fullScreenByDefault: true,
           aspectRatio: 16 / 9,
           autoPlay: true,
           fit: BoxFit.contain,
@@ -288,11 +293,9 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
       body: SafeArea(
         child: Center(
           child: _videoDataList.isNotEmpty && _videoPlayerController != null
-              ? Center(
-                  child: AspectRatio(
-                    aspectRatio: 9 / 16,
-                    child: BetterPlayer(controller: _videoPlayerController!),
-                  ),
+              ? AspectRatio(
+                  aspectRatio: 9 / 16,
+                  child: BetterPlayer(controller: _videoPlayerController!),
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.center,

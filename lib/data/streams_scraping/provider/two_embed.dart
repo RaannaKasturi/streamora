@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
-import 'package:streamora/core/common/util.dart';
 import 'package:streamora/model/video_data.dart';
 
 class TwoEmbed {
@@ -130,9 +129,7 @@ class TwoEmbed {
         );
 
         final source = extractVideoSource(response.data);
-        print("\n\n\nVideo Source: 2EMBED");
         if (source != null &&
-            await isAccessible(url: source) &&
             !videoDataList.any((element) => element.videoSourceUrl == source)) {
           videoDataList.add(
             VideoData(
