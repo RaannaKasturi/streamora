@@ -117,13 +117,14 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                 ),
               ),
               Container(
+                alignment: Alignment.center,
                 width: double.infinity,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: Text(
                   data.genres!.join(" | "),
                   style: Theme.of(context).textTheme.bodyMedium,
-                  textAlign: TextAlign.start,
+                  textAlign: TextAlign.center,
                 ),
               ),
               Padding(

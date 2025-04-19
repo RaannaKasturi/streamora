@@ -68,10 +68,12 @@ packages:
   better_player_plus:
     dependency: "direct main"
     description:
-      path: better_player_plus
-      relative: true
-    source: path
-    version: "1.0.6"
+      path: "."
+      ref: HEAD
+      resolved-ref: "3a4c31d98c446cc8e31ca3684f67f449758f7a03"
+      url: "https://github.com/RaannaKasturi/better_player_plus.git"
+    source: git
+    version: "1.1.0"
   boolean_selector:
     dependency: transitive
     description:

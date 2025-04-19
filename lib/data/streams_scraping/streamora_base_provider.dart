@@ -1,4 +1,5 @@
 import 'package:streamora/core/common/util.dart';
+import 'package:streamora/data/streams_scraping/provider/auto_embed.dart';
 import 'package:streamora/data/streams_scraping/provider/netfree.dart';
 import 'package:streamora/data/streams_scraping/provider/two_embed.dart';
 import 'package:streamora/data/streams_scraping/provider/vidsrc_su.dart';
@@ -7,6 +8,7 @@ import 'package:streamora/model/video_data.dart';
 
 class StreamoraProvider {
   final List providers = [
+    AutoEmbed(),
     TwoEmbed(),
     VidsrcSu(),
     Vidzee(),

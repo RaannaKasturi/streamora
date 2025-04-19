@@ -295,7 +295,9 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
       BetterPlayerDataSourceType.network,
       videoSourceUrl,
       headers: videoSourceHeaders,
-      videoFormat: BetterPlayerVideoFormat.hls,
+      videoFormat: isHlsFormat
+          ? BetterPlayerVideoFormat.hls
+          : BetterPlayerVideoFormat.other,
       subtitles: subtitleSources,
       liveStream: false,
       notificationConfiguration: BetterPlayerNotificationConfiguration(
