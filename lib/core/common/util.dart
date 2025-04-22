@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 
 Future<bool> isAccessible(
@@ -28,4 +30,17 @@ Future<bool> isAccessible(
     print("Error: $e\n\n\n");
     return false;
   }
+}
+
+String fixPadding(String input) {
+  final padding = input.length % 4;
+  if (padding == 0) return input;
+  return input + '=' * (4 - padding);
+}
+
+String base64Decoder({required String encodedData}) {
+  final fixedData = fixPadding(encodedData);
+  final decodedBytes = base64.decode(fixedData);
+  final decodedData = utf8.decode(decodedBytes);
+  return decodedData;
 }

@@ -12,26 +12,26 @@ import 'package:streamora/model/video_data.dart';
 part 'streamora_streams.g.dart';
 
 class StreamoraStreams {
-  final List providers = [
-    AutoEmbed(),
-    TwoEmbed(),
-    VidsrcSu(),
-    Vidzee(),
-    NetFree(),
-  ];
+  final Map<int, dynamic> providers = {
+    1: AutoEmbed(),
+    2: TwoEmbed(),
+    3: VidsrcSu(),
+    4: Vidzee(),
+    5: NetFree(),
+  };
 
   Future<List<VideoData>> scrape({
     required ScrapeStreamsData movieData,
     required BuildContext context,
   }) async {
     List<VideoData> videoDataList = [];
-    int index = 1;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
-    for (var provider in providers) {
+    for (var index in providers.keys) {
       try {
-        List<VideoData> streams = await provider.scrape(movieData: movieData);
+        List<VideoData> streams =
+            await providers[index].scrape(movieData: movieData);
         for (VideoData stream in streams) {
           if (await isAccessible(
             url: stream.videoSourceUrl,
@@ -40,6 +40,7 @@ class StreamoraStreams {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
             });
+            videoDataList.add(stream);
             WidgetsBinding.instance.addPostFrameCallback((_) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
@@ -48,7 +49,7 @@ class StreamoraStreams {
                   showCloseIcon: true,
                   closeIconColor: Colors.white,
                   content: Text(
-                    "$index of ${providers.length}: Fetching Streams from ${provider.runtimeType}...",
+                    "$index of ${providers.length}: Stream found at ${providers[index].runtimeType}...",
                     style: const TextStyle(
                       color: Colors.white,
                     ),
@@ -56,27 +57,8 @@ class StreamoraStreams {
                 ),
               );
             });
-            videoDataList.add(stream);
           } else {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            });
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Colors.red,
-                  behavior: SnackBarBehavior.floating,
-                  showCloseIcon: true,
-                  closeIconColor: Colors.white,
-                  content: Text(
-                    "$index of ${providers.length}: No Loadable Streams Found at ${provider.runtimeType}",
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              );
-            });
+            continue;
           }
         }
       } catch (e) {
@@ -91,7 +73,7 @@ class StreamoraStreams {
               showCloseIcon: true,
               closeIconColor: Colors.white,
               content: Text(
-                "$index of ${providers.length}: No Stream Found at ${provider.runtimeType}",
+                "$index of ${providers.length}: No Stream Found at ${providers[index].runtimeType}",
                 style: const TextStyle(
                   color: Colors.white,
                 ),
