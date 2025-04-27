@@ -19,7 +19,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.index = 2;
+    _tabController.index = 0;
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {});

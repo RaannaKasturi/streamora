@@ -356,23 +356,27 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
+
     final List<MovieListData> similarMovies =
-        (moviesData['similar']['results'] as List<dynamic>)
+        (moviesData['similar']?['results'] as List<dynamic>? ?? [])
             .map<MovieListData>((movie) {
       return MovieListData(
-        id: movie['id'],
-        title: movie['title'] ?? movie['original_title'] ?? movie['name'],
+        id: movie['id'] ?? 0,
+        title: movie['title'] ??
+            movie['original_title'] ??
+            movie['name'] ??
+            "Unknown Title",
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
         poster: movie['poster_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
-        voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
-        releaseYear:
-            (movie['release_date'] ?? movie['first_air_date']).toString(),
-        mediaType: "tv",
-        overview: movie['overview'],
+        voteAverage: ((movie['vote_average'] ?? 0.0).toStringAsFixed(1)),
+        releaseYear: (movie['release_date'] ?? movie['first_air_date'] ?? "N/A")
+            .toString(),
+        mediaType: movie['media_type'] ?? "movie",
+        overview: movie['overview'] ?? "No overview available",
         genres: movie['genre_ids'] != null
             ? List<String>.from(
                 movie['genre_ids'].map(
@@ -386,27 +390,28 @@ class Tmdb {
     }).toList();
 
     final List<PersonListData> cast =
-        (moviesData['credits']['cast'] as List<dynamic>)
+        (moviesData['credits']?['cast'] as List<dynamic>? ?? [])
             .map<PersonListData>((person) {
       return PersonListData(
-        name: person['name'],
-        characterName: person['character'],
+        name: person['name'] ?? "Unknown",
+        characterName: person['character'] ?? "Unknown Character",
         profilePath: person['profile_path'] != null
             ? "https://image.tmdb.org/t/p/w500${person['profile_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/person_placeholder.png",
-        id: person['id'].toString(),
+        id: person['id']?.toString() ?? "N/A",
       );
     }).toList();
+
     final List<PersonListData> crew =
-        (moviesData['credits']['crew'] as List<dynamic>)
+        (moviesData['credits']?['crew'] as List<dynamic>? ?? [])
             .map<PersonListData>((person) {
       return PersonListData(
-        name: person['name'],
-        characterName: person['job'],
+        name: person['name'] ?? "Unknown",
+        characterName: person['job'] ?? "Unknown Job",
         profilePath: person['profile_path'] != null
             ? "https://image.tmdb.org/t/p/w500${person['profile_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/person_placeholder.png",
-        id: person['id'].toString(),
+        id: person['id']?.toString() ?? "N/A",
       );
     }).toList();
 
@@ -416,13 +421,13 @@ class Tmdb {
         (moviesData['images']['logos'] as List).isNotEmpty) {
       final logos = moviesData['images']['logos'] as List<dynamic>;
       final filteredLogos = logos.where((logo) {
-        final path = logo['file_path'] as String;
+        final path = logo['file_path'] as String? ?? "";
         return path.endsWith('.png') ||
             path.endsWith('.jpg') ||
             path.endsWith('.jpeg');
-      });
+      }).toList();
       if (filteredLogos.isNotEmpty) {
-        movieLogo = filteredLogos.first['file_path'] as String;
+        movieLogo = filteredLogos.first['file_path'] as String?;
       }
     }
 
@@ -430,8 +435,8 @@ class Tmdb {
       title: moviesData['title'] ??
           moviesData['original_title'] ??
           "Unknown Title",
-      id: moviesData['id'],
-      imdbId: moviesData['imdb_id'],
+      id: moviesData['id'] ?? 0,
+      imdbId: moviesData['imdb_id'] ?? "N/A",
       backdrop: moviesData['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/w500${moviesData['backdrop_path']}"
           : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
@@ -440,16 +445,18 @@ class Tmdb {
           : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
       voteAverage: (moviesData['vote_average'] ?? 0.0).toString(),
       voteCount: (moviesData['vote_count'] ?? 0).toString(),
-      releaseYear: (moviesData['release_date'] ?? moviesData['first_air_date'])
-          .toString()
-          .split("-")[0],
+      releaseYear:
+          (moviesData['release_date'] ?? moviesData['first_air_date'] ?? "N/A")
+              .toString()
+              .split("-")[0],
       mediaType: moviesData['media_type'] ?? "movie",
       overview: moviesData['overview'] ?? "No overview available",
       genres: moviesData["genres"] != null
-          ? List<String>.from(moviesData["genres"].map((e) => e["name"]))
+          ? List<String>.from(
+              moviesData["genres"].map((e) => e["name"] ?? "Unknown Genre"))
           : [],
       runtime: moviesData['runtime'] != null
-          ? "${(moviesData['runtime'] ~/ 60).floor()}h ${(moviesData['runtime'] % 60)}m"
+          ? "${(moviesData['runtime'] ~/ 60)}h ${(moviesData['runtime'] % 60)}m"
           : "N/A",
       tagline: moviesData['tagline'] ?? "No tagline available",
       originalLanguage: moviesData['original_language'] ?? "N/A",
@@ -468,12 +475,15 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
+    print("Series Details: $moviesData");
+
     final List<MovieListData> similarMovies =
-        (moviesData['similar']['results'] as List<dynamic>)
+        (moviesData['similar']?['results'] as List<dynamic>? ?? [])
             .map<MovieListData>((movie) {
       return MovieListData(
-        id: movie['id'],
-        title: movie['title'] ?? movie['original_title'] ?? movie['name'],
+        id: movie['id'] ?? 0,
+        title:
+            movie['title'] ?? movie['original_title'] ?? movie['name'] ?? "N/A",
         backdrop: movie['backdrop_path'] != null
             ? "https://image.tmdb.org/t/p/w500${movie['backdrop_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
@@ -481,41 +491,43 @@ class Tmdb {
             ? "https://image.tmdb.org/t/p/w500${movie['poster_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
-        releaseYear:
-            (movie['release_date'] ?? movie['first_air_date']).toString(),
-        mediaType: "tv",
-        overview: movie['overview'],
+        releaseYear: (movie['release_date'] ?? movie['first_air_date'] ?? "N/A")
+            .toString(),
+        mediaType: movie['media_type'] ?? "tv",
+        overview: movie['overview'] ?? "No overview available",
         genres: movie['genre_ids'] != null
-            ? List<String>.from(movie['genre_ids'].map((e) =>
-                movie['media_type'] == "tv"
-                    ? getTvGenre(e.toString())
-                    : getMovieGenre(e.toString())))
+            ? List<String>.from(
+                (movie['genre_ids'] as List).map(
+                  (e) => movie['media_type'] == "tv"
+                      ? getTvGenre(e.toString())
+                      : getMovieGenre(e.toString()),
+                ),
+              )
             : [],
       );
     }).toList();
 
     final List<PersonListData> cast =
-        (moviesData['credits']['cast'] as List<dynamic>)
-            .map<PersonListData>((person) {
+        (moviesData['credits']?['cast'] as List<dynamic>? ?? []).map((person) {
       return PersonListData(
-        name: person['name'],
-        characterName: person['character'],
+        name: person['name'] ?? "N/A",
+        characterName: person['character'] ?? "N/A",
         profilePath: person['profile_path'] != null
             ? "https://image.tmdb.org/t/p/w500${person['profile_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/person_placeholder.png",
-        id: person['id'].toString(),
+        id: person['id']?.toString() ?? "N/A",
       );
     }).toList();
+
     final List<PersonListData> crew =
-        (moviesData['credits']['crew'] as List<dynamic>)
-            .map<PersonListData>((person) {
+        (moviesData['credits']?['crew'] as List<dynamic>? ?? []).map((person) {
       return PersonListData(
-        name: person['name'],
-        characterName: person['job'],
+        name: person['name'] ?? "N/A",
+        characterName: person['job'] ?? "N/A",
         profilePath: person['profile_path'] != null
             ? "https://image.tmdb.org/t/p/w500${person['profile_path']}"
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/person_placeholder.png",
-        id: person['id'].toString(),
+        id: person['id']?.toString() ?? "N/A",
       );
     }).toList();
 
@@ -525,13 +537,13 @@ class Tmdb {
         (moviesData['images']['logos'] as List).isNotEmpty) {
       final logos = moviesData['images']['logos'] as List<dynamic>;
       final filteredLogos = logos.where((logo) {
-        final path = logo['file_path'] as String;
+        final path = logo['file_path'] as String? ?? "";
         return path.endsWith('.png') ||
             path.endsWith('.jpg') ||
             path.endsWith('.jpeg');
       });
       if (filteredLogos.isNotEmpty) {
-        movieLogo = filteredLogos.first['file_path'] as String;
+        movieLogo = filteredLogos.first['file_path'] as String?;
       }
     }
 
@@ -540,8 +552,8 @@ class Tmdb {
           moviesData['original_title'] ??
           moviesData['name'] ??
           "Unknown Title",
-      id: moviesData['id'],
-      imdbId: moviesData['external_ids']['imdb_id'],
+      id: moviesData['id'] ?? 0,
+      imdbId: moviesData['external_ids']?['imdb_id'] ?? "N/A",
       backdrop: moviesData['backdrop_path'] != null
           ? "https://image.tmdb.org/t/p/w500${moviesData['backdrop_path']}"
           : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/backdrop_placeholder.png",
@@ -550,23 +562,26 @@ class Tmdb {
           : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
       voteAverage: (moviesData['vote_average'] ?? 0.0).toString(),
       voteCount: (moviesData['vote_count'] ?? 0).toString(),
-      releaseYear: (moviesData['release_date'] ?? moviesData['first_air_date'])
-          .toString()
-          .split("-")[0],
+      releaseYear:
+          (moviesData['release_date'] ?? moviesData['first_air_date'] ?? "N/A")
+              .toString()
+              .split("-")[0],
       mediaType: moviesData['media_type'] ?? "tv",
       overview: moviesData['overview'] ?? "No overview available",
-      genres: moviesData["genres"] != null
-          ? List<String>.from(moviesData["genres"].map((e) => e["name"]))
+      genres: moviesData['genres'] != null
+          ? List<String>.from((moviesData['genres'] as List)
+              .map((e) => e['name'] ?? "Unknown Genre"))
           : [],
-      runtime: moviesData['runtime'] != null
-          ? "${(moviesData['runtime'] ~/ 60).floor()}h ${(moviesData['runtime'] % 60)}m"
+      runtime: moviesData['episode_run_time'] != null &&
+              (moviesData['episode_run_time'] as List).isNotEmpty
+          ? "${(moviesData['episode_run_time'][0] ~/ 60)}h ${(moviesData['episode_run_time'][0] % 60)}m"
           : "N/A",
       tagline: moviesData['tagline'] ?? "No tagline available",
       originalLanguage: moviesData['original_language'] ?? "N/A",
       similarMovies: similarMovies,
-      logo: movieLogo == null
-          ? "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/movie_logo_placeholder.png"
-          : "https://image.tmdb.org/t/p/w500$movieLogo",
+      logo: movieLogo != null
+          ? "https://image.tmdb.org/t/p/w500$movieLogo"
+          : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/movie_logo_placeholder.png",
       cast: cast,
       crew: crew,
       seasonNumber: moviesData['number_of_seasons'] ?? 0,
@@ -674,7 +689,10 @@ Future<MovieDetailsData> movieDetails(ref, int movieID) async {
 @riverpod
 Future<SeriesDetailsData> seriesDetails(ref, int seriesID) async {
   final tmdb = Tmdb();
-  return await tmdb.getSeriesDetails(seriesID: seriesID);
+  SeriesDetailsData seriesDetails =
+      await tmdb.getSeriesDetails(seriesID: seriesID);
+  print("Series Details: ${seriesDetails.toString()}");
+  return seriesDetails;
 }
 
 @Riverpod(keepAlive: true)

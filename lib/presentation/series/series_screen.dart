@@ -62,21 +62,31 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                 fit: BoxFit.cover,
               ),
               SizedBox(
-                height: 10,
+                height: 15,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 13),
-                child: CachedNetworkImage(
-                  imageUrl: data.logo,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                ),
-              ),
-              Text(
-                data.tagline,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: Colors.grey,
+              data.logo.contains("placeholder")
+                  ? Text(
+                      data.title,
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.only(top: 13),
+                      child: CachedNetworkImage(
+                        imageUrl: data.logo,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                      ),
                     ),
-              ),
+              data.tagline.isNotEmpty
+                  ? Text(
+                      data.tagline,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
+                    )
+                  : const SizedBox(),
               SizedBox(
                 height: 10,
               ),
@@ -101,7 +111,7 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                     ),
                     const Icon(Icons.circle, size: 5),
                     Text(
-                      data.originalLanguage,
+                      data.originalLanguage.toUpperCase(),
                       softWrap: true,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
