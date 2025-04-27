@@ -3,10 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:streamora/core/config/util.dart';
-import 'package:streamora/data/database/database.dart';
 import 'package:streamora/data/user_preferences.dart';
+import 'package:streamora/presentation/app.dart';
 import 'package:streamora/presentation/onboarding/welcome_screen.dart';
-import 'package:streamora/presentation/home/home_screen.dart';
 import 'core/config/theme.dart';
 
 void main() async {
@@ -14,7 +13,6 @@ void main() async {
   await dotenv.load(fileName: ".env");
   final container = ProviderContainer();
   await container.read(userPreferencesProvider.future);
-  await container.read(streamoraDatabaseProvider.future);
   runApp(
     UncontrolledProviderScope(
       container: container,
@@ -60,9 +58,7 @@ class MyApp extends ConsumerWidget {
               ),
             );
           }
-          return snapshot.data == true
-              ? const HomeScreen()
-              : const WelcomeScreen();
+          return snapshot.data == true ? const App() : const WelcomeScreen();
         },
       ),
     );

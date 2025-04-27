@@ -44,12 +44,12 @@ class GenresData {
   };
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 String getMovieGenre(genreID) {
   return GenresData().movieGenres[genreID].toString();
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 String getTvGenre(genreID) {
   return GenresData().tvGenres[genreID].toString();
 }

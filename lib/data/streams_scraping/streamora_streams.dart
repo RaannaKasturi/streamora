@@ -29,6 +29,27 @@ class StreamoraStreams {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
     });
     for (var index in providers.keys) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              showCloseIcon: true,
+              closeIconColor: Colors.white,
+              content: Text(
+                "Searching $index of ${providers.length} Providers. Provider: ${providers[index].runtimeType}",
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          );
+        },
+      );
       try {
         List<VideoData> streams =
             await providers[index].scrape(movieData: movieData);
@@ -37,50 +58,13 @@ class StreamoraStreams {
             url: stream.videoSourceUrl,
             headers: stream.videoSourceHeaders,
           )) {
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            });
             videoDataList.add(stream);
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  behavior: SnackBarBehavior.floating,
-                  showCloseIcon: true,
-                  closeIconColor: Colors.white,
-                  content: Text(
-                    "$index of ${providers.length}: Stream found at ${providers[index].runtimeType}...",
-                    style: const TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-              );
-            });
           } else {
             continue;
           }
         }
       } catch (e) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        });
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-              showCloseIcon: true,
-              closeIconColor: Colors.white,
-              content: Text(
-                "$index of ${providers.length}: No Stream Found at ${providers[index].runtimeType}",
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          );
-        });
+        continue;
       }
       index++;
     }

@@ -6,12 +6,11 @@ part of 'tmdb.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$trendingMoviesHash() => r'97989f807f9d5e4c8df9991bdce64b13778a4f80';
+String _$trendingMoviesHash() => r'2d66eaadb0633813f6a05180b6ae7bfde2682b36';
 
 /// See also [trendingMovies].
 @ProviderFor(trendingMovies)
-final trendingMoviesProvider =
-    AutoDisposeFutureProvider<List<MovieListData>>.internal(
+final trendingMoviesProvider = FutureProvider<List<MovieListData>>.internal(
   trendingMovies,
   name: r'trendingMoviesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -23,13 +22,12 @@ final trendingMoviesProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TrendingMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$nowPlayingMoviesHash() => r'b5b4b39aa8dbca37c9075187d1075d2d142ec625';
+typedef TrendingMoviesRef = FutureProviderRef<List<MovieListData>>;
+String _$nowPlayingMoviesHash() => r'b26226732b717337d0f73baf958c3427f57d1ef8';
 
 /// See also [nowPlayingMovies].
 @ProviderFor(nowPlayingMovies)
-final nowPlayingMoviesProvider =
-    AutoDisposeFutureProvider<List<MovieListData>>.internal(
+final nowPlayingMoviesProvider = FutureProvider<List<MovieListData>>.internal(
   nowPlayingMovies,
   name: r'nowPlayingMoviesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -41,13 +39,12 @@ final nowPlayingMoviesProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef NowPlayingMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$seriesAiringTodayHash() => r'3b3a2a6a60246053f954b46408bff3d594af2ebb';
+typedef NowPlayingMoviesRef = FutureProviderRef<List<MovieListData>>;
+String _$seriesAiringTodayHash() => r'd14cad0955d7e43996a08597b9e614797dcd3c66';
 
 /// See also [seriesAiringToday].
 @ProviderFor(seriesAiringToday)
-final seriesAiringTodayProvider =
-    AutoDisposeFutureProvider<List<MovieListData>>.internal(
+final seriesAiringTodayProvider = FutureProvider<List<MovieListData>>.internal(
   seriesAiringToday,
   name: r'seriesAiringTodayProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -59,14 +56,12 @@ final seriesAiringTodayProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef SeriesAiringTodayRef
-    = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$topratedMoviesHash() => r'3d01b41205aa54e4aeb5183a1e65d9f1071a5226';
+typedef SeriesAiringTodayRef = FutureProviderRef<List<MovieListData>>;
+String _$topratedMoviesHash() => r'8c6fb8b1f69533c0f110776d204aae00886ada72';
 
 /// See also [topratedMovies].
 @ProviderFor(topratedMovies)
-final topratedMoviesProvider =
-    AutoDisposeFutureProvider<List<MovieListData>>.internal(
+final topratedMoviesProvider = FutureProvider<List<MovieListData>>.internal(
   topratedMovies,
   name: r'topratedMoviesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -78,13 +73,12 @@ final topratedMoviesProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TopratedMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$topratedSeriesHash() => r'42824d88206e03f059574067d15539639fcf06d4';
+typedef TopratedMoviesRef = FutureProviderRef<List<MovieListData>>;
+String _$topratedSeriesHash() => r'91fbe15cdbd289c07186b86fc74163190950be9c';
 
 /// See also [topratedSeries].
 @ProviderFor(topratedSeries)
-final topratedSeriesProvider =
-    AutoDisposeFutureProvider<List<MovieListData>>.internal(
+final topratedSeriesProvider = FutureProvider<List<MovieListData>>.internal(
   topratedSeries,
   name: r'topratedSeriesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -96,13 +90,12 @@ final topratedSeriesProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TopratedSeriesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$upcomingMoviesHash() => r'aa17b158a2ca23d9df97251d5ddbfc506043fef5';
+typedef TopratedSeriesRef = FutureProviderRef<List<MovieListData>>;
+String _$upcomingMoviesHash() => r'8e2a06d8962154814d116a834ce0e77a5f88720f';
 
 /// See also [upcomingMovies].
 @ProviderFor(upcomingMovies)
-final upcomingMoviesProvider =
-    AutoDisposeFutureProvider<List<MovieListData>>.internal(
+final upcomingMoviesProvider = FutureProvider<List<MovieListData>>.internal(
   upcomingMovies,
   name: r'upcomingMoviesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -114,8 +107,9 @@ final upcomingMoviesProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef UpcomingMoviesRef = AutoDisposeFutureProviderRef<List<MovieListData>>;
-String _$searchResultsHash() => r'd53b47b30246cc79aaa9ca73f182d3809084002f';
+typedef UpcomingMoviesRef = FutureProviderRef<List<MovieListData>>;
+String _$getMoviesSeriesByGenreHash() =>
+    r'286522d7bf578db5753b7f586d8e65ae307408e6';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -137,6 +131,312 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [getMoviesSeriesByGenre].
+@ProviderFor(getMoviesSeriesByGenre)
+const getMoviesSeriesByGenreProvider = GetMoviesSeriesByGenreFamily();
+
+/// See also [getMoviesSeriesByGenre].
+class GetMoviesSeriesByGenreFamily
+    extends Family<AsyncValue<List<MovieListData>>> {
+  /// See also [getMoviesSeriesByGenre].
+  const GetMoviesSeriesByGenreFamily();
+
+  /// See also [getMoviesSeriesByGenre].
+  GetMoviesSeriesByGenreProvider call({
+    required String genreId,
+    required String mediaType,
+  }) {
+    return GetMoviesSeriesByGenreProvider(
+      genreId: genreId,
+      mediaType: mediaType,
+    );
+  }
+
+  @override
+  GetMoviesSeriesByGenreProvider getProviderOverride(
+    covariant GetMoviesSeriesByGenreProvider provider,
+  ) {
+    return call(
+      genreId: provider.genreId,
+      mediaType: provider.mediaType,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getMoviesSeriesByGenreProvider';
+}
+
+/// See also [getMoviesSeriesByGenre].
+class GetMoviesSeriesByGenreProvider
+    extends FutureProvider<List<MovieListData>> {
+  /// See also [getMoviesSeriesByGenre].
+  GetMoviesSeriesByGenreProvider({
+    required String genreId,
+    required String mediaType,
+  }) : this._internal(
+          (ref) => getMoviesSeriesByGenre(
+            ref as GetMoviesSeriesByGenreRef,
+            genreId: genreId,
+            mediaType: mediaType,
+          ),
+          from: getMoviesSeriesByGenreProvider,
+          name: r'getMoviesSeriesByGenreProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getMoviesSeriesByGenreHash,
+          dependencies: GetMoviesSeriesByGenreFamily._dependencies,
+          allTransitiveDependencies:
+              GetMoviesSeriesByGenreFamily._allTransitiveDependencies,
+          genreId: genreId,
+          mediaType: mediaType,
+        );
+
+  GetMoviesSeriesByGenreProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.genreId,
+    required this.mediaType,
+  }) : super.internal();
+
+  final String genreId;
+  final String mediaType;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MovieListData>> Function(GetMoviesSeriesByGenreRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetMoviesSeriesByGenreProvider._internal(
+        (ref) => create(ref as GetMoviesSeriesByGenreRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        genreId: genreId,
+        mediaType: mediaType,
+      ),
+    );
+  }
+
+  @override
+  FutureProviderElement<List<MovieListData>> createElement() {
+    return _GetMoviesSeriesByGenreProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetMoviesSeriesByGenreProvider &&
+        other.genreId == genreId &&
+        other.mediaType == mediaType;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, genreId.hashCode);
+    hash = _SystemHash.combine(hash, mediaType.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetMoviesSeriesByGenreRef on FutureProviderRef<List<MovieListData>> {
+  /// The parameter `genreId` of this provider.
+  String get genreId;
+
+  /// The parameter `mediaType` of this provider.
+  String get mediaType;
+}
+
+class _GetMoviesSeriesByGenreProviderElement
+    extends FutureProviderElement<List<MovieListData>>
+    with GetMoviesSeriesByGenreRef {
+  _GetMoviesSeriesByGenreProviderElement(super.provider);
+
+  @override
+  String get genreId => (origin as GetMoviesSeriesByGenreProvider).genreId;
+  @override
+  String get mediaType => (origin as GetMoviesSeriesByGenreProvider).mediaType;
+}
+
+String _$getMoviesSeriesByLanguageHash() =>
+    r'847ae7607e694e190969eddb185d86b3f97dd18d';
+
+/// See also [getMoviesSeriesByLanguage].
+@ProviderFor(getMoviesSeriesByLanguage)
+const getMoviesSeriesByLanguageProvider = GetMoviesSeriesByLanguageFamily();
+
+/// See also [getMoviesSeriesByLanguage].
+class GetMoviesSeriesByLanguageFamily
+    extends Family<AsyncValue<List<MovieListData>>> {
+  /// See also [getMoviesSeriesByLanguage].
+  const GetMoviesSeriesByLanguageFamily();
+
+  /// See also [getMoviesSeriesByLanguage].
+  GetMoviesSeriesByLanguageProvider call({
+    required String languageISO,
+    required String mediaType,
+  }) {
+    return GetMoviesSeriesByLanguageProvider(
+      languageISO: languageISO,
+      mediaType: mediaType,
+    );
+  }
+
+  @override
+  GetMoviesSeriesByLanguageProvider getProviderOverride(
+    covariant GetMoviesSeriesByLanguageProvider provider,
+  ) {
+    return call(
+      languageISO: provider.languageISO,
+      mediaType: provider.mediaType,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'getMoviesSeriesByLanguageProvider';
+}
+
+/// See also [getMoviesSeriesByLanguage].
+class GetMoviesSeriesByLanguageProvider
+    extends FutureProvider<List<MovieListData>> {
+  /// See also [getMoviesSeriesByLanguage].
+  GetMoviesSeriesByLanguageProvider({
+    required String languageISO,
+    required String mediaType,
+  }) : this._internal(
+          (ref) => getMoviesSeriesByLanguage(
+            ref as GetMoviesSeriesByLanguageRef,
+            languageISO: languageISO,
+            mediaType: mediaType,
+          ),
+          from: getMoviesSeriesByLanguageProvider,
+          name: r'getMoviesSeriesByLanguageProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$getMoviesSeriesByLanguageHash,
+          dependencies: GetMoviesSeriesByLanguageFamily._dependencies,
+          allTransitiveDependencies:
+              GetMoviesSeriesByLanguageFamily._allTransitiveDependencies,
+          languageISO: languageISO,
+          mediaType: mediaType,
+        );
+
+  GetMoviesSeriesByLanguageProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.languageISO,
+    required this.mediaType,
+  }) : super.internal();
+
+  final String languageISO;
+  final String mediaType;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<MovieListData>> Function(
+            GetMoviesSeriesByLanguageRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: GetMoviesSeriesByLanguageProvider._internal(
+        (ref) => create(ref as GetMoviesSeriesByLanguageRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        languageISO: languageISO,
+        mediaType: mediaType,
+      ),
+    );
+  }
+
+  @override
+  FutureProviderElement<List<MovieListData>> createElement() {
+    return _GetMoviesSeriesByLanguageProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is GetMoviesSeriesByLanguageProvider &&
+        other.languageISO == languageISO &&
+        other.mediaType == mediaType;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, languageISO.hashCode);
+    hash = _SystemHash.combine(hash, mediaType.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin GetMoviesSeriesByLanguageRef on FutureProviderRef<List<MovieListData>> {
+  /// The parameter `languageISO` of this provider.
+  String get languageISO;
+
+  /// The parameter `mediaType` of this provider.
+  String get mediaType;
+}
+
+class _GetMoviesSeriesByLanguageProviderElement
+    extends FutureProviderElement<List<MovieListData>>
+    with GetMoviesSeriesByLanguageRef {
+  _GetMoviesSeriesByLanguageProviderElement(super.provider);
+
+  @override
+  String get languageISO =>
+      (origin as GetMoviesSeriesByLanguageProvider).languageISO;
+  @override
+  String get mediaType =>
+      (origin as GetMoviesSeriesByLanguageProvider).mediaType;
+}
+
+String _$searchResultsHash() => r'd53b47b30246cc79aaa9ca73f182d3809084002f';
 
 /// See also [searchResults].
 @ProviderFor(searchResults)
@@ -531,10 +831,10 @@ class _SeriesDetailsProviderElement
   int get seriesID => (origin as SeriesDetailsProvider).seriesID;
 }
 
-String _$seasonEpisodesHash() => r'b6b1d774df88fc2121ed12e4cd44dc0463b7aff5';
+String _$seasonEpisodesHash() => r'365cd093588a943df85a91afe84b0a617954daf5';
 
 abstract class _$SeasonEpisodes
-    extends BuildlessAutoDisposeAsyncNotifier<List<EpisodeDetailsData>> {
+    extends BuildlessAsyncNotifier<List<EpisodeDetailsData>> {
   late final int seriesID;
   late final int initialSeason;
 
@@ -591,8 +891,8 @@ class SeasonEpisodesFamily
 }
 
 /// See also [SeasonEpisodes].
-class SeasonEpisodesProvider extends AutoDisposeAsyncNotifierProviderImpl<
-    SeasonEpisodes, List<EpisodeDetailsData>> {
+class SeasonEpisodesProvider extends AsyncNotifierProviderImpl<SeasonEpisodes,
+    List<EpisodeDetailsData>> {
   /// See also [SeasonEpisodes].
   SeasonEpisodesProvider(
     int seriesID,
@@ -658,8 +958,8 @@ class SeasonEpisodesProvider extends AutoDisposeAsyncNotifierProviderImpl<
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<SeasonEpisodes,
-      List<EpisodeDetailsData>> createElement() {
+  AsyncNotifierProviderElement<SeasonEpisodes, List<EpisodeDetailsData>>
+      createElement() {
     return _SeasonEpisodesProviderElement(this);
   }
 
@@ -682,8 +982,7 @@ class SeasonEpisodesProvider extends AutoDisposeAsyncNotifierProviderImpl<
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SeasonEpisodesRef
-    on AutoDisposeAsyncNotifierProviderRef<List<EpisodeDetailsData>> {
+mixin SeasonEpisodesRef on AsyncNotifierProviderRef<List<EpisodeDetailsData>> {
   /// The parameter `seriesID` of this provider.
   int get seriesID;
 
@@ -691,9 +990,8 @@ mixin SeasonEpisodesRef
   int get initialSeason;
 }
 
-class _SeasonEpisodesProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<SeasonEpisodes,
-        List<EpisodeDetailsData>> with SeasonEpisodesRef {
+class _SeasonEpisodesProviderElement extends AsyncNotifierProviderElement<
+    SeasonEpisodes, List<EpisodeDetailsData>> with SeasonEpisodesRef {
   _SeasonEpisodesProviderElement(super.provider);
 
   @override

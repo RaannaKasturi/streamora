@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:streamora/data/user_preferences.dart';
 
 Future<bool> isAccessible(
     {required String url, Map<String, dynamic>? headers}) async {
@@ -43,4 +44,9 @@ String base64Decoder({required String encodedData}) {
   final decodedBytes = base64.decode(fixedData);
   final decodedData = utf8.decode(decodedBytes);
   return decodedData;
+}
+
+String getLogo(ref) {
+  final isDark = ref.watch(userPreferencesProvider).value?.theme == "dark";
+  return isDark ? 'assets/brand/logo_dark.png' : 'assets/brand/logo_light.png';
 }

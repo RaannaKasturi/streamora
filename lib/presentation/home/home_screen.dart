@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:streamora/core/common/util.dart';
 import 'package:streamora/data/tmdb.dart';
-import 'package:streamora/data/user_preferences.dart';
 import 'package:streamora/presentation/home/hero_carousel.dart';
 import 'package:streamora/presentation/home/in_theatres_near_you.dart';
 import 'package:streamora/presentation/home/series_airing_today.dart';
@@ -23,9 +23,6 @@ class HomeScreen extends ConsumerWidget {
     final topRatedMovies = ref.watch(topratedMoviesProvider);
     final topRatedSeries = ref.watch(topratedSeriesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
-    final logo = ref.watch(userPreferencesProvider).value?.theme == "dark"
-        ? 'assets/brand/logo_light.png'
-        : 'assets/brand/logo_dark.png';
     return Scaffold(
       appBar: AppBar(
         title: InkWell(
@@ -35,7 +32,7 @@ class HomeScreen extends ConsumerWidget {
                 width: 10,
               ),
               Image.asset(
-                logo,
+                getLogo(ref),
                 height: 32,
               ),
               const SizedBox(width: 8),
