@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:streamora/core/config/util.dart';
 import 'package:streamora/data/user_preferences.dart';
-import 'package:streamora/presentation/app.dart';
+import 'package:streamora/presentation/app/app.dart';
 import 'package:streamora/presentation/onboarding/welcome_screen.dart';
 import 'core/config/theme.dart';
 

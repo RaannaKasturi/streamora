@@ -3,6 +3,7 @@ import 'package:page_transition/page_transition.dart';
 import 'package:streamora/presentation/genres/genres_screen.dart';
 import 'package:streamora/presentation/home/home_screen.dart';
 import 'package:streamora/presentation/languages/languages_screen.dart';
+import 'package:streamora/presentation/profile/profile_screen.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 
 class App extends StatefulWidget {
@@ -52,7 +53,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
             HomeScreen(),
             GenresScreen(),
             LanguagesScreen(),
-            Center(child: Text("Profile Screen")),
+            ProfileScreen(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(
