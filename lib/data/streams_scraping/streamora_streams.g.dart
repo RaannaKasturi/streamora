@@ -6,7 +6,7 @@ part of 'streamora_streams.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$streamoraStreamsHash() => r'429ae4f3b517e71ac7f8c6e825e9fb4ae814bfd3';
+String _$streamoraStreamsHash() => r'c4f2101a8f5daa8d295b944f925f968ab5cb5122';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -75,8 +75,7 @@ class StreamoraStreamsFamily extends Family<AsyncValue<List<VideoData>>> {
 }
 
 /// See also [streamoraStreams].
-class StreamoraStreamsProvider
-    extends AutoDisposeFutureProvider<List<VideoData>> {
+class StreamoraStreamsProvider extends FutureProvider<List<VideoData>> {
   /// See also [streamoraStreams].
   StreamoraStreamsProvider({
     required ScrapeStreamsData movieData,
@@ -134,7 +133,7 @@ class StreamoraStreamsProvider
   }
 
   @override
-  AutoDisposeFutureProviderElement<List<VideoData>> createElement() {
+  FutureProviderElement<List<VideoData>> createElement() {
     return _StreamoraStreamsProviderElement(this);
   }
 
@@ -157,7 +156,7 @@ class StreamoraStreamsProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin StreamoraStreamsRef on AutoDisposeFutureProviderRef<List<VideoData>> {
+mixin StreamoraStreamsRef on FutureProviderRef<List<VideoData>> {
   /// The parameter `movieData` of this provider.
   ScrapeStreamsData get movieData;
 
@@ -166,8 +165,7 @@ mixin StreamoraStreamsRef on AutoDisposeFutureProviderRef<List<VideoData>> {
 }
 
 class _StreamoraStreamsProviderElement
-    extends AutoDisposeFutureProviderElement<List<VideoData>>
-    with StreamoraStreamsRef {
+    extends FutureProviderElement<List<VideoData>> with StreamoraStreamsRef {
   _StreamoraStreamsProviderElement(super.provider);
 
   @override

@@ -81,7 +81,7 @@ class StreamoraStreams {
   }
 }
 
-@riverpod
+@Riverpod(keepAlive: true)
 Future<List<VideoData>> streamoraStreams(
   ref, {
   required ScrapeStreamsData movieData,
