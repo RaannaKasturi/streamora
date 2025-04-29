@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:streamora/data/user_preferences.dart';
 
 Future<bool> isAccessible(
     {required String url, Map<String, dynamic>? headers}) async {
-  debugPrint("Checking URL: $url");
   if (url.isEmpty) return false;
   try {
     final response = await Dio()
@@ -14,7 +12,7 @@ Future<bool> isAccessible(
         .timeout(
       const Duration(seconds: 5),
       onTimeout: () {
-        debugPrint("Request timed out for URL: $url");
+        print("Request timed out for URL: $url");
         return Response(
           statusCode: 408,
           requestOptions: RequestOptions(path: url),
@@ -22,14 +20,11 @@ Future<bool> isAccessible(
       },
     );
     if (response.statusCode == 200) {
-      debugPrint("PASS\n\n\n");
       return true;
     } else {
-      debugPrint("FAIL\n\n\n");
       return false;
     }
   } catch (e) {
-    debugPrint("Error: $e\n\n\n");
     return false;
   }
 }

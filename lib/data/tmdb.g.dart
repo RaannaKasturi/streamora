@@ -699,7 +699,7 @@ class _MovieDetailsProviderElement
   int get movieID => (origin as MovieDetailsProvider).movieID;
 }
 
-String _$seriesDetailsHash() => r'9dc84a106ddcfb3e0cf40f155dc4475c93b0bce4';
+String _$seriesDetailsHash() => r'1bdcf258b81e125980e9dd068367e97d97f53151';
 
 /// See also [seriesDetails].
 @ProviderFor(seriesDetails)

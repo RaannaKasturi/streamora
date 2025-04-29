@@ -28,8 +28,12 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
     List<VideoData> videoList = [
       VideoData(
         videoSource: 'Test Video',
-        videoSourceUrl: 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8',
-        videoSourceHeaders: {},
+        videoSourceUrl:
+            'https://lightningbolt21.live/file2/n32vQu2kTV8hhDb3JLkrdfqjSLxMQ8upG7W11jhGtDoHjriOiKMvS30YjIFIdv5aFgnJibm3d+UYL6O~04ju9xRZLIDm9QSVd~pkIqbhHClumW8FPLzc72pcb5JG+x87tUKegIZlSGG7t682Y4+NKn~GlUXKXHljKHDaD3QzoY4=/cGxheWxpc3QubTN1OA==.m3u8',
+        videoSourceHeaders: {
+          "referer": "https://megacloud.store/",
+          "origin": "https://megacloud.store"
+        },
       ),
       VideoData(
         videoSource: 'AUTOEMBED1_1',
@@ -257,6 +261,7 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
                       videoSourceUrl: value.videoSourceUrl,
                       videoSourceHeaders: Map<String, String>.from(
                           value.videoSourceHeaders ?? {}),
+                      subtitles: _subtitleDataList,
                     );
                     Navigator.pop(context);
                   },
