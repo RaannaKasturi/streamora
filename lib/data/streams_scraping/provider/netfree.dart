@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
@@ -18,13 +19,13 @@ class NetFree {
             "cookie": cookie,
           };
         } else {
-          print("Cookie not found in API response");
+          debugPrint("Cookie not found in API response");
         }
       } else {
-        print("Failed to fetch headers: ${response.statusCode}");
+        debugPrint("Failed to fetch headers: ${response.statusCode}");
       }
     } catch (e) {
-      print("Netfree Headers Error: $e");
+      debugPrint("Netfree Headers Error: $e");
     }
   }
 
@@ -39,7 +40,7 @@ class NetFree {
       List<dynamic> results = data["searchResult"];
       return results[0]["id"].toString();
     } catch (e) {
-      print("Netfree Search Error: $e");
+      debugPrint("Netfree Search Error: $e");
     }
     return movieId;
   }

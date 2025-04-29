@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streamora/data/api_keys.dart';
@@ -13,7 +14,7 @@ part 'tmdb.g.dart';
 
 class Tmdb {
   final baseTMDBEndpoint =
-      "https://proxy.wafflehacker.io/?destination=https://api.themoviedb.org/3";
+      "https://movie-proxy.screeneross3083.workers.dev/?destination=https://api.themoviedb.org/3";
   final dio = Dio(BaseOptions(
     followRedirects: true,
   ));
@@ -475,7 +476,7 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
-    print("Series Details: $moviesData");
+    debugPrint("Series Details: $moviesData");
 
     final List<MovieListData> similarMovies =
         (moviesData['similar']?['results'] as List<dynamic>? ?? [])
@@ -691,7 +692,7 @@ Future<SeriesDetailsData> seriesDetails(ref, int seriesID) async {
   final tmdb = Tmdb();
   SeriesDetailsData seriesDetails =
       await tmdb.getSeriesDetails(seriesID: seriesID);
-  print("Series Details: ${seriesDetails.toString()}");
+  debugPrint("Series Details: ${seriesDetails.toString()}");
   return seriesDetails;
 }
 

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/model/movie_list_data.dart';
+import 'package:streamora/presentation/components/streamora_error_widget.dart';
+import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 import 'package:streamora/presentation/movie/movie_screen.dart';
 import 'package:streamora/presentation/series/series_screen.dart';
 
@@ -19,21 +21,19 @@ class HeroCarousel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: movies.when(
-        loading: () => const AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Center(
-            child: CircularProgressIndicator(),
-          ),
-        ),
-        error: (error, stackTrace) => AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Center(
-            child: Text(
-              "Error: $error",
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ),
+        loading: () {
+          return AspectRatio(
+            aspectRatio: 16 / 9,
+            child: StreamoraLoadingWidget(),
+          );
+        },
+        error: (error, stackTrace) {
+          debugPrint("Hero Carousel Error: $error");
+          return AspectRatio(
+            aspectRatio: 16 / 9,
+            child: StreamoraErrorWidget(),
+          );
+        },
         data: (moviesList) {
           return AspectRatio(
             aspectRatio: 16 / 12,
@@ -168,6 +168,7 @@ class HeroCarousel extends StatelessWidget {
                           PageTransition(
                             type: PageTransitionType.fade,
                             child: MovieScreen(
+                              movieTitle: movie.title,
                               movieId: movie.id,
                             ),
                           ),
@@ -178,12 +179,13 @@ class HeroCarousel extends StatelessWidget {
                           PageTransition(
                             type: PageTransitionType.fade,
                             child: SeriesScreen(
+                              seriesTitle: movie.title,
                               seriesId: movie.id,
                             ),
                           ),
                         );
                       } else {
-                        print("Unknown media type: ${movie.mediaType}");
+                        debugPrint("Unknown media type: ${movie.mediaType}");
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(

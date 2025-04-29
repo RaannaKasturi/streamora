@@ -217,7 +217,7 @@ class _VideoScreenState extends ConsumerState<TestVodScreen> {
   }
 
   bool isHLS(String url) {
-    print("URL: $url");
+    debugPrint("URL: $url");
     if (url.toLowerCase().contains('.m3u8') ||
         url.toLowerCase().contains('.m3u') ||
         url.toLowerCase().contains('.ts')) {

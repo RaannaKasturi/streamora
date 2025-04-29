@@ -60,7 +60,10 @@ class MovieTVCarousel extends StatelessWidget {
                     context,
                     PageTransition(
                       type: PageTransitionType.fade,
-                      child: MovieScreen(movieId: movie.id),
+                      child: MovieScreen(
+                        movieId: movie.id,
+                        movieTitle: movie.title,
+                      ),
                     ),
                   );
                 } else if (movie.mediaType == "tv") {
@@ -68,11 +71,14 @@ class MovieTVCarousel extends StatelessWidget {
                     context,
                     PageTransition(
                       type: PageTransitionType.fade,
-                      child: SeriesScreen(seriesId: movie.id),
+                      child: SeriesScreen(
+                        seriesId: movie.id,
+                        seriesTitle: movie.title,
+                      ),
                     ),
                   );
                 } else {
-                  print("Unknown media type: ${movie.mediaType}");
+                  debugPrint("Unknown media type: ${movie.mediaType}");
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
                       content: Text(

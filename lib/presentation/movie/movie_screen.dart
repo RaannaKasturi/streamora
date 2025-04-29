@@ -5,12 +5,16 @@ import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
+import 'package:streamora/presentation/components/streamora_error_widget.dart';
+import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 import 'package:streamora/presentation/video/video_screen.dart';
 
 class MovieScreen extends ConsumerWidget {
   final int movieId;
-  const MovieScreen({super.key, required this.movieId});
+  final String movieTitle;
+  const MovieScreen(
+      {super.key, required this.movieId, required this.movieTitle});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -18,11 +22,7 @@ class MovieScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: movieDetails.when(
-          data: (data) => Text(data.title),
-          error: (error, stack) => Text('Error'),
-          loading: () => Text('Loading...'),
-        ),
+        title: Text(movieTitle),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
@@ -356,27 +356,19 @@ class MovieScreen extends ConsumerWidget {
               ),
             ],
           ),
-          error: (error, stack) => Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  'Error: $error',
-                  style: const TextStyle(fontSize: 16),
-                ),
-              ],
-            ),
-          ),
-          loading: () => const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-              ],
-            ),
-          ),
+          error: (error, stackTrace) {
+            debugPrint("Movie Error: $error");
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: const StreamoraErrorWidget(),
+            );
+          },
+          loading: () {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.7,
+              child: StreamoraLoadingWidget(),
+            );
+          },
         ),
       ),
     );

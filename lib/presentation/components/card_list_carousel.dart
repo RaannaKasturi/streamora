@@ -90,6 +90,7 @@ class CardListCarousel extends StatelessWidget {
                           PageTransition(
                             type: PageTransitionType.fade,
                             child: MovieScreen(
+                              movieTitle: movie.title,
                               movieId: movie.id,
                             ),
                           ),
@@ -100,12 +101,13 @@ class CardListCarousel extends StatelessWidget {
                           PageTransition(
                             type: PageTransitionType.fade,
                             child: SeriesScreen(
+                              seriesTitle: movie.title,
                               seriesId: movie.id,
                             ),
                           ),
                         );
                       } else {
-                        print("Unknown media type: ${movie.mediaType}");
+                        debugPrint("Unknown media type: ${movie.mediaType}");
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(

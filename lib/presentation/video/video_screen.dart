@@ -111,7 +111,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
   }
 
   bool isHLS(String url) {
-    print("URL: $url");
+    debugPrint("URL: $url");
     if (url.toLowerCase().contains('.m3u8') ||
         url.toLowerCase().contains('.m3u') ||
         url.toLowerCase().contains('.ts')) {
@@ -172,11 +172,11 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     if (videoSourceUrl == null) return;
     final isHlsFormat = isHLS(videoSourceUrl);
 
-    print("-" * 25);
-    print("Video Source: $videoSourceUrl");
-    print("Video Source URL: $videoSourceUrl");
-    print("Video Source Headers: $videoSourceHeaders");
-    print("-" * 25);
+    debugPrint("-" * 25);
+    debugPrint("Video Source: $videoSourceUrl");
+    debugPrint("Video Source URL: $videoSourceUrl");
+    debugPrint("Video Source Headers: $videoSourceHeaders");
+    debugPrint("-" * 25);
 
     List<BetterPlayerSubtitlesSource> subtitleSources = [];
     if (subtitles != null && subtitles.isNotEmpty) {

@@ -93,7 +93,7 @@ Future<List<VideoData>> streamoraStreams(
 //   );
 //   List<VideoData> streams = await provider.scrape(movieData: movieData);
 //   for (var stream in streams) {
-//     print(
+//     debugPrint(
 //       "Stream: ${stream.videoSource} - ${stream.videoSourceUrl}\n${stream.videoSourceHeaders}",
 //     );
 //   }

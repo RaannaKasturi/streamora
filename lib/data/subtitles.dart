@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/subtitle_data.dart';
 
@@ -34,11 +35,11 @@ class Subtitles {
           );
         }
       } else {
-        print("Error fetching subtitles: ${response.statusCode}");
+        debugPrint("Error fetching subtitles: ${response.statusCode}");
         return subtitles;
       }
     } catch (e) {
-      print("Error fetching subtitles: $e");
+      debugPrint("Error fetching subtitles: $e");
       return subtitles;
     }
     return subtitles;

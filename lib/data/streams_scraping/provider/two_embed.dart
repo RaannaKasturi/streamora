@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
+import 'package:flutter/material.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
@@ -136,7 +137,7 @@ class TwoEmbed {
         }
       }
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: $e");
     }
 
     return videoDataList;

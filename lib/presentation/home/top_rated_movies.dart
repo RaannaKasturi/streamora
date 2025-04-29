@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
+import 'package:streamora/presentation/components/streamora_error_widget.dart';
+import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 
 class TopRatedMovies extends StatelessWidget {
   const TopRatedMovies({
@@ -31,23 +33,19 @@ class TopRatedMovies extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           topRatedMovies.when(
-            error: (error, stackTrace) => SizedBox(
-              height: 250,
-              width: double.infinity,
-              child: Center(
-                child: Text(
-                  "Error: $error",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-            ),
-            loading: () => const SizedBox(
-              height: 250,
-              width: double.infinity,
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+            error: (error, stackTrace) {
+              debugPrint("Top Rated Movies Error: $error");
+              return AspectRatio(
+                aspectRatio: 16 / 9,
+                child: StreamoraErrorWidget(),
+              );
+            },
+            loading: () {
+              return AspectRatio(
+                aspectRatio: 16 / 9,
+                child: StreamoraLoadingWidget(),
+              );
+            },
             data: (data) {
               return CardListCarousel(
                 movieData: data,
