@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/core/common/util.dart';
 import 'package:streamora/data/streams_scraping/provider/auto_embed.dart';
+import 'package:streamora/data/streams_scraping/provider/flixhq.dart';
 import 'package:streamora/data/streams_scraping/provider/netfree.dart';
 import 'package:streamora/data/streams_scraping/provider/two_embed.dart';
 import 'package:streamora/data/streams_scraping/provider/vidsrc_su.dart';
@@ -22,6 +23,7 @@ class StreamoraStreams {
     5: NetFree(),
     6: XPrimeFox(),
     7: XPrimeAppolo(),
+    8: FlixHQ(),
   };
 
   Future<List<VideoData>> scrape({
@@ -94,11 +96,30 @@ Future<List<VideoData>> streamoraStreams(
 void main() async {
   final provider = StreamoraStreams();
   final movieData = ScrapeStreamsData(
-    title: "Captain America: Brave New World",
-    imdbId: "tt14401230",
-    tmdbId: "822119",
-    mediaType: "movie",
-    year: "2025",
+    // Movie
+    // title: "Captain America: Brave New World",
+    // imdbId: "tt14401230",
+    // tmdbId: "822119",
+    // mediaType: "movie",
+    // year: "2025",
+
+    // Series
+    // title: "Breaking Bad",
+    // imdbId: "tt0903747",
+    // tmdbId: "1369",
+    // mediaType: "tv",
+    // year: "2008",
+    // season: "1",
+    // episode: "1",
+
+    // Anime
+    title: "One Piece",
+    imdbId: "tt0388629",
+    tmdbId: "37854",
+    mediaType: "tv",
+    year: "1999",
+    season: "1",
+    episode: "1",
   );
   List<VideoData> streams =
       await provider.scrape(movieData: movieData, context: null);
