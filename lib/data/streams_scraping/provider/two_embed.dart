@@ -3,11 +3,18 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:beautiful_soup_dart/beautiful_soup.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
+part 'two_embed.g.dart';
+
 class TwoEmbed {
-  final Dio dio = Dio();
+  final Dio dio = Dio(BaseOptions(
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
+    sendTimeout: const Duration(seconds: 10),
+  ));
   final List<VideoData> videoDataList = [];
   final String baseUrl = "https://uqloads.xyz/e/";
   final headers = {
@@ -15,7 +22,7 @@ class TwoEmbed {
     'Referer': 'https://streamsrcs.2embed.cc/',
   };
 
-  Future<String?> getStreamId({required ScrapeStreamsData movieData}) async {
+  Future<String?> getStreamId({required StreamSearchData movieData}) async {
     String url = "https://www.2embed.cc/embed/";
     if (movieData.mediaType == "tv" &&
         movieData.season != null &&
@@ -110,7 +117,7 @@ class TwoEmbed {
     return null;
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     try {
       final streamId = await getStreamId(movieData: movieData);
       if (streamId != null) {
@@ -141,5 +148,17 @@ class TwoEmbed {
     }
 
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> twoEmbedStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return TwoEmbed().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

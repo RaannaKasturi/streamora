@@ -1,6 +1,6 @@
 import 'dart:isolate';
 
-class ScrapeStreamsData {
+class StreamSearchData {
   final String imdbId;
   final String tmdbId;
   final String mediaType;
@@ -10,7 +10,7 @@ class ScrapeStreamsData {
   final String? episode;
   final SendPort? sendPort;
 
-  ScrapeStreamsData({
+  StreamSearchData({
     required this.imdbId,
     required this.tmdbId,
     required this.mediaType,

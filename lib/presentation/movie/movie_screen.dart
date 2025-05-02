@@ -170,6 +170,17 @@ class MovieScreen extends ConsumerWidget {
                               season: null,
                               episode: null,
                             ),
+                            // child: SearchingStreamsScreen(
+                            //   movieData: StreamSearchData(
+                            //     title: data.title,
+                            //     imdbId: data.imdbId.toString(),
+                            //     tmdbId: data.id.toString(),
+                            //     mediaType: "movie",
+                            //     year: data.releaseYear,
+                            //     season: null,
+                            //     episode: null,
+                            //   ),
+                            // ),
                           ),
                         );
                       },

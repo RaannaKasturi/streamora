@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'auto_embed.g.dart';
 
 class AutoEmbed {
   final baseUrl = "https://tom.autoembed.cc/api/getVideoSource";
@@ -30,7 +33,7 @@ class AutoEmbed {
     }
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     final requestUrl = buildUrl(
       imdbId: movieData.imdbId,
       mediaType: movieData.mediaType,
@@ -56,5 +59,17 @@ class AutoEmbed {
       ),
     );
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> autoEmbedStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return AutoEmbed().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

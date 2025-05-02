@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'x_prime_appolo.g.dart';
 
 class XPrimeAppolo {
   final baseUrl = "https://kendrickl-3amar.site";
@@ -32,7 +35,7 @@ class XPrimeAppolo {
     }
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     String finalUrl = buildUrl(
       tmdbId: movieData.tmdbId,
       mediaType: movieData.mediaType,
@@ -61,5 +64,17 @@ class XPrimeAppolo {
       );
     }
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> xPrimeAppoloStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return XPrimeAppolo().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

@@ -1,6 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'flixhq.g.dart';
 
 class FlixHQ {
   final String baseUrl = "https://flix.1anime.app";
@@ -23,7 +26,7 @@ class FlixHQ {
   }
 
   Future<List<VideoData>> scrape({
-    required ScrapeStreamsData movieData,
+    required StreamSearchData movieData,
   }) async {
     final requestUrl = buildUrl(
       tmdbId: movieData.tmdbId,
@@ -55,5 +58,17 @@ class FlixHQ {
       );
     }
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> flixHQStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return FlixHQ().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

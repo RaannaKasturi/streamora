@@ -1,12 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'streamora_streams.dart';
+part of 'flixhq.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$streamoraStreamsHash() => r'8764093c6080cb15c92381d8dcbfac4be107ed9a';
+String _$flixHQStreamHash() => r'c5d236871e769faa491abc050af4d4a5b435d818';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,33 +29,30 @@ class _SystemHash {
   }
 }
 
-/// See also [streamoraStreams].
-@ProviderFor(streamoraStreams)
-const streamoraStreamsProvider = StreamoraStreamsFamily();
+/// See also [flixHQStream].
+@ProviderFor(flixHQStream)
+const flixHQStreamProvider = FlixHQStreamFamily();
 
-/// See also [streamoraStreams].
-class StreamoraStreamsFamily extends Family<AsyncValue<List<VideoData>>> {
-  /// See also [streamoraStreams].
-  const StreamoraStreamsFamily();
+/// See also [flixHQStream].
+class FlixHQStreamFamily extends Family<AsyncValue<List<VideoData>>> {
+  /// See also [flixHQStream].
+  const FlixHQStreamFamily();
 
-  /// See also [streamoraStreams].
-  StreamoraStreamsProvider call({
+  /// See also [flixHQStream].
+  FlixHQStreamProvider call({
     required StreamSearchData movieData,
-    required BuildContext context,
   }) {
-    return StreamoraStreamsProvider(
+    return FlixHQStreamProvider(
       movieData: movieData,
-      context: context,
     );
   }
 
   @override
-  StreamoraStreamsProvider getProviderOverride(
-    covariant StreamoraStreamsProvider provider,
+  FlixHQStreamProvider getProviderOverride(
+    covariant FlixHQStreamProvider provider,
   ) {
     return call(
       movieData: provider.movieData,
-      context: provider.context,
     );
   }
 
@@ -71,35 +68,32 @@ class StreamoraStreamsFamily extends Family<AsyncValue<List<VideoData>>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'streamoraStreamsProvider';
+  String? get name => r'flixHQStreamProvider';
 }
 
-/// See also [streamoraStreams].
-class StreamoraStreamsProvider extends FutureProvider<List<VideoData>> {
-  /// See also [streamoraStreams].
-  StreamoraStreamsProvider({
+/// See also [flixHQStream].
+class FlixHQStreamProvider extends AutoDisposeFutureProvider<List<VideoData>> {
+  /// See also [flixHQStream].
+  FlixHQStreamProvider({
     required StreamSearchData movieData,
-    required BuildContext context,
   }) : this._internal(
-          (ref) => streamoraStreams(
-            ref as StreamoraStreamsRef,
+          (ref) => flixHQStream(
+            ref as FlixHQStreamRef,
             movieData: movieData,
-            context: context,
           ),
-          from: streamoraStreamsProvider,
-          name: r'streamoraStreamsProvider',
+          from: flixHQStreamProvider,
+          name: r'flixHQStreamProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$streamoraStreamsHash,
-          dependencies: StreamoraStreamsFamily._dependencies,
+                  : _$flixHQStreamHash,
+          dependencies: FlixHQStreamFamily._dependencies,
           allTransitiveDependencies:
-              StreamoraStreamsFamily._allTransitiveDependencies,
+              FlixHQStreamFamily._allTransitiveDependencies,
           movieData: movieData,
-          context: context,
         );
 
-  StreamoraStreamsProvider._internal(
+  FlixHQStreamProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -107,48 +101,42 @@ class StreamoraStreamsProvider extends FutureProvider<List<VideoData>> {
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.movieData,
-    required this.context,
   }) : super.internal();
 
   final StreamSearchData movieData;
-  final BuildContext context;
 
   @override
   Override overrideWith(
-    FutureOr<List<VideoData>> Function(StreamoraStreamsRef provider) create,
+    FutureOr<List<VideoData>> Function(FlixHQStreamRef provider) create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: StreamoraStreamsProvider._internal(
-        (ref) => create(ref as StreamoraStreamsRef),
+      override: FlixHQStreamProvider._internal(
+        (ref) => create(ref as FlixHQStreamRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         movieData: movieData,
-        context: context,
       ),
     );
   }
 
   @override
-  FutureProviderElement<List<VideoData>> createElement() {
-    return _StreamoraStreamsProviderElement(this);
+  AutoDisposeFutureProviderElement<List<VideoData>> createElement() {
+    return _FlixHQStreamProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is StreamoraStreamsProvider &&
-        other.movieData == movieData &&
-        other.context == context;
+    return other is FlixHQStreamProvider && other.movieData == movieData;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, movieData.hashCode);
-    hash = _SystemHash.combine(hash, context.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -156,23 +144,18 @@ class StreamoraStreamsProvider extends FutureProvider<List<VideoData>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin StreamoraStreamsRef on FutureProviderRef<List<VideoData>> {
+mixin FlixHQStreamRef on AutoDisposeFutureProviderRef<List<VideoData>> {
   /// The parameter `movieData` of this provider.
   StreamSearchData get movieData;
-
-  /// The parameter `context` of this provider.
-  BuildContext get context;
 }
 
-class _StreamoraStreamsProviderElement
-    extends FutureProviderElement<List<VideoData>> with StreamoraStreamsRef {
-  _StreamoraStreamsProviderElement(super.provider);
+class _FlixHQStreamProviderElement
+    extends AutoDisposeFutureProviderElement<List<VideoData>>
+    with FlixHQStreamRef {
+  _FlixHQStreamProviderElement(super.provider);
 
   @override
-  StreamSearchData get movieData =>
-      (origin as StreamoraStreamsProvider).movieData;
-  @override
-  BuildContext get context => (origin as StreamoraStreamsProvider).context;
+  StreamSearchData get movieData => (origin as FlixHQStreamProvider).movieData;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

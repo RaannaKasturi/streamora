@@ -1,8 +1,10 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'vidsrc_su.g.dart';
 
 class VidsrcSu {
   List<String> extractUrls(String input) {
@@ -12,7 +14,7 @@ class VidsrcSu {
     return matches.map((match) => match.group(1)!).toList();
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     List<VideoData> videoDataList = [];
     final baseUrl = "https://vidsrc.su/embed";
     final headers = {
@@ -51,5 +53,17 @@ class VidsrcSu {
       );
     }
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> vidsrcStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return VidsrcSu().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

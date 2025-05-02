@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/core/common/util.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'embed.g.dart';
 
 class Embed {
   final baseUrl = "https://embed.su";
@@ -107,7 +110,7 @@ class Embed {
     return videoDataList;
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     String requestUrl = buildUrl(
       tmdbId: movieData.tmdbId,
       mediaType: movieData.mediaType,
@@ -128,5 +131,17 @@ class Embed {
         await extractVideoStreamUrls(streamIds: streamIds);
     await getStreams(videoSourceUrls: videoSourceUrlsList);
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> vidsrcStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return Embed().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

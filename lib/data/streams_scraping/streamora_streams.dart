@@ -27,7 +27,7 @@ class StreamoraStreams {
   };
 
   Future<List<VideoData>> scrape({
-    required ScrapeStreamsData movieData,
+    required StreamSearchData movieData,
     BuildContext? context,
   }) async {
     List<VideoData> videoDataList = [];
@@ -86,7 +86,7 @@ class StreamoraStreams {
 @Riverpod(keepAlive: true)
 Future<List<VideoData>> streamoraStreams(
   ref, {
-  required ScrapeStreamsData movieData,
+  required StreamSearchData movieData,
   required BuildContext context,
 }) async {
   return await StreamoraStreams()
@@ -95,13 +95,13 @@ Future<List<VideoData>> streamoraStreams(
 
 void main() async {
   final provider = StreamoraStreams();
-  final movieData = ScrapeStreamsData(
+  final movieData = StreamSearchData(
     // Movie
-    // title: "Captain America: Brave New World",
-    // imdbId: "tt14401230",
-    // tmdbId: "822119",
-    // mediaType: "movie",
-    // year: "2025",
+    title: "Captain America: Brave New World",
+    imdbId: "tt14401230",
+    tmdbId: "822119",
+    mediaType: "movie",
+    year: "2025",
 
     // Series
     // title: "Breaking Bad",
@@ -111,15 +111,6 @@ void main() async {
     // year: "2008",
     // season: "1",
     // episode: "1",
-
-    // Anime
-    title: "One Piece",
-    imdbId: "tt0388629",
-    tmdbId: "37854",
-    mediaType: "tv",
-    year: "1999",
-    season: "1",
-    episode: "1",
   );
   List<VideoData> streams =
       await provider.scrape(movieData: movieData, context: null);

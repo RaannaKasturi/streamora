@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'x_prime_fox.g.dart';
 
 class XPrimeFox {
   final baseUrl = "https://xprime.tv/foxtemp?pstream=true";
@@ -32,7 +35,7 @@ class XPrimeFox {
     }
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     String finalUrl = buildUrl(
       title: movieData.title,
       mediaType: movieData.mediaType,
@@ -63,5 +66,17 @@ class XPrimeFox {
       );
     }
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> xPrimeFoxStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return XPrimeFox().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

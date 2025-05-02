@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
 
+part 'vidzee.g.dart';
+
 class Vidzee {
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     final baseUrl =
         "https://vidzee.wtf/${movieData.mediaType}/player.php?id=${movieData.tmdbId}${movieData.mediaType == 'tv' ? '&season=${movieData.season}&episode=${movieData.episode}' : ''}";
     final List<VideoData> videoDataList = [];
@@ -36,5 +39,17 @@ class Vidzee {
       debugPrint("Error: $e");
     }
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> vidzeeStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return Vidzee().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

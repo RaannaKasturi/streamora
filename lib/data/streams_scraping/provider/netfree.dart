@@ -1,7 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/video_data.dart';
+
+part 'netfree.g.dart';
 
 class NetFree {
   final baseUrl = "https://netfree2.cc";
@@ -45,7 +48,7 @@ class NetFree {
     return movieId;
   }
 
-  Future<List<VideoData>> scrape({required ScrapeStreamsData movieData}) async {
+  Future<List<VideoData>> scrape({required StreamSearchData movieData}) async {
     await getHeaders();
     String movieId = await getId(title: movieData.title);
     if (movieId.isEmpty) {
@@ -67,5 +70,17 @@ class NetFree {
       );
     }
     return videoDataList;
+  }
+}
+
+@riverpod
+Future<List<VideoData>> netFreeStream(
+  ref, {
+  required StreamSearchData movieData,
+}) {
+  try {
+    return NetFree().scrape(movieData: movieData);
+  } catch (e) {
+    return Future.value([]);
   }
 }

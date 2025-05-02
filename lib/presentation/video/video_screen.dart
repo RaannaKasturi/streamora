@@ -43,7 +43,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
 
   Future<void> getStreams() async {
     List<VideoData> videoList = await ref.read(streamoraStreamsProvider(
-      movieData: ScrapeStreamsData(
+      movieData: StreamSearchData(
         title: widget.title,
         imdbId: widget.imdbId,
         tmdbId: widget.tmdbId,
