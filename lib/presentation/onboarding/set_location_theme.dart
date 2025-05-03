@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/constants/countries_data.dart';
 import 'package:streamora/data/user_preferences.dart';
-import 'package:streamora/presentation/home/home_screen.dart';
+import 'package:streamora/presentation/app/app.dart';
 
 class SetLocationTheme extends ConsumerWidget {
   const SetLocationTheme({super.key});
@@ -95,13 +95,14 @@ class SetLocationTheme extends ConsumerWidget {
                   ref
                       .read(userPreferencesProvider.notifier)
                       .savePreferences(country, countryCode, theme);
-                  Navigator.pushReplacement(
+                  Navigator.pushAndRemoveUntil(
                     context,
                     PageTransition(
                       type: PageTransitionType.fade,
                       duration: Duration(milliseconds: 500),
-                      child: const HomeScreen(),
+                      child: const App(),
                     ),
+                    (route) => false,
                   );
                 },
                 icon: Icon(Icons.arrow_forward),

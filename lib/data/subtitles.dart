@@ -6,7 +6,8 @@ import 'package:streamora/model/subtitle_data.dart';
 part 'subtitles.g.dart';
 
 class Subtitles {
-  final String baseurl = "https://subs.whvx.net/search/";
+  final String baseurl =
+      "https://rest.opensubtitles.org/search/episode-1/imdbid-0903747/season-1";
   final Dio dio = Dio();
 
   Future<List<SubtitleData>> getSubtitles({
@@ -24,6 +25,7 @@ class Subtitles {
       Response response = await dio.get(baseurl, queryParameters: queryParams);
       if (response.statusCode == 200) {
         List<dynamic> data = response.data;
+        print("Subtitles data: $data");
         for (var item in data) {
           String subtitleLanguage = item['languageName'];
           String subtitleUrl = item['url'];

@@ -8,7 +8,7 @@ import 'package:streamora/presentation/search/search_screen.dart';
 
 class App extends StatefulWidget {
   final int initialIndex;
-  const App({super.key, this.initialIndex = 0});
+  const App({super.key, this.initialIndex = 3});
 
   @override
   State<App> createState() => _AppState();

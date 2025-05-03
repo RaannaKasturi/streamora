@@ -33,7 +33,10 @@ class UserPreferences extends _$UserPreferences {
 
     state = AsyncData(
       UserPreferencesModel(
-          country: country, countryCode: countryCode, theme: theme),
+        country: country,
+        countryCode: countryCode,
+        theme: theme,
+      ),
     );
   }
 }

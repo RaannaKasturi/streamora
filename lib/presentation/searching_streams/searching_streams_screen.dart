@@ -9,6 +9,7 @@ import 'package:streamora/data/stream_provider/vidsrc_su.dart';
 import 'package:streamora/data/stream_provider/vidzee.dart';
 import 'package:streamora/data/stream_provider/x_prime_appolo.dart';
 import 'package:streamora/data/stream_provider/x_prime_fox.dart';
+import 'package:streamora/data/subtitles.dart';
 import 'package:streamora/model/provider_data.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/subtitle_data.dart';
@@ -35,9 +36,9 @@ class _SearchingStreamsScreenState
     extends ConsumerState<SearchingStreamsScreen> {
   bool streamFound = false;
   bool isLoading = true;
-  List<SubtitleData> subtitleList = [];
+  List<SubtitleData> _subtitleData = [];
 
-  final List<ProviderData> providerData = [
+  final List<ProviderData> _providerData = [
     ProviderData(
       providerName: "AutoEmbed",
       providerFunction: autoEmbedStreamProvider,
@@ -80,8 +81,22 @@ class _SearchingStreamsScreenState
     ),
   ];
 
+  Future<void> getSubtitles() async {
+    List<SubtitleData> subtitleList = await ref.read(subtitlesProvider(
+      tmdbId: "7239223",
+      season: "23",
+      episode: "2",
+    ).future);
+    if (!mounted) return;
+    if (subtitleList.isNotEmpty) {
+      setState(() {
+        _subtitleData = subtitleList;
+      });
+    }
+  }
+
   Future<void> searchVideoStreams() async {
-    for (final provider in providerData) {
+    for (final provider in _providerData) {
       if (streamFound && widget.isWatching) {
         break;
       }
@@ -137,8 +152,8 @@ class _SearchingStreamsScreenState
             child: VideoScreen(
               backdrop: widget.backdrop,
               movieData: widget.movieData,
-              subtitleDataList: subtitleList,
-              providerDataList: providerData,
+              subtitleDataList: _subtitleData,
+              providerDataList: _providerData,
             ),
           ),
         );
@@ -180,6 +195,7 @@ class _SearchingStreamsScreenState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       searchVideoStreams();
+      getSubtitles();
     });
   }
 
@@ -190,9 +206,9 @@ class _SearchingStreamsScreenState
         title: Text("${widget.movieData.title} (${widget.movieData.year})"),
       ),
       body: ListView.builder(
-        itemCount: providerData.length,
+        itemCount: _providerData.length,
         itemBuilder: (context, index) {
-          final provider = providerData[index];
+          final provider = _providerData[index];
           return ListTile(
             title: Text(provider.providerName),
             subtitle: provider.streamFound == null
