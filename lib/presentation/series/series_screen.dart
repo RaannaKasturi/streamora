@@ -4,13 +4,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
 import 'package:streamora/model/episode_details_data.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/series_details_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
 import 'package:streamora/presentation/components/streamora_error_widget.dart';
 import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
-import 'package:streamora/presentation/video/video_screen.dart';
+import 'package:streamora/presentation/searching_streams/searching_streams_screen.dart';
 
 class SeriesScreen extends ConsumerStatefulWidget {
   final int seriesId;
@@ -240,37 +241,6 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Icon(Icons.download),
-                              const SizedBox(height: 5),
-                              Text(
-                                "Download",
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                style: const TextStyle(fontSize: 16),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurface
-                                  .withAlpha((0.1 * 255).toInt()),
-                              width: 1,
-                            ),
-                          ),
-                          padding: const EdgeInsets.all(5.0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
                               Icon(Icons.star),
                               const SizedBox(height: 5),
                               Text(
@@ -444,21 +414,107 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                                 ),
                               ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageTransition(
-                                    type: PageTransitionType.fade,
-                                    child: VideoScreen(
-                                      backdrop: data.backdrop,
-                                      imdbId: data.imdbId.toString(),
-                                      tmdbId: data.id.toString(),
-                                      title: data.title,
-                                      year: data.releaseYear,
-                                      mediaType: "tv",
-                                      season: episode.seasonNumber,
-                                      episode: episode.episodeNumber,
-                                    ),
-                                  ),
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        "S${episode.seasonNumber}E${episode.episodeNumber}: ${episode.episodeTitle}",
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            ListTile(
+                                              title: Text("watch Online"),
+                                              leading: Icon(Icons.play_arrow),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type:
+                                                        PageTransitionType.fade,
+                                                    child:
+                                                        SearchingStreamsScreen(
+                                                      backdrop: data.backdrop,
+                                                      movieData:
+                                                          StreamSearchData(
+                                                        title: data.title,
+                                                        imdbId: data.imdbId
+                                                            .toString(),
+                                                        tmdbId:
+                                                            data.id.toString(),
+                                                        mediaType: "tv",
+                                                        year: data.releaseYear,
+                                                        season: episode
+                                                            .seasonNumber
+                                                            .toString(),
+                                                        episode: episode
+                                                            .episodeNumber
+                                                            .toString(),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                            ListTile(
+                                              title: Text("Download"),
+                                              leading: Icon(Icons.download),
+                                              onTap: () {
+                                                Navigator.pop(context);
+                                                Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type:
+                                                        PageTransitionType.fade,
+                                                    child:
+                                                        SearchingStreamsScreen(
+                                                      backdrop: data.backdrop,
+                                                      movieData:
+                                                          StreamSearchData(
+                                                        title: data.title,
+                                                        imdbId: data.imdbId
+                                                            .toString(),
+                                                        tmdbId:
+                                                            data.id.toString(),
+                                                        mediaType: "tv",
+                                                        year: data.releaseYear,
+                                                        season: episode
+                                                            .seasonNumber
+                                                            .toString(),
+                                                        episode: episode
+                                                            .episodeNumber
+                                                            .toString(),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                    // return Dialog.fullscreen(
+                                    //   child: SearchingStreamsScreen(
+                                    //     backdrop: data.backdrop,
+                                    //     movieData: StreamSearchData(
+                                    //       title: data.title,
+                                    //       imdbId: data.imdbId.toString(),
+                                    //       tmdbId: data.id.toString(),
+                                    //       mediaType: "tv",
+                                    //       year: data.releaseYear,
+                                    //       season: episode.seasonNumber,
+                                    //       episode: episode.episodeNumber,
+                                    //     ),
+                                    //   ),
+                                    // );
+                                  },
                                 );
                               },
                             );

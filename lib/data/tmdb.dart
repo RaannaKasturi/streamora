@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:streamora/data/api_keys.dart';
@@ -476,8 +475,6 @@ class Tmdb {
       options: Options(headers: headers),
     );
     final moviesData = response.data as Map<String, dynamic>;
-    debugPrint("Series Details: $moviesData");
-
     final List<MovieListData> similarMovies =
         (moviesData['similar']?['results'] as List<dynamic>? ?? [])
             .map<MovieListData>((movie) {
@@ -692,7 +689,6 @@ Future<SeriesDetailsData> seriesDetails(ref, int seriesID) async {
   final tmdb = Tmdb();
   SeriesDetailsData seriesDetails =
       await tmdb.getSeriesDetails(seriesID: seriesID);
-  debugPrint("Series Details: ${seriesDetails.toString()}");
   return seriesDetails;
 }
 

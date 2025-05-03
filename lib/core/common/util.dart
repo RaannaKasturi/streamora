@@ -12,7 +12,6 @@ Future<bool> isAccessible(
         .timeout(
       const Duration(seconds: 5),
       onTimeout: () {
-        print("Request timed out for URL: $url");
         return Response(
           statusCode: 408,
           requestOptions: RequestOptions(path: url),

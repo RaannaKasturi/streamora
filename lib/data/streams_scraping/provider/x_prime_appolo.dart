@@ -53,7 +53,6 @@ class XPrimeAppolo {
       return videoDataList;
     }
     String stream = jsonDecode(response.data)['url'];
-    print("XPRIMEAPPOLO: $stream");
     if (stream.contains(".m3u8")) {
       videoDataList.add(
         VideoData(

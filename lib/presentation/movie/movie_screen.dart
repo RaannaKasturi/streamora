@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';
 import 'package:streamora/presentation/components/streamora_error_widget.dart';
 import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
-import 'package:streamora/presentation/video/video_screen.dart';
+import 'package:streamora/presentation/searching_streams/searching_streams_screen.dart';
 
 class MovieScreen extends ConsumerWidget {
   final int movieId;
@@ -160,27 +161,18 @@ class MovieScreen extends ConsumerWidget {
                           context,
                           PageTransition(
                             type: PageTransitionType.fade,
-                            child: VideoScreen(
+                            child: SearchingStreamsScreen(
                               backdrop: data.backdrop,
-                              imdbId: data.imdbId.toString(),
-                              tmdbId: data.id.toString(),
-                              title: data.title,
-                              year: data.releaseYear,
-                              mediaType: "movie",
-                              season: null,
-                              episode: null,
+                              movieData: StreamSearchData(
+                                title: data.title,
+                                imdbId: data.imdbId.toString(),
+                                tmdbId: data.id.toString(),
+                                mediaType: "movie",
+                                year: data.releaseYear,
+                                season: null,
+                                episode: null,
+                              ),
                             ),
-                            // child: SearchingStreamsScreen(
-                            //   movieData: StreamSearchData(
-                            //     title: data.title,
-                            //     imdbId: data.imdbId.toString(),
-                            //     tmdbId: data.id.toString(),
-                            //     mediaType: "movie",
-                            //     year: data.releaseYear,
-                            //     season: null,
-                            //     episode: null,
-                            //   ),
-                            // ),
                           ),
                         );
                       },
@@ -267,33 +259,56 @@ class MovieScreen extends ConsumerWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withAlpha((0.1 * 255).toInt()),
-                            width: 1,
+                      child: InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withAlpha((0.1 * 255).toInt()),
+                              width: 1,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.download),
+                              const SizedBox(height: 5),
+                              Text(
+                                "Download",
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: const TextStyle(fontSize: 16),
+                              )
+                            ],
                           ),
                         ),
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.download),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Download",
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                              style: const TextStyle(fontSize: 16),
-                            )
-                          ],
-                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              child: SearchingStreamsScreen(
+                                backdrop: data.backdrop,
+                                isWatching: false,
+                                movieData: StreamSearchData(
+                                  title: data.title,
+                                  imdbId: data.imdbId.toString(),
+                                  tmdbId: data.id.toString(),
+                                  mediaType: "movie",
+                                  year: data.releaseYear,
+                                  season: null,
+                                  episode: null,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ),
                     Expanded(

@@ -21,7 +21,11 @@ class VidsrcSu {
       'accept': '*/*',
     };
 
-    final Dio dio = Dio();
+    final Dio dio = Dio(BaseOptions(
+      connectTimeout: Duration(seconds: 10),
+      receiveTimeout: Duration(seconds: 10),
+      sendTimeout: Duration(seconds: 10),
+    ));
     final path =
         "$baseUrl/${movieData.mediaType == "movie" ? "movie/${movieData.tmdbId}" : "tv/${movieData.tmdbId}/${movieData.season}/${movieData.episode}"}";
     Response response = await dio.get(path, options: Options(headers: headers));

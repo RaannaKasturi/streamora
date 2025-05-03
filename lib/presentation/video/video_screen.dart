@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:streamora/data/streams_scraping/streamora_streams.dart';
-import 'package:streamora/data/subtitles.dart';
+import 'package:streamora/model/provider_data.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/subtitle_data.dart';
 import 'package:streamora/model/video_data.dart';
@@ -9,24 +8,16 @@ import 'package:better_player_plus/better_player_plus.dart';
 
 class VideoScreen extends ConsumerStatefulWidget {
   final String backdrop;
-  final String tmdbId;
-  final String imdbId;
-  final String title;
-  final String year;
-  final String mediaType;
-  final String? season;
-  final String? episode;
+  final List<SubtitleData> subtitleDataList;
+  final StreamSearchData movieData;
+  final List<ProviderData> providerDataList;
 
   const VideoScreen({
     super.key,
     required this.backdrop,
-    required this.tmdbId,
-    required this.imdbId,
-    required this.title,
-    required this.year,
-    required this.mediaType,
-    required this.season,
-    required this.episode,
+    required this.subtitleDataList,
+    required this.movieData,
+    required this.providerDataList,
   });
 
   @override
@@ -39,71 +30,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
   late List<SubtitleData> _subtitleDataList = [];
   late String nowPlayingUrl = "";
   late Map<String, String> nowPlayingHeaders = {};
+  bool isSearching = true;
   GlobalKey betterPlayerKey = GlobalKey();
-
-  Future<void> getStreams() async {
-    List<VideoData> videoList = await ref.read(streamoraStreamsProvider(
-      movieData: StreamSearchData(
-        title: widget.title,
-        imdbId: widget.imdbId,
-        tmdbId: widget.tmdbId,
-        mediaType: widget.mediaType,
-        year: widget.year,
-      ),
-      context: context,
-    ).future);
-
-    if (!mounted) return;
-
-    if (videoList.isNotEmpty) {
-      setState(() {
-        _videoDataList = videoList;
-      });
-
-      changeVideo(
-        videoSourceUrl: videoList[0].videoSourceUrl,
-        videoSourceHeaders:
-            Map<String, String>.from(videoList[0].videoSourceHeaders ?? {}),
-        subtitles: _subtitleDataList,
-      );
-    } else {
-      if (!mounted) return;
-      Navigator.pop(context);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.errorContainer,
-          content: Text(
-            "We couldn't find any streams for this video.",
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Theme.of(context).colorScheme.onErrorContainer,
-                ),
-          ),
-          showCloseIcon: true,
-          closeIconColor: Theme.of(context).colorScheme.onErrorContainer,
-          dismissDirection: DismissDirection.horizontal,
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 5),
-        ),
-      );
-    }
-  }
-
-  Future<void> getSubtitles() async {
-    List<SubtitleData> subtitleList = await ref.read(subtitlesProvider(
-      tmdbId: widget.imdbId,
-      season: widget.season.toString(),
-      episode: widget.episode.toString(),
-    ).future);
-
-    if (!mounted) return;
-
-    if (subtitleList.isNotEmpty) {
-      setState(() {
-        _subtitleDataList = subtitleList;
-      });
-    }
-  }
 
   @override
   void didChangeDependencies() {
@@ -125,38 +53,49 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     showDialog(
       context: context,
       builder: (context) {
+        List<Widget> childern = _videoDataList.map((value) {
+          return ListTile(
+            leading: Icon(
+              Icons.play_arrow,
+              color: value.videoSourceUrl == nowPlayingUrl
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.onSurface,
+            ),
+            title: Text(
+              value.videoSource,
+              style: TextStyle(
+                color: value.videoSourceUrl == nowPlayingUrl
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.onSurface,
+              ),
+            ),
+            onTap: () {
+              changeVideo(
+                videoSourceUrl: value.videoSourceUrl,
+                videoSourceHeaders:
+                    Map<String, String>.from(value.videoSourceHeaders ?? {}),
+                subtitles: _subtitleDataList,
+              );
+              Navigator.pop(context);
+            },
+          );
+        }).toList();
         return AlertDialog(
           title: const Text("Select Server"),
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
-              children: _videoDataList.map((value) {
-                return ListTile(
-                  leading: Icon(
-                    Icons.play_arrow,
-                    color: value.videoSourceUrl == nowPlayingUrl
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onSurface,
-                  ),
-                  title: Text(
-                    value.videoSource,
-                    style: TextStyle(
-                      color: value.videoSourceUrl == nowPlayingUrl
-                          ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.onSurface,
-                    ),
-                  ),
-                  onTap: () {
-                    changeVideo(
-                      videoSourceUrl: value.videoSourceUrl,
-                      videoSourceHeaders: Map<String, String>.from(
-                          value.videoSourceHeaders ?? {}),
-                      subtitles: _subtitleDataList,
-                    );
-                    Navigator.pop(context);
-                  },
-                );
-              }).toList(),
+              children: [
+                ...[
+                  ...childern,
+                  isSearching
+                      ? ListTile(
+                          leading: const CircularProgressIndicator(),
+                          title: const Text("Searching Servers..."),
+                        )
+                      : null,
+                ].whereType<Widget>(),
+              ],
             ),
           ),
         );
@@ -204,9 +143,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
       liveStream: false,
       notificationConfiguration: BetterPlayerNotificationConfiguration(
           showNotification: true,
-          title: "${widget.title} (${widget.year})",
-          author: (widget.season != null && widget.episode != null)
-              ? "Season ${widget.season} Episode ${widget.episode}"
+          title: "${widget.movieData.title} (${widget.movieData.year})",
+          author: (widget.movieData.season != null &&
+                  widget.movieData.episode != null)
+              ? "Season ${widget.movieData.season} Episode ${widget.movieData.episode}"
               : null,
           imageUrl: widget.backdrop,
           activityName: "MainActivity"),
@@ -221,7 +161,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
           autoPlay: true,
           fit: BoxFit.contain,
           controlsConfiguration: BetterPlayerControlsConfiguration(
-            title: "${widget.title} (${widget.year})",
+            title: "${widget.movieData.title} (${widget.movieData.year})",
             showControls: true,
             playerTheme: BetterPlayerTheme.material,
             enableOverflowMenu: true,
@@ -264,18 +204,82 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     });
   }
 
+  void getAllStreams() async {
+    setState(() {
+      isSearching = true;
+    });
+    for (final provider in widget.providerDataList) {
+      try {
+        final providerInstance =
+            provider.providerFunction(movieData: widget.movieData);
+        List<VideoData> result = await ref.read(providerInstance.future);
+        if (result.isNotEmpty) {
+          for (var video in result) {
+            if (video.videoSourceUrl != nowPlayingUrl &&
+                !_videoDataList.any((element) =>
+                    element.videoSourceUrl == video.videoSourceUrl)) {
+              _videoDataList.add(video);
+            }
+          }
+          setState(() {
+            provider.videoDataList = result;
+            provider.streamFound = true;
+            provider.isSearching = false;
+            _videoDataList = _videoDataList;
+          });
+        } else {
+          setState(() {
+            provider.streamFound = false;
+            provider.isSearching = false;
+          });
+        }
+      } catch (e) {
+        setState(() {
+          provider.streamFound = false;
+          provider.isSearching = false;
+        });
+        continue;
+      }
+    }
+    setState(() {
+      isSearching = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        behavior: SnackBarBehavior.floating,
+        showCloseIcon: true,
+        closeIconColor: Theme.of(context).colorScheme.onPrimary,
+        content: Text(
+          "New ${_videoDataList.length - 1} streams found.",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void initState() {
     super.initState();
-    getSubtitles().then((value) {
-      if (mounted) {
-        setState(() {});
-      }
+    _videoDataList = widget.providerDataList
+        .map((provider) => provider.videoDataList)
+        .expand((videoData) => videoData)
+        .toList();
+    _subtitleDataList = widget.subtitleDataList;
+    nowPlayingUrl = _videoDataList[0].videoSourceUrl;
+    nowPlayingHeaders =
+        Map<String, String>.from(_videoDataList[0].videoSourceHeaders ?? {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      changeVideo(
+        videoSourceUrl: nowPlayingUrl,
+        subtitles: _subtitleDataList,
+        videoSourceHeaders: nowPlayingHeaders,
+      );
     });
-    getStreams().then((value) {
-      if (mounted) {
-        setState(() {});
-      }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getAllStreams();
     });
   }
 
@@ -290,7 +294,7 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${widget.title} (${widget.year})",
+          "${widget.movieData.title} (${widget.movieData.year})",
           style: Theme.of(context).textTheme.titleLarge,
         ),
       ),
