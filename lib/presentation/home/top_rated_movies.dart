@@ -5,8 +5,8 @@ import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/streamora_error_widget.dart';
 import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 
-class TopRatedMovies extends StatelessWidget {
-  const TopRatedMovies({
+class TopRatedMoviesWidget extends StatelessWidget {
+  const TopRatedMoviesWidget({
     super.key,
     required this.topRatedMovies,
   });

@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/data/tmdb_provider/movie_details.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/credits_list_carousel.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/core/common/util.dart';
-import 'package:streamora/data/genres_data.dart';
+import 'package:streamora/data/tmdb_provider/genres_data.dart';
 import 'package:streamora/presentation/genres/individual_genre_screen.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 
@@ -165,9 +165,8 @@ class _GenresScreenState extends ConsumerState<GenresScreen>
                               PageTransition(
                                 type: PageTransitionType.fade,
                                 child: IndividualGenreScreen(
-                                  genreName:
-                                      movieGenres.values.elementAt(index),
-                                  genreId: movieGenres.keys.elementAt(index),
+                                  genreName: tvGenres.values.elementAt(index),
+                                  genreId: tvGenres.keys.elementAt(index),
                                   mediaType: "tv",
                                 ),
                               ),

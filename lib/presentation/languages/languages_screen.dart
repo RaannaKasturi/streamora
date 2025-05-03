@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/core/common/util.dart';
-import 'package:streamora/data/languages_data.dart';
+import 'package:streamora/data/constants/languages_data.dart';
 import 'package:streamora/model/movie_language_data.dart';
 import 'package:streamora/presentation/languages/individual_language_screen.dart';
 import 'package:streamora/presentation/search/search_screen.dart';

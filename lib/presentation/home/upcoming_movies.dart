@@ -5,8 +5,8 @@ import 'package:streamora/presentation/components/card_list_carousel.dart';
 import 'package:streamora/presentation/components/streamora_error_widget.dart';
 import 'package:streamora/presentation/components/streamora_loading_widget.dart';
 
-class UpcomingMovies extends StatelessWidget {
-  const UpcomingMovies({
+class UpcomingMoviesWidget extends StatelessWidget {
+  const UpcomingMoviesWidget({
     super.key,
     required this.upcomingMovies,
   });

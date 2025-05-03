@@ -6,8 +6,8 @@ import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/presentation/movie/movie_screen.dart';
 import 'package:streamora/presentation/series/series_screen.dart';
 
-class MovieTVCarousel extends StatelessWidget {
-  const MovieTVCarousel({
+class MovieTVGrid extends StatelessWidget {
+  const MovieTVGrid({
     super.key,
     required this.sectionTitle,
     required this.nowPlayingMovies,

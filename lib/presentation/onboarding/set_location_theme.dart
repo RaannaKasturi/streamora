@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:streamora/data/countries_data.dart';
+import 'package:streamora/data/constants/countries_data.dart';
 import 'package:streamora/data/user_preferences.dart';
 import 'package:streamora/presentation/home/home_screen.dart';
 

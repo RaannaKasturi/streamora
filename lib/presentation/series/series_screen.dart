@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/data/tmdb_provider/season_episode_details.dart';
+import 'package:streamora/data/tmdb_provider/series_details.dart';
 import 'package:streamora/model/episode_details_data.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/series_details_data.dart';
@@ -475,6 +476,7 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
                                                     child:
                                                         SearchingStreamsScreen(
                                                       backdrop: data.backdrop,
+                                                      isWatching: false,
                                                       movieData:
                                                           StreamSearchData(
                                                         title: data.title,

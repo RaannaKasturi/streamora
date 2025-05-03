@@ -9,8 +9,8 @@ import 'package:streamora/presentation/components/streamora_loading_widget.dart'
 import 'package:streamora/presentation/movie/movie_screen.dart';
 import 'package:streamora/presentation/series/series_screen.dart';
 
-class HeroCarousel extends StatelessWidget {
-  const HeroCarousel({
+class HeroCarouselWidget extends StatelessWidget {
+  const HeroCarouselWidget({
     super.key,
     required this.movies,
   });

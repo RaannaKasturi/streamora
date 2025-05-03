@@ -2,7 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/core/common/util.dart';
-import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/data/tmdb_provider/airing_today.dart';
+import 'package:streamora/data/tmdb_provider/now_playing_movies.dart';
+import 'package:streamora/data/tmdb_provider/top_rated_movies.dart';
+import 'package:streamora/data/tmdb_provider/top_rated_series.dart';
+import 'package:streamora/data/tmdb_provider/trending_movies.dart';
+import 'package:streamora/data/tmdb_provider/upcoming_movies.dart';
 import 'package:streamora/presentation/home/hero_carousel.dart';
 import 'package:streamora/presentation/home/in_theatres_near_you.dart';
 import 'package:streamora/presentation/home/series_airing_today.dart';
@@ -17,11 +22,11 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
+    final nowPlayingMovies = ref.watch(nowPlayingProvider);
     final trendingMovies = ref.watch(trendingMoviesProvider);
-    final seriesAiringToday = ref.watch(seriesAiringTodayProvider);
-    final topRatedMovies = ref.watch(topratedMoviesProvider);
-    final topRatedSeries = ref.watch(topratedSeriesProvider);
+    final seriesAiringToday = ref.watch(airingTodayProvider);
+    final topRatedMovies = ref.watch(topRatedMoviesProvider);
+    final topRatedSeries = ref.watch(topRatedSeriesProvider);
     final upcomingMovies = ref.watch(upcomingMoviesProvider);
     return Scaffold(
       appBar: AppBar(
@@ -73,24 +78,24 @@ class HomeScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            HeroCarousel(movies: trendingMovies),
-            InTheatresNearYou(nowPlayingMovies: nowPlayingMovies),
+            HeroCarouselWidget(movies: trendingMovies),
+            InTheatresNearYouWidget(nowPlayingMovies: nowPlayingMovies),
             SizedBox(
               height: 10,
             ),
-            SeriesAiringToday(seriesAiringToday: seriesAiringToday),
+            SeriesAiringTodayWidget(seriesAiringToday: seriesAiringToday),
             SizedBox(
               height: 10,
             ),
-            TopRatedMovies(topRatedMovies: topRatedMovies),
+            TopRatedMoviesWidget(topRatedMovies: topRatedMovies),
             SizedBox(
               height: 10,
             ),
-            TopRatedSeries(topRatedSeries: topRatedSeries),
+            TopRatedSeriesWidget(topRatedSeries: topRatedSeries),
             SizedBox(
               height: 10,
             ),
-            UpcomingMovies(upcomingMovies: upcomingMovies),
+            UpcomingMoviesWidget(upcomingMovies: upcomingMovies),
             SizedBox(
               height: 30,
             ),

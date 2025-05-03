@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/data/tmdb_provider/search_results.dart';
 import 'package:streamora/data/user_preferences.dart';
 import 'package:streamora/model/movie_list_data.dart';
 import 'package:streamora/presentation/components/streamora_error_widget.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/core/common/util.dart';
-import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/data/tmdb_provider/details_by_language.dart';
 import 'package:streamora/presentation/components/movie_tv_carousel.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 
@@ -20,7 +20,7 @@ class IndividualLanguageScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final moviesByLanguage = ref.watch(
-      getMoviesSeriesByLanguageProvider(
+      getDetailsByLanguageProvider(
         languageISO: languageCode,
         mediaType: mediaType,
       ),
@@ -65,7 +65,7 @@ class IndividualLanguageScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: MovieTVCarousel(
+      body: MovieTVGrid(
         nowPlayingMovies: moviesByLanguage,
         sectionTitle: '',
       ),

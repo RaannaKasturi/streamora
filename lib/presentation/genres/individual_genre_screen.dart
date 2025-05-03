@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/core/common/util.dart';
-import 'package:streamora/data/tmdb.dart';
+import 'package:streamora/data/tmdb_provider/details_by_genre.dart';
 import 'package:streamora/presentation/components/movie_tv_carousel.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 
@@ -20,7 +20,7 @@ class IndividualGenreScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final moviesByGenre = ref.watch(
-      getMoviesSeriesByGenreProvider(genreId: genreId, mediaType: mediaType),
+      getDetailsByGenreProvider(genreId: genreId, mediaType: mediaType),
     );
     return Scaffold(
       appBar: AppBar(
@@ -34,12 +34,16 @@ class IndividualGenreScreen extends ConsumerWidget {
               height: 32,
             ),
             const SizedBox(width: 8),
-            Text(
-              genreName.toUpperCase().splitMapJoin("",
-                  onMatch: (m) => " ", onNonMatch: (n) => n.toUpperCase()),
-              style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+            Expanded(
+              child: Text(
+                genreName.toUpperCase().splitMapJoin("",
+                    onMatch: (m) => " ", onNonMatch: (n) => n.toUpperCase()),
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+              ),
             ),
           ],
         ),
@@ -61,7 +65,7 @@ class IndividualGenreScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: MovieTVCarousel(
+      body: MovieTVGrid(
         nowPlayingMovies: moviesByGenre,
         sectionTitle: '',
       ),
