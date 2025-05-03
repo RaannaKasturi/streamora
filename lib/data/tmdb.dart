@@ -48,7 +48,7 @@ class Tmdb {
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: movie['media_type'],
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
@@ -81,7 +81,7 @@ class Tmdb {
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: "movie",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
@@ -147,7 +147,7 @@ class Tmdb {
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: "tv",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
@@ -180,7 +180,7 @@ class Tmdb {
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: "tv",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
@@ -213,7 +213,7 @@ class Tmdb {
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'])
             .toString()
-            .substring(0, 4),
+            .split("-")[0],
         mediaType: "movie",
         overview: movie['overview'],
         genres: movie['genre_ids'] != null
@@ -374,7 +374,8 @@ class Tmdb {
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
         voteAverage: ((movie['vote_average'] ?? 0.0).toStringAsFixed(1)),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'] ?? "N/A")
-            .toString(),
+            .toString()
+            .split("-")[0],
         mediaType: movie['media_type'] ?? "movie",
         overview: movie['overview'] ?? "No overview available",
         genres: movie['genre_ids'] != null
@@ -490,7 +491,8 @@ class Tmdb {
             : "https://raw.githubusercontent.com/RaannaKasturi/streamora/refs/heads/master/assets/placeholder/poster_placeholder.png",
         voteAverage: (movie['vote_average'] ?? 0.0).toString().substring(0, 3),
         releaseYear: (movie['release_date'] ?? movie['first_air_date'] ?? "N/A")
-            .toString(),
+            .toString()
+            .split("-")[0],
         mediaType: movie['media_type'] ?? "tv",
         overview: movie['overview'] ?? "No overview available",
         genres: movie['genre_ids'] != null

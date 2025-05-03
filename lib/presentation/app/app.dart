@@ -7,7 +7,8 @@ import 'package:streamora/presentation/profile/profile_screen.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 
 class App extends StatefulWidget {
-  const App({super.key});
+  final int initialIndex;
+  const App({super.key, this.initialIndex = 0});
 
   @override
   State<App> createState() => _AppState();
@@ -20,7 +21,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.index = 0;
+    _tabController.index = widget.initialIndex;
     _tabController.addListener(() {
       if (_tabController.indexIsChanging) {
         setState(() {});
