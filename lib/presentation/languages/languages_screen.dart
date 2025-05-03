@@ -113,14 +113,14 @@ class _LanguagesScreenState extends ConsumerState<LanguagesScreen>
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          Icons.search,
+                          Icons.close,
                           color: Theme.of(context).colorScheme.primary,
                         ),
                         onPressed: () {
-                          if (_searchController.text.trim().isNotEmpty) {
-                            _onSearch(query: _searchController.text.trim());
-                            FocusScope.of(context).unfocus();
-                          }
+                          _searchController.clear();
+                          setState(() {
+                            filteredLanguages = languages;
+                          });
                         },
                       ),
                     ),
