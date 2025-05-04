@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:streamora/data/env/env.dart';
 import 'package:streamora/data/tmdb_provider/movie_details.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/presentation/components/card_list_carousel.dart';
@@ -262,33 +264,47 @@ class MovieScreen extends ConsumerWidget {
                     ),
                     Expanded(
                       flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onSurface
-                                .withAlpha((0.1 * 255).toInt()),
-                            width: 1,
+                      child: InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurface
+                                  .withAlpha((0.1 * 255).toInt()),
+                              width: 1,
+                            ),
+                          ),
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(Icons.share),
+                              const SizedBox(height: 5),
+                              Text(
+                                "Share",
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                style: const TextStyle(fontSize: 16),
+                              )
+                            ],
                           ),
                         ),
-                        padding: const EdgeInsets.all(5.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(Icons.share),
-                            const SizedBox(height: 5),
-                            Text(
-                              "Share",
-                              overflow: TextOverflow.ellipsis,
-                              softWrap: true,
-                              style: const TextStyle(fontSize: 16),
-                            )
-                          ],
-                        ),
+                        onTap: () {
+                          SharePlus.instance.share(
+                            ShareParams(
+                              title:
+                                  "${data.title} (${data.releaseYear}). Now Available on Streamora for FREE",
+                              subject:
+                                  "${data.title} (${data.releaseYear}). Now Available on Streamora for FREE",
+                              text:
+                                  'Check out this movie: ${data.title} (${data.releaseYear}) on Streamora at https://$streamoraWebUrl/movie/${data.id} \nFREE TO WATCH!!!',
+                            ),
+                          );
+                        },
                       ),
                     ),
                     Expanded(
