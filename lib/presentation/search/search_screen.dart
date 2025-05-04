@@ -38,8 +38,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            showCloseIcon: true,
             closeIconColor: Colors.white,
             content: Text(
               "No results found for '$query'",

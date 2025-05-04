@@ -255,15 +255,8 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        behavior: SnackBarBehavior.floating,
-        showCloseIcon: true,
-        closeIconColor: Theme.of(context).colorScheme.onPrimary,
         content: Text(
           "New ${_videoDataList.length - 1} streams found.",
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
         ),
       ),
     );

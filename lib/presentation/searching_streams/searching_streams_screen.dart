@@ -156,11 +156,11 @@ class _SearchingStreamsScreenState
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               backgroundColor: Colors.red,
-              behavior: SnackBarBehavior.floating,
-              showCloseIcon: true,
               closeIconColor: Colors.white,
-              content: const Text("No streams found!",
-                  style: TextStyle(color: Colors.white)),
+              content: const Text(
+                "No streams found!",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           );
         } else {
@@ -178,15 +178,8 @@ class _SearchingStreamsScreenState
           );
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              backgroundColor: Theme.of(context).colorScheme.primary,
-              behavior: SnackBarBehavior.floating,
-              showCloseIcon: true,
-              closeIconColor: Theme.of(context).colorScheme.onPrimary,
               content: Text(
                 "Stream Found!",
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
               ),
             ),
           );
@@ -194,15 +187,8 @@ class _SearchingStreamsScreenState
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            behavior: SnackBarBehavior.floating,
-            showCloseIcon: true,
-            closeIconColor: Theme.of(context).colorScheme.onPrimary,
             content: Text(
               "Download Feature Coming Soon!",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
             ),
           ),
         );
