@@ -132,95 +132,206 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             Expanded(child: StreamoraErrorWidget()),
           if (_searchResults.isNotEmpty && !_isLoading && !_isError)
             Expanded(
-              child: GridView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 0.6,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                ),
+              child: ListView.builder(
                 itemCount: _searchResults.length,
-                itemBuilder: (context, index) {
-                  final movie = _searchResults[index];
-                  return InkWell(
-                    onTap: () {
-                      if (movie.mediaType == "movie") {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            child: MovieScreen(
-                              movieId: movie.id,
-                              movieTitle: movie.title,
-                            ),
-                          ),
-                        );
-                      } else if (movie.mediaType == "tv") {
-                        Navigator.push(
-                          context,
-                          PageTransition(
-                            type: PageTransitionType.fade,
-                            child: SeriesScreen(
-                              seriesId: movie.id,
-                              seriesTitle: movie.title,
-                            ),
-                          ),
-                        );
-                      } else {
-                        debugPrint("Unknown media type: ${movie.mediaType}");
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "Unknown media type: ${movie.mediaType}\n${movie.title} (${movie.releaseYear})",
-                            ),
-                          ),
-                        );
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainer,
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .onSurface
-                              .withAlpha((0.1 * 255).toInt()),
-                          width: 1,
-                        ),
-                      ),
-                      child: Column(
+                itemBuilder: (BuildContext context, int index) {
+                  final data = _searchResults;
+                  return Container(
+                    alignment: Alignment.topCenter,
+                    margin: const EdgeInsets.only(
+                      left: 16,
+                      right: 16,
+                    ),
+                    child: InkWell(
+                      child: Row(
+                        spacing: 8,
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.vertical(
-                                top: Radius.circular(8)),
-                            child: CachedNetworkImage(
-                              imageUrl: movie.poster,
-                              height: 225,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                          Expanded(
+                            flex: 1,
+                            child: Stack(
+                              children: [
+                                AspectRatio(
+                                  aspectRatio: 9 / 15,
+                                  child: CachedNetworkImage(
+                                      imageUrl: data[index].poster),
+                                ),
+                                Positioned(
+                                  top: 15,
+                                  right: 5,
+                                  child: Badge(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.primary,
+                                    textColor:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    label: Text(
+                                      data[index].mediaType.toUpperCase(),
+                                      style: const TextStyle(
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "${movie.title} (${movie.releaseYear})",
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                          Expanded(
+                            flex: 4,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              spacing: 4,
+                              children: [
+                                Text(
+                                  "${data[index].title} (${data[index].releaseYear})",
+                                  maxLines: 2,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleLarge
+                                      ?.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                ),
+                                Text(
+                                  data[index].overview,
+                                  maxLines: 3,
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
+                      onTap: () {
+                        if (data[index].mediaType == "movie") {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              child: MovieScreen(
+                                movieId: data[index].id,
+                                movieTitle: data[index].title,
+                              ),
+                            ),
+                          );
+                        } else if (data[index].mediaType == "tv") {
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.fade,
+                              child: SeriesScreen(
+                                seriesId: data[index].id,
+                                seriesTitle: data[index].title,
+                              ),
+                            ),
+                          );
+                        } else {
+                          debugPrint(
+                              "Unknown media type: ${data[index].mediaType}");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                "Unknown media type: ${data[index].mediaType}\n${data[index].title} (${data[index].releaseYear})",
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   );
                 },
               ),
+              // child: GridView.builder(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16),
+              //   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              //     crossAxisCount: 2,
+              //     childAspectRatio: 0.6,
+              //     crossAxisSpacing: 12,
+              //     mainAxisSpacing: 12,
+              //   ),
+              //   itemCount: _searchResults.length,
+              //   itemBuilder: (context, index) {
+              //     final movie = _searchResults[index];
+              //     return InkWell(
+              //       onTap: () {
+              //         if (movie.mediaType == "movie") {
+              //           Navigator.push(
+              //             context,
+              //             PageTransition(
+              //               type: PageTransitionType.fade,
+              //               child: MovieScreen(
+              //                 movieId: movie.id,
+              //                 movieTitle: movie.title,
+              //               ),
+              //             ),
+              //           );
+              //         } else if (movie.mediaType == "tv") {
+              //           Navigator.push(
+              //             context,
+              //             PageTransition(
+              //               type: PageTransitionType.fade,
+              //               child: SeriesScreen(
+              //                 seriesId: movie.id,
+              //                 seriesTitle: movie.title,
+              //               ),
+              //             ),
+              //           );
+              //         } else {
+              //           debugPrint("Unknown media type: ${movie.mediaType}");
+              //           ScaffoldMessenger.of(context).showSnackBar(
+              //             SnackBar(
+              //               content: Text(
+              //                 "Unknown media type: ${movie.mediaType}\n${movie.title} (${movie.releaseYear})",
+              //               ),
+              //             ),
+              //           );
+              //         }
+              //       },
+              //       child: Container(
+              //         decoration: BoxDecoration(
+              //           color: Theme.of(context).colorScheme.surfaceContainer,
+              //           borderRadius: BorderRadius.circular(8),
+              //           border: Border.all(
+              //             color: Theme.of(context)
+              //                 .colorScheme
+              //                 .onSurface
+              //                 .withAlpha((0.1 * 255).toInt()),
+              //             width: 1,
+              //           ),
+              //         ),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           children: [
+              //             ClipRRect(
+              //               borderRadius: const BorderRadius.vertical(
+              //                   top: Radius.circular(8)),
+              //               child: CachedNetworkImage(
+              //                 imageUrl: movie.poster,
+              //                 height: 225,
+              //                 width: double.infinity,
+              //                 fit: BoxFit.cover,
+              //               ),
+              //             ),
+              //             Padding(
+              //               padding: const EdgeInsets.all(8.0),
+              //               child: Text(
+              //                 "${movie.title} (${movie.releaseYear})",
+              //                 maxLines: 2,
+              //                 overflow: TextOverflow.ellipsis,
+              //                 style: Theme.of(context)
+              //                     .textTheme
+              //                     .bodyMedium
+              //                     ?.copyWith(fontWeight: FontWeight.bold),
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //       ),
+              //     );
+              //   },
+              // ),
             ),
         ],
       ),

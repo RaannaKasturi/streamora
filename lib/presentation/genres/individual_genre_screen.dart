@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:streamora/core/common/util.dart';
 import 'package:streamora/data/tmdb_provider/details_by_genre.dart';
-import 'package:streamora/presentation/components/movie_tv_carousel.dart';
+import 'package:streamora/presentation/components/movie_tv_list.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
 
 class IndividualGenreScreen extends ConsumerWidget {
@@ -65,7 +65,7 @@ class IndividualGenreScreen extends ConsumerWidget {
           ),
         ],
       ),
-      body: MovieTVGrid(
+      body: MovieTVList(
         nowPlayingMovies: moviesByGenre,
         sectionTitle: '',
       ),
