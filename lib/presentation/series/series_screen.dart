@@ -35,26 +35,57 @@ class _SeriesScreenState extends ConsumerState<SeriesScreen> {
         ref.watch(seasonEpisodesProvider(widget.seriesId, selectedSeason));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.seriesTitle),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.fade,
-                    child: const SearchScreen(),
+      appBar: (widget.seriesTitle == "")
+          ? AppBar(
+              title: movieDetails.when(
+                data: (data) => Text(
+                  data.title,
+                ),
+                error: (error, stackTrace) {
+                  return const Text("Error Loading Series");
+                },
+                loading: () {
+                  return const Text("Loading Series...");
+                },
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const SearchScreen(),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
+            )
+          : AppBar(
+              title: Text(widget.seriesTitle),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const SearchScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       body: Container(
         padding: const EdgeInsets.only(top: 5),
         alignment: Alignment.center,

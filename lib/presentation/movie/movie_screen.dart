@@ -14,34 +14,68 @@ import 'package:streamora/presentation/searching_streams/searching_streams_scree
 class MovieScreen extends ConsumerWidget {
   final int movieId;
   final String movieTitle;
-  const MovieScreen(
-      {super.key, required this.movieId, required this.movieTitle});
+  const MovieScreen({
+    super.key,
+    required this.movieId,
+    required this.movieTitle,
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final movieDetails = ref.watch(movieDetailsProvider(movieId));
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(movieTitle),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  PageTransition(
-                    type: PageTransitionType.fade,
-                    child: const SearchScreen(),
+      appBar: (movieTitle == "")
+          ? AppBar(
+              title: movieDetails.when(
+                data: (data) => Text(
+                  data.title,
+                ),
+                error: (error, stackTrace) {
+                  return const Text("Error Loading Movie");
+                },
+                loading: () {
+                  return const Text("Loading Movie...");
+                },
+              ),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const SearchScreen(),
+                        ),
+                      );
+                    },
                   ),
-                );
-              },
+                ),
+              ],
+            )
+          : AppBar(
+              title: Text(movieTitle),
+              actions: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: IconButton(
+                    icon: const Icon(Icons.search),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.fade,
+                          child: const SearchScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
-      ),
       body: SingleChildScrollView(
         child: movieDetails.when(
           data: (data) => Column(

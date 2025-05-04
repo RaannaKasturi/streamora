@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:streamora/data/api_keys.dart';
+import 'package:streamora/data/env/env.dart';
 
 class Tmdb {
   final baseTMDBEndpoint =
