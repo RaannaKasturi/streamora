@@ -9,7 +9,7 @@ import 'package:streamora/data/stream_provider/vidsrc_su.dart';
 import 'package:streamora/data/stream_provider/vidzee.dart';
 import 'package:streamora/data/stream_provider/x_prime_appolo.dart';
 import 'package:streamora/data/stream_provider/x_prime_fox.dart';
-import 'package:streamora/data/subtitles.dart';
+import 'package:streamora/data/subtitle_provider/subtitles.dart';
 import 'package:streamora/model/provider_data.dart';
 import 'package:streamora/model/scrape_streams_data.dart';
 import 'package:streamora/model/subtitle_data.dart';
@@ -34,8 +34,11 @@ class SearchingStreamsScreen extends ConsumerStatefulWidget {
 
 class _SearchingStreamsScreenState
     extends ConsumerState<SearchingStreamsScreen> {
+  bool isStreamsDone = false;
+  bool isSubtitlesDone = false;
   bool streamFound = false;
-  bool isLoading = true;
+  bool searchingSubtitles = false;
+  bool searchingStreams = true;
   List<SubtitleData> _subtitleData = [];
 
   final List<ProviderData> _providerData = [
@@ -82,24 +85,35 @@ class _SearchingStreamsScreenState
   ];
 
   Future<void> getSubtitles() async {
-    List<SubtitleData> subtitleList = await ref.read(subtitlesProvider(
-      tmdbId: "7239223",
-      season: "23",
-      episode: "2",
-    ).future);
-    if (!mounted) return;
-    if (subtitleList.isNotEmpty) {
-      setState(() {
-        _subtitleData = subtitleList;
-      });
+    setState(() {
+      searchingSubtitles = true;
+    });
+    try {
+      List<SubtitleData> subtitleList = await ref.read(
+        subtitlesProvider(imdbId: widget.movieData.imdbId).future,
+      );
+      if (!mounted) return;
+      if (subtitleList.isNotEmpty) {
+        setState(() {
+          _subtitleData = subtitleList;
+        });
+      }
+    } catch (e) {
+      debugPrint("Subtitle error: $e");
     }
+
+    setState(() {
+      searchingSubtitles = false;
+      isSubtitlesDone = true;
+    });
+
+    _maybeNavigateToVideoScreen();
   }
 
   Future<void> searchVideoStreams() async {
     for (final provider in _providerData) {
-      if (streamFound && widget.isWatching) {
-        break;
-      }
+      if (streamFound && widget.isWatching) break;
+
       setState(() => provider.isSearching = true);
       try {
         final providerInstance =
@@ -118,45 +132,66 @@ class _SearchingStreamsScreenState
             provider.isSearching = false;
           });
         }
-      } catch (e) {
+      } catch (_) {
         setState(() {
           provider.streamFound = false;
           provider.isSearching = false;
         });
-        continue;
       }
-      setState(() => provider.isSearching = false);
     }
-    if (widget.isWatching) {
-      if (streamFound == false) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: Colors.red,
-            behavior: SnackBarBehavior.floating,
-            showCloseIcon: true,
-            closeIconColor: Colors.white,
-            content: Text(
-              "No streams found!",
-              style: const TextStyle(
-                color: Colors.white,
+
+    setState(() {
+      isStreamsDone = true;
+    });
+
+    _maybeNavigateToVideoScreen();
+  }
+
+  void _maybeNavigateToVideoScreen() {
+    if (!mounted) return;
+    if (isStreamsDone && isSubtitlesDone) {
+      if (widget.isWatching) {
+        if (!streamFound) {
+          Navigator.pop(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              behavior: SnackBarBehavior.floating,
+              showCloseIcon: true,
+              closeIconColor: Colors.white,
+              content: const Text("No streams found!",
+                  style: TextStyle(color: Colors.white)),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            PageTransition(
+              type: PageTransitionType.fade,
+              child: VideoScreen(
+                backdrop: widget.backdrop,
+                movieData: widget.movieData,
+                subtitleDataList: _subtitleData,
+                providerDataList: _providerData,
               ),
             ),
-          ),
-        );
-      } else {
-        Navigator.pushReplacement(
-          context,
-          PageTransition(
-            type: PageTransitionType.fade,
-            child: VideoScreen(
-              backdrop: widget.backdrop,
-              movieData: widget.movieData,
-              subtitleDataList: _subtitleData,
-              providerDataList: _providerData,
+          );
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              behavior: SnackBarBehavior.floating,
+              showCloseIcon: true,
+              closeIconColor: Theme.of(context).colorScheme.onPrimary,
+              content: Text(
+                "Stream Found!",
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             ),
-          ),
-        );
+          );
+        }
+      } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Theme.of(context).colorScheme.primary,
@@ -164,7 +199,7 @@ class _SearchingStreamsScreenState
             showCloseIcon: true,
             closeIconColor: Theme.of(context).colorScheme.onPrimary,
             content: Text(
-              "Stream Found!",
+              "Download Feature Coming Soon!",
               style: TextStyle(
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
@@ -172,21 +207,6 @@ class _SearchingStreamsScreenState
           ),
         );
       }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          behavior: SnackBarBehavior.floating,
-          showCloseIcon: true,
-          closeIconColor: Theme.of(context).colorScheme.onPrimary,
-          content: Text(
-            "Download Feature Coming Soon!",
-            style: TextStyle(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-        ),
-      );
     }
   }
 
@@ -194,37 +214,89 @@ class _SearchingStreamsScreenState
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      searchVideoStreams();
       getSubtitles();
+      searchVideoStreams();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> providerWidgets = _providerData.map((provider) {
+      return ListTile(
+        title: Text(provider.providerName),
+        subtitle: provider.streamFound == null
+            ? const Text("Searching...")
+            : provider.streamFound == true
+                ? const Text("Streams found")
+                : const Text("No streams found."),
+        trailing: provider.isSearching == true
+            ? const CircularProgressIndicator()
+            : provider.streamFound == true
+                ? const Icon(Icons.check, color: Colors.green)
+                : const Icon(Icons.close, color: Colors.red),
+      );
+    }).toList();
+
+    List<Widget> subtitleWidgets = [];
+
+    if (searchingSubtitles) {
+      subtitleWidgets.add(
+        const ListTile(
+          title: Text("Subtitles"),
+          subtitle: Text("Searching..."),
+          trailing: CircularProgressIndicator(),
+        ),
+      );
+    } else if (_subtitleData.isEmpty) {
+      subtitleWidgets.add(
+        const ListTile(
+          title: Text("Subtitles"),
+          subtitle: Text("No subtitles found."),
+          trailing: Icon(Icons.close, color: Colors.red),
+        ),
+      );
+    } else {
+      subtitleWidgets.add(
+        const ListTile(
+          title: Text("Subtitles"),
+          subtitle: Text("Subtitles found."),
+          trailing: Icon(Icons.check, color: Colors.green),
+        ),
+      );
+      subtitleWidgets.addAll(
+        _subtitleData.map((subtitle) {
+          return ListTile(
+            title: Text(subtitle.subtitleLanguage),
+            subtitle: Text(subtitle.subtitleUrl),
+            trailing: const Icon(Icons.subtitles),
+          );
+        }).toList(),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("${widget.movieData.title} (${widget.movieData.year})"),
       ),
-      body: ListView.builder(
-        itemCount: _providerData.length,
-        itemBuilder: (context, index) {
-          final provider = _providerData[index];
-          return ListTile(
-            title: Text(provider.providerName),
-            subtitle: provider.streamFound == null
-                ? const Text("Searching...")
-                : provider.streamFound == true
-                    ? const Text("Streams found")
-                    : const Text("No streams found."),
-            trailing: provider.isSearching == null
-                ? const Icon(Icons.search)
-                : provider.isSearching == true
-                    ? const CircularProgressIndicator()
-                    : provider.streamFound == true
-                        ? const Icon(Icons.check, color: Colors.green)
-                        : const Icon(Icons.close, color: Colors.red),
-          );
-        },
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 10),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: Text("Streaming Providers",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+            ...providerWidgets,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              child: Text("Subtitles",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            ),
+            ...subtitleWidgets,
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }

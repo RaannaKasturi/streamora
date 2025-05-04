@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  archive: ^4.0.7
   beautiful_soup_dart: ^0.3.0
   better_player_plus:
     git:
@@ -52,6 +53,7 @@ dependencies:
   lottie: ^3.3.1
   page_transition: ^2.2.1
   path: ^1.9.1
+  path_provider: ^2.1.5
   permission_handler: ^12.0.0+1
   riverpod_annotation: ^2.6.1
   shared_preferences: ^2.5.3

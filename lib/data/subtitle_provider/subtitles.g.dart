@@ -6,7 +6,7 @@ part of 'subtitles.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$subtitlesHash() => r'fdc9feecef3811ca9d1cfb1adc1965de1eb1486a';
+String _$subtitlesHash() => r'e447b2f40f4ea0e54427771c6460e2d1ad88eb4d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -40,14 +40,10 @@ class SubtitlesFamily extends Family<AsyncValue<List<SubtitleData>>> {
 
   /// See also [subtitles].
   SubtitlesProvider call({
-    required String tmdbId,
-    String? season,
-    String? episode,
+    required String imdbId,
   }) {
     return SubtitlesProvider(
-      tmdbId: tmdbId,
-      season: season,
-      episode: episode,
+      imdbId: imdbId,
     );
   }
 
@@ -56,9 +52,7 @@ class SubtitlesFamily extends Family<AsyncValue<List<SubtitleData>>> {
     covariant SubtitlesProvider provider,
   ) {
     return call(
-      tmdbId: provider.tmdbId,
-      season: provider.season,
-      episode: provider.episode,
+      imdbId: provider.imdbId,
     );
   }
 
@@ -78,18 +72,14 @@ class SubtitlesFamily extends Family<AsyncValue<List<SubtitleData>>> {
 }
 
 /// See also [subtitles].
-class SubtitlesProvider extends FutureProvider<List<SubtitleData>> {
+class SubtitlesProvider extends AutoDisposeFutureProvider<List<SubtitleData>> {
   /// See also [subtitles].
   SubtitlesProvider({
-    required String tmdbId,
-    String? season,
-    String? episode,
+    required String imdbId,
   }) : this._internal(
           (ref) => subtitles(
             ref as SubtitlesRef,
-            tmdbId: tmdbId,
-            season: season,
-            episode: episode,
+            imdbId: imdbId,
           ),
           from: subtitlesProvider,
           name: r'subtitlesProvider',
@@ -99,9 +89,7 @@ class SubtitlesProvider extends FutureProvider<List<SubtitleData>> {
                   : _$subtitlesHash,
           dependencies: SubtitlesFamily._dependencies,
           allTransitiveDependencies: SubtitlesFamily._allTransitiveDependencies,
-          tmdbId: tmdbId,
-          season: season,
-          episode: episode,
+          imdbId: imdbId,
         );
 
   SubtitlesProvider._internal(
@@ -111,14 +99,10 @@ class SubtitlesProvider extends FutureProvider<List<SubtitleData>> {
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.tmdbId,
-    required this.season,
-    required this.episode,
+    required this.imdbId,
   }) : super.internal();
 
-  final String tmdbId;
-  final String? season;
-  final String? episode;
+  final String imdbId;
 
   @override
   Override overrideWith(
@@ -133,32 +117,25 @@ class SubtitlesProvider extends FutureProvider<List<SubtitleData>> {
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        tmdbId: tmdbId,
-        season: season,
-        episode: episode,
+        imdbId: imdbId,
       ),
     );
   }
 
   @override
-  FutureProviderElement<List<SubtitleData>> createElement() {
+  AutoDisposeFutureProviderElement<List<SubtitleData>> createElement() {
     return _SubtitlesProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is SubtitlesProvider &&
-        other.tmdbId == tmdbId &&
-        other.season == season &&
-        other.episode == episode;
+    return other is SubtitlesProvider && other.imdbId == imdbId;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, tmdbId.hashCode);
-    hash = _SystemHash.combine(hash, season.hashCode);
-    hash = _SystemHash.combine(hash, episode.hashCode);
+    hash = _SystemHash.combine(hash, imdbId.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -166,27 +143,18 @@ class SubtitlesProvider extends FutureProvider<List<SubtitleData>> {
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin SubtitlesRef on FutureProviderRef<List<SubtitleData>> {
-  /// The parameter `tmdbId` of this provider.
-  String get tmdbId;
-
-  /// The parameter `season` of this provider.
-  String? get season;
-
-  /// The parameter `episode` of this provider.
-  String? get episode;
+mixin SubtitlesRef on AutoDisposeFutureProviderRef<List<SubtitleData>> {
+  /// The parameter `imdbId` of this provider.
+  String get imdbId;
 }
 
 class _SubtitlesProviderElement
-    extends FutureProviderElement<List<SubtitleData>> with SubtitlesRef {
+    extends AutoDisposeFutureProviderElement<List<SubtitleData>>
+    with SubtitlesRef {
   _SubtitlesProviderElement(super.provider);
 
   @override
-  String get tmdbId => (origin as SubtitlesProvider).tmdbId;
-  @override
-  String? get season => (origin as SubtitlesProvider).season;
-  @override
-  String? get episode => (origin as SubtitlesProvider).episode;
+  String get imdbId => (origin as SubtitlesProvider).imdbId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -123,9 +123,9 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
         subtitleSources.add(
           BetterPlayerSubtitlesSource(
             name: subtitle.subtitleLanguage,
-            type: BetterPlayerSubtitlesSourceType.network,
+            type: BetterPlayerSubtitlesSourceType.file,
             selectedByDefault:
-                subtitle.subtitleLanguage == "English" ? true : false,
+                subtitle.subtitleLanguage == "ENGLISH" ? true : false,
             urls: [subtitle.subtitleUrl],
           ),
         );
@@ -165,6 +165,10 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
             showControls: true,
             playerTheme: BetterPlayerTheme.material,
             enableOverflowMenu: true,
+            progressBarBufferedColor: Colors.grey,
+            progressBarPlayedColor: Theme.of(context).colorScheme.primary,
+            progressBarHandleColor: Theme.of(context).colorScheme.primary,
+            progressBarBackgroundColor: Colors.white,
             enableQualities: true,
             enableAudioTracks: true,
             enableSubtitles: true,
@@ -191,6 +195,11 @@ class _VideoScreenState extends ConsumerState<VideoScreen> {
           subtitlesConfiguration: BetterPlayerSubtitlesConfiguration(
             fontSize: Theme.of(context).textTheme.bodyMedium!.fontSize!,
             fontColor: Colors.white,
+            leftPadding: 12,
+            rightPadding: 12,
+            outlineEnabled: true,
+            outlineColor: Colors.black,
+            outlineSize: 10,
             backgroundColor: Colors.black,
           ),
         ),

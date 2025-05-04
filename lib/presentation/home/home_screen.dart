@@ -15,7 +15,7 @@ import 'package:streamora/presentation/home/top_rated_movies.dart';
 import 'package:streamora/presentation/home/top_rated_series.dart';
 import 'package:streamora/presentation/home/upcoming_movies.dart';
 import 'package:streamora/presentation/search/search_screen.dart';
-import 'package:streamora/presentation/video/test_vod_screen.dart';
+import 'package:streamora/presentation/video/test_subs.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
@@ -49,7 +49,7 @@ class HomeScreen extends ConsumerWidget {
               context,
               PageTransition(
                 type: PageTransitionType.fade,
-                child: const TestVodScreen(),
+                child: const TestSubs(),
               ),
             );
           },
