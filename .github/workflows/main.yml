@@ -1,7 +1,7 @@
 name: Build Flutter APK
 
 on:
-  workflow_dispatch:  # Manual trigger
+  workflow_dispatch:  # Trigger manually
 
 jobs:
   build-apk:
@@ -12,10 +12,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Flutter
+      - name: Set up Flutter (latest stable, includes latest Dart)
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.19.6'  # adjust to your Flutter version
+          channel: 'stable'  # Always fetches the latest stable Flutter & Dart
+
+      - name: Verify Dart version
+        run: dart --version
 
       - name: Install dependencies
         run: flutter pub get
@@ -23,11 +26,11 @@ jobs:
       - name: Build release APK
         run: flutter build apk --release
 
-      - name: Generate timestamp and rename APK
+      - name: Rename APK with timestamp
         run: |
           DATE=$(date +'%y%m%d')
           FILENAME="StringsSocial-${DATE}-signed.apk"
-          cp build/app/outputs/flutter-apk/app-release.apk "./$FILENAME"
+          cp build/app/outputs/flutter-apk/app-release.apk "$FILENAME"
           echo "APK_NAME=$FILENAME" >> $GITHUB_ENV
 
       - name: Commit and push APK to repo root
